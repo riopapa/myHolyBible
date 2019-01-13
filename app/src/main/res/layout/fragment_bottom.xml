@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/agpBible"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/agpBible"
+        android:layout_marginStart="0sp"
+        android:paddingLeft="8sp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/leftAction" />
+
+    <TextView
+        android:id="@+id/leftAction"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/prevBible"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/agpBible"
+        app:layout_constraintRight_toLeftOf="@+id/currBible"/>
+
+    <TextView
+        android:id="@+id/currBible"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/nowBible"
+        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/leftAction"
+        app:layout_constraintRight_toLeftOf="@id/rightAction" />
+
+    <TextView
+        android:id="@+id/rightAction"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/nextBible"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/currBible"
+        app:layout_constraintRight_toLeftOf="@id/cevBible" />
+
+    <TextView
+        android:id="@+id/cevBible"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/cevBible"
+        android:layout_marginEnd="0sp"
+        android:paddingRight="8sp"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintLeft_toRightOf="@id/cevBible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

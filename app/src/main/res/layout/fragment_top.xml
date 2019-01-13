@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/menu"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dnArrow"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/oldBible"/>
+
+    <TextView
+        android:id="@+id/oldBible"
+        style="@style/MenuStyle"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/oldBible"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintLeft_toRightOf="@+id/menu"
+        app:layout_constraintRight_toLeftOf="@+id/newBible"/>
+
+    <TextView
+        android:id="@+id/newBible"
+        style="@style/MenuStyle"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/newBible"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintLeft_toRightOf="@id/oldBible"
+        app:layout_constraintRight_toLeftOf="@id/hymn" />
+
+    <TextView
+        android:id="@+id/hymn"
+        style="@style/MenuStyle"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/hymn"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintLeft_toRightOf="@id/newBible"
+        app:layout_constraintRight_toLeftOf="@id/goBack" />
+
+    <TextView
+        android:id="@+id/goBack"
+        style="@style/MenuStyle"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text="@string/goBack"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/hymn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toLeftOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
