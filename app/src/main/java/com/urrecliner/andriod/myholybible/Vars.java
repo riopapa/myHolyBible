@@ -12,7 +12,6 @@ public class Vars {
 
     static Activity mActivity = null;
     static Context mContext = null;
-    static Utils utils = new Utils();
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0;
     static int xPixels, yPixels;
@@ -45,7 +44,6 @@ public class Vars {
 //    static int topColorH = Color.parseColor("#cacaca");
 
     static ViewGroup mContainerBody;
-    static boolean fromSubFunction = false;
     static String keyWord;
 
 //    int cevColorF;

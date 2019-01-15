@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/dnArrow"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/oldBible"/>
 
@@ -50,8 +50,18 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/goBack"
-        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintLeft_toRightOf="@id/hymn"
+        app:layout_constraintRight_toLeftOf="@id/none" />
+
+    <TextView
+        android:id="@+id/none"
+        style="@style/MenuStyle"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:text=" "
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/goBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="parent" />
 

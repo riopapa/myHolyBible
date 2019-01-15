@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/nowBible"
-        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintHorizontal_weight="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/leftAction"
         app:layout_constraintRight_toLeftOf="@id/rightAction" />

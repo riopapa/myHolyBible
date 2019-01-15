@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -41,6 +42,10 @@ import static com.urrecliner.andriod.myholybible.Vars.topTab;
 
 public class Utils {
 
+    private MainActivity mainActivity;
+    public Utils (MainActivity activity) {
+        mainActivity = activity;
+    }
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss sss", Locale.KOREA);
 
@@ -64,7 +69,6 @@ public class Utils {
         int BUFFER_SIZE = 81920;
 
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(filename), EUC_KR),BUFFER_SIZE);
-//        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath), UTF8),BUFFER_SIZE);
 
         List<String> lines = new ArrayList<>();
         String line;
@@ -72,7 +76,6 @@ public class Utils {
             lines.add(line);
         }
         bufferedReader.close();
-
         return lines.toArray(new String[lines.size()]);
     }
 
@@ -176,257 +179,6 @@ public class Utils {
         toast.show();
     }
 
-    float textSize;
-    float referSize;
-    private int TABLE_SIZE = 500;
-
-    private int keywordF[] = new int[TABLE_SIZE];
-    private int keywordT[] = new int[TABLE_SIZE];
-    private String keywords[] = new String[TABLE_SIZE];
-    private int iKeyword;
-
-    private int VERSE_SIZE = 177; // max verse number is 176
-    private int verseF[] = new int[VERSE_SIZE];
-    private int verseT[] = new int[VERSE_SIZE];
-    private int iVerse;
-
-    private int referF[] = new int[TABLE_SIZE];
-    private int referT[] = new int[TABLE_SIZE];
-    private String refers[] = new String[TABLE_SIZE];
-    private int iRefer;
-
-    private int paraF[] = new int[30];
-    private int paraT[] = new int[30];
-    private int iPara;
-
-    private int agpF[] = new int[VERSE_SIZE];
-    private int agpT[] = new int[VERSE_SIZE];
-    private int iAgp;
-
-    private int cevF[] = new int[VERSE_SIZE];
-    private int cevT[] = new int[VERSE_SIZE];
-    private int iCev;
-
-    public void generateBibleBody() {
-
-        ScrollView scrollView = new ScrollView(Vars.mContext);
-        textSize = 24;                  // text size is dp, refersize is pixel
-        referSize = textSize * 2f;
-        String file2read = "bible/" + Vars.nowBible + "/" + Vars.nowChapter + ".txt";
-        String bibleTexts[] = Vars.utils.readBibleFile(file2read);
-        if (bibleTexts == null) {
-            Toast.makeText(Vars.mContext, "Bible source not found " + Vars.fullBibleNames[Vars.nowBible] + " " + Vars.nowChapter,Toast.LENGTH_LONG).show();
-            return;
-        }
-        int lines = bibleTexts.length;
-        String str;
-        int p, p2;
-        iVerse = 0;
-        iRefer = 0;
-        iKeyword = 0;
-        iPara = 0;
-        iAgp = 0;
-        iCev = 0;
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
-        linearlayout.setOrientation(LinearLayout.VERTICAL);
-        linearlayout.setGravity(Gravity.LEFT);
-        scrollView.addView(linearlayout);
-        TextView tV = new TextView(Vars.mContext);
-        tV.setTextSize(textSize);
-        tV.setGravity(Gravity.LEFT);
-        tV.setWidth(Vars.xPixels);
-        tV.setTextColor(Color.parseColor("#000000"));
-        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
-        lp.setMargins(20,16,20,16);
-        linearlayout.setLayoutParams(lp);
-        linearlayout.addView(tV);
-
-        StringBuilder bodyText = new StringBuilder();
-        bodyText.append("\n");
-        int bodyP = 1;
-        for (int line = 0; line < lines; line++) {
-            String workLine = bibleTexts[line] + "~";   // "~" is end character
-            int lenWorkLine = workLine.length() - 1;
-            p = workLine.indexOf("`a");
-            p2 = workLine.indexOf("`c");
-            String agpText = workLine.substring(p + 2, p2);
-            String cevText = workLine.substring(p2 + 2, lenWorkLine);
-            workLine = workLine.substring(0, p);
-            lenWorkLine = workLine.length();
-// {천지 창조}[_태초_]에 [_하나님_]이 [_천지_]를 [_창조_]하시니라[_#v43#1:3_][_$58#1:10_]
-// `a태초에 하나님께서 하늘과 땅을 창조하셨습니다.
-// `cIn the beginning God created the heavens and the earth.
-            String c = workLine.substring(0, 1);
-            if (c.equals("{")) {    // first column might have paragraph name
-                int idx = workLine.indexOf("}");
-                str = workLine.substring(1, idx);
-                workLine = workLine.substring(idx + 1);
-                lenWorkLine = workLine.length();
-                bodyText.append(str + "\n");
-                paraF[iPara] = bodyP;
-                paraT[iPara] = bodyP + str.length() + 1;
-                iPara++;
-                bodyP += str.length() + 1;
-            }
-            str = " " + (line + 1) + " ";
-            verseF[iVerse] = bodyP;
-            verseT[iVerse] = bodyP + str.length();
-            iVerse++;
-            bodyP += str.length();
-            bodyText.append(str);
-
-            while (lenWorkLine > 0) {
-                p = workLine.indexOf("[_");
-                if (p == -1) { // no more keyword
-                    bodyText.append(workLine);
-                    bodyP += lenWorkLine;
-                    break;
-                } else {  // contains keyword
-                    if (p != 0) {   // has string before keyword
-                        bodyText.append(workLine.substring(0, p));
-                        bodyP += p;
-                        workLine = workLine.substring(p);
-                    }
-                    // string starts with [_ & keyword
-                    p2 = workLine.indexOf("_]");
-                    String keyword = workLine.substring(2, p2);
-                    if (keyword.substring(0, 1).equals("$")) {   // reference
-                        String bibShort = Vars.shortBibleNames[Integer.parseInt(keyword.substring(1, 3))];
-                        String showWord = " (" + bibShort + keyword.substring(4) + ") ";      // $01#12:34 -> (창12:34) 로 표시
-                        bodyText.append(showWord);
-                        referF[iRefer] = bodyP;
-                        referT[iRefer] = bodyP + showWord.length();
-                        refers[iRefer] = keyword.substring(1);  // save 01#12:34
-                        iRefer++;
-                        bodyP += showWord.length();
-                    } else {  // keyword case
-                        int tilde = keyword.indexOf("~");
-                        if (isNewKeyword(keyword, keywords, iKeyword)) {
-                            keywordF[iKeyword] = bodyP;
-                            if (tilde != -1) {
-                                keywordT[iKeyword] = bodyP + tilde;
-                                keywords[iKeyword] = keyword.substring(0, tilde) + keyword.substring(tilde + 1);
-                                bodyP += tilde;
-                                bodyText.append(keyword.substring(0, tilde));
-                            }
-                            else {
-                                keywordT[iKeyword] = bodyP + keyword.length();
-                                keywords[iKeyword] = keyword;
-                                bodyP += keyword.length();
-                                bodyText.append(keyword);
-                            }
-                            iKeyword++;
-                        }
-                        else {
-                            bodyText.append(keyword);
-                            bodyP += keyword.length();
-                        }
-                    }
-                    workLine = workLine.substring(p2 + 2);
-                    lenWorkLine = workLine.length();
-                }
-            }
-            if(Vars.agpShow) {
-                agpText = " " + agpText;
-                bodyText.append(agpText);
-                agpF[iAgp] = bodyP;
-                agpT[iAgp] = bodyP + agpText.length();
-                iAgp++;
-                bodyP += agpText.length();
-            }
-            if(Vars.cevShow) {
-                cevText = " " + cevText;
-                bodyText.append(cevText);
-                cevF[iCev] = bodyP;
-                cevT[iCev] = bodyP + cevText.length();
-                iCev++;
-                bodyP += cevText.length();
-            }
-            bodyP++;
-            bodyText.append("\n");
-//            if (bodyText.length() != bodyP) {
-//                Log.e("length","len " + bodyText.length() + " bodyP " + bodyP);
-//            }
-        }
-        bodyText.append("\n\n\n");
-        SpannableString ss = new SpannableString(bodyText);
-        for (int i = 0; i < iKeyword; i++) {
-            ss.setSpan(new keywordSpan(keywords[i]), keywordF[i], keywordT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        for (int i = 0; i < iVerse; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.verseColorF), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new StyleSpan(BOLD), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        for (int i = 0; i < iPara; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.paraColorF), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new UnderlineSpan(), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        for (int i = 0; i < iRefer; i++) {
-            ss.setSpan(new referSpan(refers[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        for (int i = 0; i < iCev; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.cevColorF), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        for (int i = 0; i < iAgp; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.agpColorF), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-
-        tV.setText(ss);
-        tV.setMovementMethod(LinkMovementMethod.getInstance());
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
-        pushHistory();
-//        mActivity.onBackPressed();
-    }
-    public boolean isNewKeyword(String s, String keywords [], int iKeyword) {
-        for (int i = 0 ; i < iKeyword; i++) {
-            if (s.equals(keywords[i]))
-                return false;
-        }
-        return true;
-    }
-
-    public class keywordSpan extends ClickableSpan {
-
-        String key;
-        public keywordSpan(String key) { this.key = key;}
-
-        Typeface typeface = Typeface.create(Typeface.DEFAULT, BOLD);
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setColor(Vars.bibleColorF);
-            ds.setTypeface(typeface);
-            ds.setUnderlineText(false);    // this remove the underline
-        }
-
-        @Override
-        public void onClick(View widget) {
-            Vars.keyWord = key;
-            showDictionary();
-        }
-    }
-
-    public class referSpan extends ClickableSpan{
-
-        String key;
-        public referSpan(String key) { this.key = key;}
-        //        public keywordSpan(int position){
-//            this.pos=position;
-//        }
-//        Typeface typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD);
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setColor(Vars.referColorF);
-            ds.setTextSize(referSize);
-            ds.setUnderlineText(false);    // this remove the underline
-        }
-
-        @Override
-        public void onClick(View widget) {
-            Toast.makeText(Vars.mContext, "keyword "  + key + " clicked!", Toast.LENGTH_LONG).show();
-        }
-    }
-
     public void showBibleList() {
 
         ScrollView scrollView = new ScrollView(Vars.mContext);
@@ -469,8 +221,7 @@ public class Utils {
                         Log.w("biblelist","bible " + Vars.nowBible);
                         Vars.mContainerBody.removeAllViewsInLayout();
                         Vars.mContainerBody.addView(buildBibleNumber());
-                        Vars.fromSubFunction = true;
-                        Vars.mActivity.onBackPressed();
+                        mainActivity.makeTopBottomMenu();
                     }
                 });
                 rowLayout.addView(columnLayout);
@@ -485,6 +236,8 @@ public class Utils {
         Vars.mContainerBody.removeAllViewsInLayout();
         Vars.mContainerBody.addView(scrollView);
     }
+    int textSizeBibleTitle = 24;
+    int textSizeBibleNumber = 20;
     private ScrollView buildBibleNumber() {
         int loop = Vars.nbrofChapters[Vars.nowBible];
         int count = 1;
@@ -497,7 +250,7 @@ public class Utils {
         scrollView.addView(linearlayout);
         TextView tV = new TextView(Vars.mContext);
         tV.setText(Vars.fullBibleNames[Vars.nowBible]);
-        tV.setTextSize(28);
+        tV.setTextSize(textSizeBibleTitle);
         tV.setWidth(Vars.xPixels);
         tV.setTextColor(Color.parseColor("#000000"));
         tV.setGravity(Gravity.CENTER);
@@ -512,7 +265,7 @@ public class Utils {
                 b = new Button(Vars.mContext);
                 b.setText(""+count);
                 b.setId(count);
-                b.setTextSize(20);
+                b.setTextSize(textSizeBibleNumber);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
                 columnLayout.addView(b);
@@ -523,8 +276,6 @@ public class Utils {
                         Vars.nowVerse = 0;
                         Log.w("nowBible"," is "+ Vars.nowBible);
                         generateBibleBody();
-                        Vars.fromSubFunction = true;
-                        Vars.mActivity.onBackPressed();
                     }
                 });
                 rowLayout.addView(columnLayout);
@@ -545,8 +296,272 @@ public class Utils {
         return scrollView;
     }
 
+    float textSize;
+    float referSize;
+    private int TABLE_SIZE = 500;
+
+    private int keywordF[] = new int[TABLE_SIZE];
+    private int keywordT[] = new int[TABLE_SIZE];
+    private String keywords[] = new String[TABLE_SIZE];
+    private int iKeyword;
+
+    private int VERSE_SIZE = 177; // max verse number is 176
+    private int verseF[] = new int[VERSE_SIZE];
+    private int verseT[] = new int[VERSE_SIZE];
+    private int iVerse;
+
+    private int referF[] = new int[TABLE_SIZE];
+    private int referT[] = new int[TABLE_SIZE];
+    private String refers[] = new String[TABLE_SIZE];
+    private int iRefer;
+
+    private int paraF[] = new int[30];
+    private int paraT[] = new int[30];
+    private int iPara;
+
+    private int agpF[] = new int[VERSE_SIZE];
+    private int agpT[] = new int[VERSE_SIZE];
+    private int iAgp;
+
+    private int cevF[] = new int[VERSE_SIZE];
+    private int cevT[] = new int[VERSE_SIZE];
+    private int iCev;
+
+    private int bodyP;
+    StringBuilder bodyText;
+
+    public void generateBibleBody() {
+
+        ScrollView scrollView = new ScrollView(Vars.mContext);
+        textSize = 20;                  // text size is dp, refersize is pixel
+        referSize = textSize * 2f;
+        String file2read = "bible/" + Vars.nowBible + "/" + Vars.nowChapter + ".txt";
+        String bibleTexts[] = readBibleFile(file2read);
+        if (bibleTexts == null) {
+            Toast.makeText(Vars.mContext, "Bible source not found " + Vars.fullBibleNames[Vars.nowBible] + " " + Vars.nowChapter,Toast.LENGTH_LONG).show();
+            return;
+        }
+        iVerse = 0;
+        iRefer = 0;
+        iKeyword = 0;
+        iPara = 0;
+        iAgp = 0;
+        iCev = 0;
+        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        linearlayout.setOrientation(LinearLayout.VERTICAL);
+        linearlayout.setGravity(Gravity.LEFT);
+        scrollView.addView(linearlayout);
+        TextView tV = new TextView(Vars.mContext);
+        tV.setTextSize(textSize);
+        tV.setGravity(Gravity.LEFT);
+        tV.setWidth(Vars.xPixels);
+        tV.setTextColor(Color.parseColor("#000000"));
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
+        lp.setMargins(20,16,20,16);
+        linearlayout.setLayoutParams(lp);
+        linearlayout.addView(tV);
+
+        bodyText = new StringBuilder();
+        bodyText.append("\n");
+        bodyP = 1;
+        generateBibleAllVerses(bibleTexts);
+        bodyText.append("\n\n\n");
+        SpannableString ss = settleSpannableString();
+
+        pushHistory();
+        tV.setText(ss);
+        tV.setMovementMethod(LinkMovementMethod.getInstance());
+        Vars.mContainerBody.removeAllViewsInLayout();
+        Vars.mContainerBody.addView(scrollView);
+        scrollView.scrollTo(0,3000);
+        mainActivity.makeTopBottomMenu();
+    }
+
+    @NonNull
+    private SpannableString settleSpannableString() {
+        SpannableString ss = new SpannableString(bodyText);
+        for (int i = 0; i < iKeyword; i++) {
+            ss.setSpan(new keywordSpan(keywords[i]), keywordF[i], keywordT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        for (int i = 0; i < iVerse; i++) {
+            ss.setSpan(new ForegroundColorSpan(Vars.verseColorF), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new StyleSpan(BOLD), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        for (int i = 0; i < iPara; i++) {
+            ss.setSpan(new ForegroundColorSpan(Vars.paraColorF), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new UnderlineSpan(), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        for (int i = 0; i < iRefer; i++) {
+            ss.setSpan(new referSpan(refers[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        for (int i = 0; i < iCev; i++) {
+            ss.setSpan(new ForegroundColorSpan(Vars.cevColorF), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        for (int i = 0; i < iAgp; i++) {
+            ss.setSpan(new ForegroundColorSpan(Vars.agpColorF), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return ss;
+    }
+
+    private void generateBibleAllVerses(String bibleTexts[]) {
+        int lines = bibleTexts.length;
+        for (int line = 0; line < lines; line++) {
+            String str;
+            String workLine = bibleTexts[line] + "~";   // "~" is end character
+            int lenWorkLine = workLine.length() - 1;
+            int idx = workLine.indexOf("`a");
+            int idx2nd = workLine.indexOf("`c");
+            String agpText = workLine.substring(idx + 2, idx2nd);
+            String cevText = workLine.substring(idx2nd + 2, lenWorkLine);
+            workLine = workLine.substring(0, idx);
+            lenWorkLine = workLine.length();
+// {천지 창조}[_태초_]에 [_하나님_]이 [_천지_]를 [_창조_]하시니라[_#v43#1:3_][_$58#1:10_]
+// `a태초에 하나님께서 하늘과 땅을 창조하셨습니다.
+// `cIn the beginning God created the heavens and the earth.
+            String c = workLine.substring(0, 1);
+            if (c.equals("{")) {    // first column might have paragraph name
+                int endIdx = workLine.indexOf("}");
+                str = workLine.substring(1, endIdx);
+                workLine = workLine.substring(endIdx + 1);
+                lenWorkLine = workLine.length();
+                bodyText.append(str + "\n");
+                paraF[iPara] = bodyP;
+                paraT[iPara] = bodyP + str.length() + 1;
+                iPara++;
+                bodyP += str.length() + 1;
+            }
+            str = " " + (line + 1) + " ";
+            verseF[iVerse] = bodyP;
+            verseT[iVerse] = bodyP + str.length();
+            iVerse++;
+            bodyP += str.length();
+            bodyText.append(str);
+
+            while (lenWorkLine > 0) {
+                idx = workLine.indexOf("[_");
+                if (idx == -1) { // no more keyword
+                    bodyText.append(workLine);
+                    bodyP += lenWorkLine;
+                    break;
+                } else {  // contains keyword
+                    if (idx != 0) {   // has string before keyword
+                        bodyText.append(workLine, 0, idx);
+                        bodyP += idx;
+                        workLine = workLine.substring(idx);
+                    }
+                    // string starts with [_ & keyword
+                    idx2nd = generateBibleKeyword(workLine);
+                    workLine = workLine.substring(idx2nd + 2);
+                    lenWorkLine = workLine.length();
+                }
+            }
+            if (Vars.agpShow) {
+                agpText = " " + agpText;
+                bodyText.append(agpText);
+                agpF[iAgp] = bodyP;
+                agpT[iAgp] = bodyP + agpText.length();
+                iAgp++;
+                bodyP += agpText.length();
+            }
+            if (Vars.cevShow) {
+                cevText = " " + cevText;
+                bodyText.append(cevText);
+                cevF[iCev] = bodyP;
+                cevT[iCev] = bodyP + cevText.length();
+                iCev++;
+                bodyP += cevText.length();
+            }
+            bodyP++;
+            bodyText.append("\n");
+        }
+    }
+
+    private int generateBibleKeyword(String workLine) {
+        int ptr;
+        ptr = workLine.indexOf("_]");
+        String keyword = workLine.substring(2, ptr);
+        if (keyword.substring(0, 1).equals("$")) {   // reference
+            String bibShort = Vars.shortBibleNames[Integer.parseInt(keyword.substring(1, 3))];
+            String showWord = " (" + bibShort + keyword.substring(4) + ") ";      // $01#12:34 -> (창12:34) 로 표시
+            bodyText.append(showWord);
+            referF[iRefer] = bodyP;
+            referT[iRefer] = bodyP + showWord.length();
+            refers[iRefer] = keyword.substring(1);  // save 01#12:34
+            iRefer++;
+            bodyP += showWord.length();
+        } else {  // keyword case
+            int tilde = keyword.indexOf("~");
+            if (isNewKeyword(keyword, keywords, iKeyword)) {
+                keywordF[iKeyword] = bodyP;
+                if (tilde != -1) {
+                    keywordT[iKeyword] = bodyP + tilde;
+                    keywords[iKeyword] = keyword.substring(0, tilde) + keyword.substring(tilde + 1);
+                    bodyP += tilde;
+                    bodyText.append(keyword.substring(0, tilde));
+                } else {
+                    keywordT[iKeyword] = bodyP + keyword.length();
+                    keywords[iKeyword] = keyword;
+                    bodyP += keyword.length();
+                    bodyText.append(keyword);
+                }
+                iKeyword++;
+            } else {
+                bodyText.append(keyword);
+                bodyP += keyword.length();
+            }
+        }
+        return ptr;
+    }
+
+    private boolean isNewKeyword(String s, String keywords [], int iKeyword) {
+        for (int i = 0 ; i < iKeyword; i++) {
+            if (s.equals(keywords[i]))
+                return false;
+        }
+        return true;
+    }
+
+    public class keywordSpan extends ClickableSpan {
+
+        String key;
+        public keywordSpan(String key) { this.key = key;}
+
+        Typeface typeface = Typeface.create(Typeface.DEFAULT, BOLD);
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Vars.bibleColorF);
+            ds.setTypeface(typeface);
+            ds.setUnderlineText(false);    // this remove the underline
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Vars.keyWord = key;
+            generateKeyWord();
+        }
+    }
+
+    public class referSpan extends ClickableSpan{
+
+        String key;
+        public referSpan(String key) { this.key = key;}
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Vars.referColorF);
+            ds.setTextSize(referSize);
+            ds.setUnderlineText(false);    // this remove the underline
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Toast.makeText(Vars.mContext, "Refer "  + key + " clicked!", Toast.LENGTH_LONG).show();
+        }
+    }
+
     TextView tVTitle;
     String hymnTitle = "";
+    int textSizeHymnTitle = 20;
+    int textSizeHymnKeypad = 24;
     public void generateHymnKeypad() {
 
         ScrollView scrollView = new ScrollView(Vars.mContext);
@@ -556,12 +571,11 @@ public class Utils {
         LinearLayout linearlayout = new LinearLayout(Vars.mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        linearlayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
         scrollView.addView(linearlayout);
         TextView tV0 = new TextView(Vars.mContext);
 
         tV0.setText("\n");
-        tV0.setTextSize(20);
+        tV0.setTextSize(textSizeHymnTitle);
         tV0.setTextColor(Color.parseColor("#000000"));
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
@@ -572,19 +586,12 @@ public class Utils {
         else
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
-        tVTitle.setTextSize(24);
+        tVTitle.setTextSize(textSizeHymnKeypad);
         tVTitle.setTextColor(Color.parseColor("#0b1849"));
         tVTitle.setGravity(Gravity.CENTER);
         tVTitle.setWidth(2000);
         linearlayout.addView(tVTitle);
 
-//        TextView tV2 = new TextView(mContext);
-//        tV2.setText("\n");
-//        tV2.setTextSize(12);
-//        tV2.setTextColor(Color.parseColor("#000000"));
-//        tV2.setGravity(Gravity.CENTER_HORIZONTAL);
-//        linearlayout.addView(tV2);
-//
         for(int i = 0; i<5;i++) {
             LinearLayout rowLayout = new LinearLayout(Vars.mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -612,7 +619,7 @@ public class Utils {
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(Vars.mContext);
                 b.setBackgroundResource(R.drawable.button_number);
-                b.setTextSize(24);
+                b.setTextSize(textSizeHymnKeypad);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setWidth(buttonWidth);
                 b.setText(buttonText);
@@ -646,8 +653,6 @@ public class Utils {
                         @Override
                         public void onClick(View v) {
                             generateHymnBody();
-                            Vars.fromSubFunction = true;
-                            Vars.mActivity.onBackPressed();
                         }
                     });
                 }
@@ -656,15 +661,14 @@ public class Utils {
         }
         Vars.mContainerBody.removeAllViewsInLayout();
         Vars.mContainerBody.addView(scrollView);
-        Vars.fromSubFunction = true;
     }
 
+    int textSizeHymnText = 20;                  // text size is dp, refersize is pixel
     public void generateHymnBody() {
 
         ScrollView scrollView = new ScrollView(Vars.mContext);
-        textSize = 24;                  // text size is dp, refersize is pixel
         String txt = "Hymn/" + Vars.nowHymn + ".txt";
-        String [] hymnTexts = Vars.utils.readBibleFile(txt);
+        String [] hymnTexts = readBibleFile(txt);
         if (hymnTexts == null) {
             Toast.makeText(Vars.mContext, "찬송가 " + Vars.nowHymn + " 파일 없음",Toast.LENGTH_LONG).show();
             return;
@@ -687,7 +691,7 @@ public class Utils {
             Log.e("no image", imgFile.toString());
         }
         TextView tVBody = new TextView(Vars.mContext);
-        tVBody.setTextSize(textSize);
+        tVBody.setTextSize(textSizeHymnText);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(Vars.xPixels);
         tVBody.setTextColor(Color.parseColor("#000000"));
@@ -702,21 +706,17 @@ public class Utils {
         SpannableString ssBody = new SpannableString(bodyText);
         tVBody.setText(ssBody);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
-
-//        MainActivity mainActivity = new MainActivity();
-//        mainActivity.toastMessage("hymnBody");
-        Vars.fromSubFunction = true;
+        pushHistory();
         Vars.mContainerBody.removeAllViewsInLayout();
         Vars.mContainerBody.addView(scrollView);
-        Vars.mActivity.onBackPressed();
-        pushHistory();
+        mainActivity.makeTopBottomMenu();
     }
-    private void showDictionary() {
+    int textSizeKeyword = 20;                  // text size is dp, refersize is pixel
+    public void generateKeyWord() {
 
         ScrollView scrollView = new ScrollView(Vars.mContext);
-        textSize = 20;                  // text size is dp, refersize is pixel
         String txt = "dict/" + Vars.keyWord + ".txt";
-        String [] dicTexts = Vars.utils.readBibleFile(txt);
+        String [] dicTexts = readBibleFile(txt);
         if (dicTexts != null) {
             LinearLayout linearlayout = new LinearLayout(Vars.mContext);
             linearlayout.setOrientation(LinearLayout.VERTICAL);
@@ -725,8 +725,6 @@ public class Utils {
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
             lp.setMargins(20,16,20,16);
             linearlayout.setLayoutParams(lp);
-//            log("0" , dicTexts[0]);
-//            log("1" , dicTexts[1]);
             for (String line : dicTexts) {
                 if (line.substring(0, 1).equals("@")) {      // contains image file name
                     File imgFile = new File(Vars.packageFolder, "dict_img/" + line.substring(1));
@@ -752,15 +750,10 @@ public class Utils {
                     tVLine.setText(line.substring(1));
                 } else {
                     TextView tVLine = new TextView(Vars.mContext);
-                    tVLine.setTextSize(textSize);
+                    tVLine.setTextSize(textSizeKeyword);
                     tVLine.setGravity(Gravity.LEFT);
                     tVLine.setWidth(Vars.xPixels);
                     linearlayout.addView(tVLine);
-
-//                StringBuilder headText = new StringBuilder();
-//                headText.append(line);
-//                SpannableString ssTitle = new SpannableString(headText);
-//                ssTitle.setSpan(new ForegroundColorSpan(hymnColorF), 1, txt.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     tVLine.setText(line);
                 }
             }
@@ -776,14 +769,13 @@ public class Utils {
             Toast.makeText(Vars.mContext,errText,Toast.LENGTH_LONG).show();
             log(Vars.logFile, errText);
         }
-        Vars.fromSubFunction = true;
         topTab = Vars.TABMODE_DIC;
+
+        pushHistory();
         Vars.mContainerBody.removeAllViewsInLayout();
         Vars.mContainerBody.addView(scrollView);
-        Vars.mActivity.onBackPressed();
+        mainActivity.makeTopBottomMenu();
     }
-
-    static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0;
 
     private int STACK_SIZE = 20;
     private int topTabStack [] = new int[STACK_SIZE];
@@ -791,6 +783,7 @@ public class Utils {
     private int chapterStack [] = new int[STACK_SIZE];
     private int verseStack [] = new int[STACK_SIZE];
     private int hymnStack[] = new int[STACK_SIZE];
+    private String keyStack[] = new String[STACK_SIZE];
     private int stackP = 0;
     public void pushHistory() {
         if (stackP > 18) {
@@ -800,6 +793,7 @@ public class Utils {
                 chapterStack[i] = chapterStack[i+4];
                 verseStack[i] = verseStack[i+4];
                 hymnStack[i] = hymnStack[i+4];
+                keyStack[i] = keyStack[i-4];
                 stackP -= 4;
             }
         }
@@ -808,12 +802,11 @@ public class Utils {
         chapterStack[stackP] = Vars.nowChapter;
         verseStack[stackP] = Vars.nowVerse;
         hymnStack[stackP] = Vars.nowHymn;
+        keyStack[stackP] = Vars.keyWord;
         stackP++;
-        for (int i = 0; i < stackP; i++) {
-            Log.w("push "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
-        }
-
-        Vars.fromSubFunction = false;
+//        for (int i = 0; i < stackP; i++) {
+//            Log.w("push "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
+//        }
     }
     public void popHistory() {
         if (stackP > 0)
@@ -823,8 +816,9 @@ public class Utils {
         Vars.nowChapter = chapterStack[stackP];
         Vars.nowVerse = verseStack[stackP];
         Vars.nowHymn = hymnStack[stackP];
-        for (int i = 0; i < stackP; i++) {
-            Log.w("pop "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
-        }
+        Vars.keyWord = keyStack[stackP];
+//        for (int i = 0; i < stackP; i++) {
+//            Log.w("pop "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
+//        }
     }
 }

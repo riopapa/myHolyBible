@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -14,24 +16,26 @@ import android.widget.Toast;
 
 import java.io.File;
 
+import static com.urrecliner.andriod.myholybible.Vars.TABMODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TABMODE_HYMN;
-import static com.urrecliner.andriod.myholybible.Vars.fromSubFunction;
+import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
+import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
-
 
 public class MainActivity extends Activity {
 
     TextView vMenu, vOldBible, vNewBible, vHymn, vGoBack;
     TextView vAgpBible, vLeftAction, vCurrBible, vRightAction, vCevBible;
     long backKeyPressedTime;
-
+    private Utils utils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Vars.mContext = getApplicationContext();
         Vars.mActivity = this;
+        //        MainActivity mainActivity = new MainActivity();
+        utils = new Utils(this);
         Log.w("main", "started");
 
         setContentView(R.layout.activity_main);
@@ -45,8 +49,7 @@ public class MainActivity extends Activity {
         Vars.nowVerse = 0;
         Vars.nowHymn = 0;
 
-        makeTopMenu();
-        makeBottomMenu();
+        makeTopBottomMenu();
         makeBibleList();
         assignButtonListeners();
     }
@@ -66,6 +69,7 @@ public class MainActivity extends Activity {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) Vars.mContext.getSystemService(WINDOW_SERVICE);
         try {
+            assert windowManager != null;
             windowManager.getDefaultDisplay().getMetrics(dm);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -74,13 +78,14 @@ public class MainActivity extends Activity {
         Vars.yPixels = dm.heightPixels;
     }
 
+    public void makeTopBottomMenu() {
+        makeTopMenu();
+        makeBottomMenu();
+    }
+
     public void makeTopMenu() {
-        int highLight = getResources().getColor(R.color.MenuHighLight);
-        int normal;
-//        if (vMenu.getBackground() instanceof ColorDrawable) {
-//            ColorDrawable cd =  vMenu.getCurrentTextColor();
-            normal = vMenu.getCurrentTextColor();
-//        }
+        int highLight = getResources().getColor(R.color.MenuHighLight, mActivity.getTheme());
+        int normal = vMenu.getCurrentTextColor();
         if (Vars.topTab == Vars.TABMODE_OLD)
             vOldBible.setTextColor(highLight);
         else
@@ -106,7 +111,6 @@ public class MainActivity extends Activity {
     }
 
     public void makeBibleBottomMenu() {
-        Log.w("makeBibleBottomMenu", nowBible + " nowbible is " + Vars.shortBibleNames[nowBible]);
         if (nowBible == 0)
             makeBibleBottomClear();
         else
@@ -114,7 +118,6 @@ public class MainActivity extends Activity {
     }
 
     public void makeBibleBottomClear() {
-        Log.w("makeBibleBottomClear", "nowbible" + nowBible);
         vAgpBible.setText(Vars.blank);
         vLeftAction.setText((Vars.blank));
         String text;
@@ -132,7 +135,6 @@ public class MainActivity extends Activity {
     }
 
     public void makeBibleBottomNormal() {
-        Log.w("makeBibleBottom normal", "nowbible" + nowBible);
         String txt;
         if (Vars.nowChapter==0) {
             vAgpBible.setText(Vars.blank);
@@ -216,7 +218,6 @@ public class MainActivity extends Activity {
                 nowBible = 0;
                 makeBibleBottomMenu();
                 makeBibleList();
-                makeTopMenu();
             }
         });
         vNewBible.setOnClickListener(new View.OnClickListener() {
@@ -224,9 +225,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Vars.topTab = Vars.TABMODE_NEW;
                 nowBible = 0;
-                makeBibleBottomMenu();
                 makeBibleList();
-                makeTopMenu();
             }
         });
         vHymn.setOnClickListener(new View.OnClickListener() {
@@ -235,9 +234,13 @@ public class MainActivity extends Activity {
                 Vars.topTab = Vars.TABMODE_HYMN;
                 nowBible = 0;
                 Vars.nowHymn = 0;
-                Vars.utils.generateHymnKeypad();
-                makeHymnBottomMenu();
-                makeTopMenu();
+                utils.generateHymnKeypad();
+            }
+        });
+        vGoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBack2Prev();
             }
         });
         vAgpBible.setOnClickListener(new View.OnClickListener() {
@@ -246,9 +249,7 @@ public class MainActivity extends Activity {
                 if (vAgpBible.getText().toString().equals(Vars.blank))
                     return;
                 Vars.agpShow ^= true;
-                Vars.utils.generateBibleBody();
-                makeBibleBottomNormal();
-                makeTopMenu();
+                utils.generateBibleBody();
             }
         });
         vCevBible.setOnClickListener(new View.OnClickListener() {
@@ -257,15 +258,12 @@ public class MainActivity extends Activity {
                 if (vCevBible.getText().toString().equals(Vars.blank))
                     return;
                 Vars.cevShow ^= true;
-                Vars.utils.generateBibleBody();
-                makeBibleBottomNormal();
-                makeTopMenu();
+                utils.generateBibleBody();
             }
         });
     }
 
     public void makeBibleLeft() {
-        utils.pushHistory();
         int c = Vars.nowChapter - 1;
         if (c == 0) {   // prev bible required
             int b = nowBible - 1;
@@ -277,19 +275,15 @@ public class MainActivity extends Activity {
             }
         } else
             Vars.nowChapter = c;
-        Vars.utils.generateBibleBody();
-        makeBibleBottomNormal();
+        utils.generateBibleBody();
     }
 
     public void makeHymnLeft() {
-        utils.pushHistory();
         Vars.nowHymn--;
-        Vars.utils.generateHymnBody();
-        makeHymnBottomMenu();
+        utils.generateHymnBody();
     }
 
     public void makeBibleRight() {
-        utils.pushHistory();
         int c = Vars.nowChapter + 1;
         if (c > Vars.nbrofChapters[nowBible]) {   // next bible required
             int b = nowBible + 1;
@@ -302,15 +296,12 @@ public class MainActivity extends Activity {
         } else {
             Vars.nowChapter = c;
         }
-        Vars.utils.generateBibleBody();
-        makeBibleBottomNormal();
+        utils.generateBibleBody();
     }
 
     public void makeHymnRight() {
-        utils.pushHistory();
         Vars.nowHymn++;
-        Vars.utils.generateHymnBody();
-        makeHymnBottomMenu();
+        utils.generateHymnBody();
     }
 
     public void makeHymnBottomMenu() {
@@ -339,49 +330,61 @@ public class MainActivity extends Activity {
 
     public void makeBibleList() {
         Vars.nowChapter = 0;
-        Vars.utils.showBibleList();
+        utils.showBibleList();
+    }
+
+    private void goBack2Prev() {
+        utils.popHistory();
+        utils.popHistory();
+        if (topTab < TABMODE_HYMN && nowBible > 0) {
+            utils.generateBibleBody();
+        } else if (topTab == TABMODE_HYMN && nowHymn > 0) {
+            utils.generateHymnBody();
+        }
+        else if (topTab == TABMODE_DIC) {
+            utils.generateKeyWord();
+        }
+        makeTopBottomMenu();
+    }
+
+    private final int textSize_Bible = 1;
+    private final int textSize_Hymn = 2;
+    private final int show_HymnImage = 3;
+    private final int show_HymnText = 4;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, textSize_Bible, Menu.NONE, "성경 본문 크기 설정");
+        menu.add(Menu.NONE, textSize_Hymn, Menu.NONE, "찬송 본문 크기 설정");
+        menu.add(Menu.NONE, show_HymnImage, Menu.NONE, "찬송 악보 보이기");
+        menu.add(Menu.NONE, show_HymnText, Menu.NONE, "찬송 가사 보이기");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Toast.makeText(getApplicationContext(), item.getItemId() + " selected",Toast.LENGTH_LONG).show();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onBackPressed() {
 
-        Log.w("timegap", fromSubFunction + " " + (System.currentTimeMillis()-backKeyPressedTime));
+        Log.w("timegap", " " + (System.currentTimeMillis()-backKeyPressedTime));
+        Log.w("back", " topTab " + Vars.topTab + " bible " + nowBible+" chap "+ Vars.nowChapter+" hymn "+ Vars.nowHymn);
         if(System.currentTimeMillis()>backKeyPressedTime+300){
             backKeyPressedTime = System.currentTimeMillis();
-            Log.w("back","topTab " + Vars.topTab + " bible " + nowBible+" chap "+ Vars.nowChapter+" hymn "+ Vars.nowHymn);
-            Log.w("topTab",""+ topTab);
-            if (!fromSubFunction) {
-                utils.popHistory();
-                if (topTab < TABMODE_HYMN && nowBible > 0) {
-                    utils.generateBibleBody();
-                } else {
-                    utils.generateHymnBody();
-                }
-                makeTopMenu();
-                makeBottomMenu();
-            }
-            else {
-                makeTopMenu();
-                makeBottomMenu();
-            }
+            goBack2Prev();
         }
         else{
-            if (fromSubFunction) {
-                fromSubFunction = false;
-                makeTopMenu();
-                makeBottomMenu();
-            }
-            else {
-                quitApp();
-            }
+            quitApp();
         }
     }
     private void quitApp()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("riopapa HolyBible");
+        builder.setIcon(R.mipmap.icon_myface);
         builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
-        builder.setPositiveButton("그래",
+        builder.setPositiveButton("그렇다니까",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -389,7 +392,7 @@ public class MainActivity extends Activity {
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 });
-        builder.setNegativeButton("아니",
+        builder.setNegativeButton("앗, 잘못 눌렀군",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
