@@ -22,7 +22,6 @@ public class Vars {
     static int TABMODE_OLD  = 1;
     static int TABMODE_NEW  = 2;
     static int TABMODE_HYMN = 4;
-    static int TABMODE_GOBACK = 8;
     static int TABMODE_MENU = 16;
     static int TABMODE_DIC = 32;
 
@@ -37,20 +36,13 @@ public class Vars {
     static int paraColorF = Color.parseColor("#226768");
     static int referColorF = Color.parseColor("#60318e");
     static int cevColorF = Color.parseColor("#2c538c");
+    static int cevColorB = Color.parseColor("#eff0f7");
     static int agpColorF = Color.parseColor("#466d10");
-    static int hymnColorF = Color.parseColor("#00009C");
-
-//    static int topColorB = Color.parseColor("#ababab");
-//    static int topColorH = Color.parseColor("#cacaca");
+    static int agpColorB = Color.parseColor("#edf7e3");
+//    static int hymnColorF = Color.parseColor("#00009C");
 
     static ViewGroup mContainerBody;
     static String keyWord;
-
-//    int cevColorF;
-//    int cevColorB;
-//    static int agpColorF;
-//    static int agpColorB;
-
 
     static int nbrofChapters [] = {0,50,40,27,36,34,24,21,4,31,24,22,25,29,36,10,13,10,42,150,31,12,8,66,52,5,48,12,14,3,9,1,4,7,3,3,3,2,14,4,28,16,24,21,28,16,16,13,6,6,4,4,5,3,6,4,3,1,13,5,5,3,5,1,1,1,22, 0 };
 

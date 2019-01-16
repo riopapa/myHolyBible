@@ -4,13 +4,18 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/menu"
-        style="@style/MenuStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/dnArrow"
-        app:layout_constraintHorizontal_weight="2"
+    <ImageButton
+        android:id="@+id/setting"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/SettingStyle"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:layout_marginStart="0sp"
+        android:contentDescription="@string/setting"
+        android:src="@mipmap/icon_setting"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/oldBible"/>
 
@@ -20,8 +25,9 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/oldBible"
-        app:layout_constraintHorizontal_weight="4"
-        app:layout_constraintLeft_toRightOf="@+id/menu"
+        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/setting"
         app:layout_constraintRight_toLeftOf="@+id/newBible"/>
 
     <TextView
@@ -30,7 +36,8 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/newBible"
-        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/oldBible"
         app:layout_constraintRight_toLeftOf="@id/hymn" />
 
@@ -40,7 +47,8 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/hymn"
-        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/newBible"
         app:layout_constraintRight_toLeftOf="@id/goBack" />
 
@@ -50,7 +58,8 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/goBack"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="3"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/hymn"
         app:layout_constraintRight_toLeftOf="@id/none" />
 
@@ -61,6 +70,7 @@
         android:layout_height="wrap_content"
         android:text=" "
         app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/goBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="parent" />

@@ -4,10 +4,11 @@
     <string name="newBible">신약</string>
     <string name="hymn">찬송가</string>
     <string name="dnArrow">  ▼  </string>
-    <string name="goBack"> ≪ </string>
+    <string name="goBack">←</string>
     <string name="nowBible">데살로니가전서2장</string>
     <string name="nextBible">왕하12</string>
     <string name="cevBible">CEV</string>
     <string name="prevBible">열왕33</string>
     <string name="agpBible">AGP</string>
+    <string name="setting">setting</string>
 </resources>
