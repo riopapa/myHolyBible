@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -20,10 +20,18 @@ import static com.urrecliner.andriod.myholybible.Vars.TABMODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TABMODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
-import static com.urrecliner.andriod.myholybible.Vars.mActivity;
+import static com.urrecliner.andriod.myholybible.Vars.editor;
+import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
+import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 
 public class MainActivity extends Activity {
@@ -33,6 +41,9 @@ public class MainActivity extends Activity {
     TextView vAgpBible, vLeftAction, vCurrBible, vRightAction, vCevBible;
     long backKeyPressedTime;
     private Utils utils;
+    int menuHighLightColor;
+    int menuNormalColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +51,15 @@ public class MainActivity extends Activity {
         Vars.mActivity = this;
         //        MainActivity mainActivity = new MainActivity();
         utils = new Utils(this);
-        Log.w("main", "started");
+        mSettings = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = mSettings.edit();
+        textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
+        textSizeBibleTitle = mSettings.getInt("textSizeBibleTitle", 24);
+        textSizeBibleText = mSettings.getInt("textSizeBibleText", 20);
+        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 30);
+        textSizeHymnText = mSettings.getInt("textSizeHymnText", 20);
+        hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
+        hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
 
         setContentView(R.layout.activity_main);
 
@@ -80,6 +99,9 @@ public class MainActivity extends Activity {
         }
         Vars.xPixels = dm.widthPixels;
         Vars.yPixels = dm.heightPixels;
+        menuHighLightColor = getResources().getColor(R.color.MenuHighLight, this.getTheme());
+        ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
+        menuNormalColor = cd.getColor();
     }
 
     public void makeTopBottomMenu() {
@@ -88,21 +110,18 @@ public class MainActivity extends Activity {
     }
 
     public void makeTopMenu() {
-        int highLight = getResources().getColor(R.color.MenuHighLight, mActivity.getTheme());
-        ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
-        int normal = cd.getColor();
         if (Vars.topTab == Vars.TABMODE_OLD)
-            vOldBible.setBackgroundColor(highLight);
+            vOldBible.setBackgroundColor(menuHighLightColor);
         else
-            vOldBible.setBackgroundColor(normal);
+            vOldBible.setBackgroundColor(menuNormalColor);
         if (Vars.topTab == Vars.TABMODE_NEW)
-            vNewBible.setBackgroundColor(highLight);
+            vNewBible.setBackgroundColor(menuHighLightColor);
         else
-            vNewBible.setBackgroundColor(normal);
+            vNewBible.setBackgroundColor(menuNormalColor);
         if (Vars.topTab == Vars.TABMODE_HYMN)
-            vHymn.setBackgroundColor(highLight);
+            vHymn.setBackgroundColor(menuHighLightColor);
         else
-            vHymn.setBackgroundColor(normal);
+            vHymn.setBackgroundColor(menuNormalColor);
     }
 
     public void makeBottomMenu() {
@@ -140,9 +159,6 @@ public class MainActivity extends Activity {
     }
 
     public void makeBibleBottomNormal() {
-        int highLight = getResources().getColor(R.color.MenuHighLight, mActivity.getTheme());
-        ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
-        int normal = cd.getColor();
         String txt;
         if (Vars.nowChapter==0) {
             vAgpBible.setText(Vars.blank);
@@ -154,9 +170,9 @@ public class MainActivity extends Activity {
         else {
             vAgpBible.setText((Vars.agpShow) ? "agp" : "AGP");
             if (agpShow)
-                vAgpBible.setBackgroundColor(highLight);
+                vAgpBible.setBackgroundColor(menuHighLightColor);
             else
-                vAgpBible.setBackgroundColor(normal);
+                vAgpBible.setBackgroundColor(menuNormalColor);
             int chapter = Vars.nowChapter - 1;
             if (chapter > 0)
                 txt = Vars.shortBibleNames[nowBible] + chapter;
@@ -183,9 +199,9 @@ public class MainActivity extends Activity {
             vRightAction.setText(txt);
             vCevBible.setText((Vars.cevShow) ? "cev" : "CEV");
             if (cevShow)
-                vCevBible.setBackgroundColor(highLight);
+                vCevBible.setBackgroundColor(menuHighLightColor);
             else
-                vCevBible.setBackgroundColor(normal);
+                vCevBible.setBackgroundColor(menuNormalColor);
         }
     }
 
@@ -195,9 +211,17 @@ public class MainActivity extends Activity {
         vCurrBible.setText(Vars.blank);
         vRightAction.setText(Vars.blank);
         vCevBible.setText(Vars.blank);
+        vAgpBible.setBackgroundColor(menuNormalColor);
+        vCevBible.setBackgroundColor(menuNormalColor);
     }
 
     public void assignButtonListeners() {
+        vSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                utils.generateSettingBody();
+            }
+        });
         vLeftAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,13 +242,6 @@ public class MainActivity extends Activity {
                     makeBibleRight();
                 else if (Vars.topTab == Vars.TABMODE_HYMN)
                     makeHymnRight();
-            }
-        });
-        vSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Vars.topTab = Vars.TABMODE_MENU;
-
             }
         });
         vOldBible.setOnClickListener(new View.OnClickListener() {
@@ -409,7 +426,7 @@ public class MainActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(R.mipmap.icon_myface);
         builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
-        builder.setPositiveButton("다음에 또 만나요",
+        builder.setPositiveButton("그래요, 다음에 또 봅시다",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -417,7 +434,7 @@ public class MainActivity extends Activity {
                         android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 });
-        builder.setNegativeButton("앗, 잘못 눌렀군",
+        builder.setNegativeButton("앗, 잘못 눌렀군요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();

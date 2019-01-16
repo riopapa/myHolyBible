@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:text="@string/agpBible"
         android:layout_marginStart="0sp"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/leftAction" />
@@ -22,7 +23,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/prevBible"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/agpBible"
         app:layout_constraintRight_toLeftOf="@+id/currBible"/>
@@ -33,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/nowBible"
-        app:layout_constraintHorizontal_weight="5"
+        app:layout_constraintHorizontal_weight="8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/leftAction"
         app:layout_constraintRight_toLeftOf="@id/rightAction" />
@@ -44,7 +45,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/nextBible"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/currBible"
         app:layout_constraintRight_toLeftOf="@id/cevBible" />
@@ -56,7 +57,7 @@
         android:layout_height="wrap_content"
         android:text="@string/cevBible"
         android:layout_marginEnd="0sp"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintLeft_toRightOf="@id/cevBible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

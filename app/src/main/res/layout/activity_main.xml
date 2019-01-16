@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/fragment_top"
         app:layout_constraintVertical_weight="2"
+        app:layout_constraintTop_toTopOf="parent"
         android:name="com.urrecliner.andriod.myholybible.Fragment_Top" />
 
     <fragment
