@@ -1,5 +1,6 @@
 package com.urrecliner.andriod.myholybible;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -26,26 +27,46 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import static android.graphics.Typeface.BOLD;
+import static com.urrecliner.andriod.myholybible.Vars.TABMODE_DIC;
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
+import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
+import static com.urrecliner.andriod.myholybible.Vars.agpColorF;
+import static com.urrecliner.andriod.myholybible.Vars.agpShow;
+import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
+import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
+import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
+import static com.urrecliner.andriod.myholybible.Vars.cevShow;
+import static com.urrecliner.andriod.myholybible.Vars.dictWord;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
+import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
+import static com.urrecliner.andriod.myholybible.Vars.logFile;
+import static com.urrecliner.andriod.myholybible.Vars.mActivity;
+import static com.urrecliner.andriod.myholybible.Vars.mBody;
+import static com.urrecliner.andriod.myholybible.Vars.mContext;
+import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
+import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
+import static com.urrecliner.andriod.myholybible.Vars.referColorF;
+import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
+import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleNumber;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -54,8 +75,9 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnKeypad;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnTitle;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyword;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
+import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
+import static com.urrecliner.andriod.myholybible.Vars.xPixels;
 import static java.lang.Integer.parseInt;
 
 public class Utils {
@@ -66,9 +88,11 @@ public class Utils {
     }
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss sss", Locale.KOREA);
-
+    private final String newLine = "\n";
+    private final String new2Line = "\n\n";
+    private final String new3Line = "\n\n\n";
     public String[] readBibleFile(String filename) {
-        String file2read = Vars.packageFolder + "/" + filename;
+        String file2read = packageFolder + "/" + filename;
         String[] lines;
         try {
             lines = readLines(file2read);
@@ -76,8 +100,11 @@ public class Utils {
         }
         catch(IOException e)
         {
-            // Print out the exception that occurred
-            logE("file read", "Unable to read "+filename+": "+e.getMessage());
+            String message = filename+"이 없거나, 파일읽기가 거부되어 있습니다.";
+            new AlertDialog.Builder(mActivity)
+                    .setMessage(message)
+                    .setPositiveButton("OK", null)
+                    .create().show();
         }
         return null;
     }
@@ -98,74 +125,6 @@ public class Utils {
         return lines.toArray(new String[0]);
     }
 
-    private String getTimeStamp() {
-        return timeFormat.format(new Date());
-    }
-
-    public void append2file(String filename, String textLine) {
-
-        Log.w(filename,textLine);
-        File directoryDate = getTodayFolder();
-
-        BufferedWriter bw = null;
-        FileWriter fw = null;
-        String fullName = directoryDate.toString() + "/" + filename;
-
-        try {
-            File file = new File(fullName);
-            // if file doesnt exists, then create it
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    logE("createFile", " Error");
-                }
-            }
-            StackTraceElement[] traces;
-            traces = Thread.currentThread().getStackTrace();
-            String outText = "\n" + getTimeStamp() + " " + traces[5].getMethodName() + " > " + traces[4].getMethodName() + " > " + traces[3].getMethodName() + " #" + traces[3].getLineNumber() + " [[" + textLine + "]]\n";
-            // true = append file
-            fw = new FileWriter(file.getAbsoluteFile(), true);
-            bw = new BufferedWriter(fw);
-            bw.write(outText);
-
-//            for (int i = 3; i < 8; i++) {
-//                bw.write("                ".substring(0, i ) + "+- " + i + traces[i].getMethodName() + "#" +traces[i].getLineNumber() + "\n");
-//            }
-            //            Toast.makeText(getApplicationContext(), "File wrote to " + fullName,
-//                    Toast.LENGTH_SHORT).show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (bw != null) bw.close();
-                if (fw != null) fw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private File getTodayFolder() {
-        try {
-            if (!Vars.packageFolder.exists()) {
-                Vars.packageFolder.mkdirs();
-            }
-        } catch (Exception e) {
-            Log.e("creating Directory error", Vars.packageFolder.toString() + "_" + e.toString());
-        }
-
-        File directoryDate = new File(Vars.packageFolder, dateFormat.format(new Date()));
-        try {
-            if (!directoryDate.exists()) {
-                if (directoryDate.mkdirs())
-                    log("Directory", directoryDate.toString() + " created ");
-            }
-        } catch (Exception e) {
-            logE("creating Folder error", directoryDate + "_" + e.toString());
-        }
-        return directoryDate;
-    }
-
     public void log(String tag, String text) {
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
@@ -182,7 +141,7 @@ public class Utils {
 
     public void customToast  (String text, int length) {
 
-        Toast toast = Toast.makeText(Vars.mContext, text, length);
+        Toast toast = Toast.makeText(mContext, text, length);
         toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
         View toastView = toast.getView(); // This'll return the default View of the Toast.
 
@@ -200,34 +159,34 @@ public class Utils {
 
     public void showBibleList() {
 
-        ScrollView scrollView = new ScrollView(Vars.mContext);
-        int loop = (topTab == Vars.TABMODE_OLD) ?  39: 27;
-        int start = (topTab == Vars.TABMODE_OLD) ? 1 : 40;
+        ScrollView scrollView = new ScrollView(mContext);
+        int loop = (topTab == TAB_MODE_OLD) ?  39: 27;
+        int start = (topTab == TAB_MODE_OLD) ? 1 : 40;
         int count = 1;
         Button b;
         final int nbrColumn = 3;
-        int buttonWidth = Vars.xPixels / nbrColumn;
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        int buttonWidth = xPixels / nbrColumn;
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
-//        TextView tV = new TextView(Vars.mContext);
-//        tV.setText(Vars.blank);
+//        TextView tV = new TextView(mContext);
+//        tV.setText(blank);
 //        tV.setTextSize(textSizeBibleTitle);
-//        tV.setWidth(Vars.xPixels);
+//        tV.setWidth(xPixels);
 //        tV.setTextColor(Color.parseColor("#000000"));
 //        tV.setGravity(Gravity.CENTER);
 //        linearlayout.addView(tV);
         for(int i = 0; i<15;i++) {
-            LinearLayout rowLayout = new LinearLayout(Vars.mContext);
+            LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearlayout.addView(rowLayout);
             for(int j = 0; j < nbrColumn; j++) {
-                LinearLayout columnLayout = new LinearLayout(Vars.mContext);
+                LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setOrientation(LinearLayout.VERTICAL);
-                b = new Button(Vars.mContext);
+                b = new Button(mContext);
                 b.setBackgroundResource(R.drawable.button_bible);
-                b.setText(Vars.fullBibleNames[start]);
+                b.setText(fullBibleNames[start]);
                 b.setId(start);
                 b.setWidth(buttonWidth);
                 b.setTextSize(textSizeBible66);
@@ -236,9 +195,9 @@ public class Utils {
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Vars.nowBible = v.getId();
-                        Vars.mContainerBody.removeAllViewsInLayout();
-                        Vars.mContainerBody.addView(buildBibleNumber());
+                        nowBible = v.getId();
+                        mBody.removeAllViewsInLayout();
+                        mBody.addView(buildBibleNumber());
                         mainActivity.makeTopBottomMenu();
                     }
                 });
@@ -251,72 +210,73 @@ public class Utils {
             if (count > loop)
                 break;
         }
-        TextView tVb = new TextView(Vars.mContext);
-        tVb.setText("\n\n\n");
+        TextView tVb = new TextView(mContext);
+        tVb.setText(new3Line);
         tVb.setTextSize(textSizeBibleTitle);
-        tVb.setWidth(Vars.xPixels);
+        tVb.setWidth(xPixels);
         tVb.setTextColor(Color.parseColor("#000000"));
         tVb.setGravity(Gravity.CENTER);
         linearlayout.addView(tVb);
 
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
     }
 
     private ScrollView buildBibleNumber() {
-        int loop = Vars.nbrofChapters[Vars.nowBible];
-        int count = 1;
-        TextView b;
-        ScrollView scrollView = new ScrollView(Vars.mContext);
+        int verseMax = nbrofChapters[nowBible];
+        int verse = 1;
+        TextView tVNbr;
+        ScrollView scrollView = new ScrollView(mContext);
         final int nbrColumn = 5;
-        int buttonWidth = Vars.xPixels / nbrColumn;
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        int buttonWidth = xPixels / nbrColumn;
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
-        TextView tV = new TextView(Vars.mContext);
-        tV.setText(Vars.fullBibleNames[Vars.nowBible]);
+        TextView tV = new TextView(mContext);
+        tV.setText(fullBibleNames[nowBible]);
         tV.setTextSize(textSizeBibleTitle);
-        tV.setWidth(Vars.xPixels);
+        tV.setWidth(xPixels);
         tV.setTextColor(Color.parseColor("#000000"));
         tV.setGravity(Gravity.CENTER);
         linearlayout.addView(tV);
         for(int i = 0; i<31;i++) {
-            LinearLayout rowLayout = new LinearLayout(Vars.mContext);
+            LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearlayout.addView(rowLayout);
             for(int j = 0; j < nbrColumn; j++) {
-                LinearLayout columnLayout = new LinearLayout(Vars.mContext);
-                b = new TextView(Vars.mContext);
-                b.setText(""+count);
-                b.setTextColor(paraColorF);
-                b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                b.setWidth(buttonWidth);
-                b.setGravity(Gravity.CENTER_HORIZONTAL);
-                b.setPadding(0,16,0,16);
-                b.setId(count);
-                b.setTextSize(textSizeBibleNumber);
-                b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                columnLayout.addView(b);
-                b.setOnClickListener(new View.OnClickListener() {
+                LinearLayout columnLayout = new LinearLayout(mContext);
+                tVNbr = new TextView(mContext);
+                String text = ""+verse;
+                tVNbr.setText(text);
+                tVNbr.setTextColor(paraColorF);
+                tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                tVNbr.setWidth(buttonWidth);
+                tVNbr.setGravity(Gravity.CENTER_HORIZONTAL);
+                tVNbr.setPadding(0,16,0,16);
+                tVNbr.setId(verse);
+                tVNbr.setTextSize(textSizeBibleNumber);
+                tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                columnLayout.addView(tVNbr);
+                tVNbr.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Vars.nowChapter = v.getId();
-                        Vars.nowVerse = 0;
+                        nowChapter = v.getId();
+                        nowVerse = 0;
                         generateBibleBody();
                     }
                 });
                 rowLayout.addView(columnLayout);
-                count++;
-                if (count > loop)
+                verse++;
+                if (verse > verseMax)
                     break;
             }
-            if (count > loop)
+            if (verse > verseMax)
                 break;
         }
-        tV = new TextView(Vars.mContext);
-        tV.setText("\n\n");
+        tV = new TextView(mContext);
+        tV.setText(new2Line);
         tV.setTextSize(28);
         tV.setWidth(10);
         tV.setTextColor(Color.parseColor("#000000"));
@@ -363,11 +323,11 @@ public class Utils {
 
     public void generateBibleBody() {
 
-        final ScrollView scrollView = new ScrollView(Vars.mContext);
-        String file2read = "bible/" + Vars.nowBible + "/" + Vars.nowChapter + ".txt";
+        final ScrollView scrollView = new ScrollView(mContext);
+        String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         final String bibleTexts[] = readBibleFile(file2read);
         if (bibleTexts == null) {
-            Toast.makeText(Vars.mContext, "Bible source not found " + Vars.fullBibleNames[Vars.nowBible] + " " + Vars.nowChapter,Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Bible source not found " + fullBibleNames[nowBible] + " " + nowChapter,Toast.LENGTH_LONG).show();
             return;
         }
         iVerse = 0;
@@ -376,14 +336,14 @@ public class Utils {
         iPara = 0;
         iAgp = 0;
         iCev = 0;
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
-        linearlayout.setGravity(Gravity.LEFT);
+        linearlayout.setGravity(Gravity.START);
         scrollView.addView(linearlayout);
-        final TextView tV = new TextView(Vars.mContext);
+        final TextView tV = new TextView(mContext);
         tV.setTextSize(textSizeBibleText);
-        tV.setGravity(Gravity.LEFT);
-        tV.setWidth(Vars.xPixels);
+        tV.setGravity(Gravity.START);
+        tV.setWidth(xPixels);
         tV.setTextColor(Color.parseColor("#000000"));
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
         lp.setMargins(20,16,20,16);
@@ -391,17 +351,17 @@ public class Utils {
         linearlayout.addView(tV);
 
         bodyText = new StringBuilder();
-        bodyText.append("\n");
+        bodyText.append(newLine);
         ptrBody = 1;
         generateBibleAllVerses(bibleTexts);
-        bodyText.append("\n\n\n");
+        bodyText.append(new3Line + new3Line);
         SpannableString ss = settleSpannableString();
 
         pushHistory();
         tV.setText(ss);
         tV.setMovementMethod(LinkMovementMethod.getInstance());
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
         scrollView.post(new Runnable() {
             @Override
@@ -418,23 +378,23 @@ public class Utils {
             ss.setSpan(new keywordSpan(keywords[i], keywordV[i]), keywordF[i], keywordT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iVerse; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.verseColorF), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(verseColorF), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new StyleSpan(BOLD), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iPara; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.paraColorF), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(paraColorF), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new UnderlineSpan(), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iRefer; i++) {
             ss.setSpan(new referSpan(refers[i], referV[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iCev; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.cevColorF), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new BackgroundColorSpan(Vars.cevColorB), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(cevColorF), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new BackgroundColorSpan(cevColorB), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iAgp; i++) {
-            ss.setSpan(new ForegroundColorSpan(Vars.agpColorF), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new BackgroundColorSpan(Vars.agpColorB), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(agpColorF), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new BackgroundColorSpan(agpColorB), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return ss;
     }
@@ -463,7 +423,8 @@ public class Utils {
                 str = workLine.substring(1, endIdx);
                 workLine = workLine.substring(endIdx + 1);
                 lenWorkLine = workLine.length();
-                bodyText.append(str + "\n");
+                bodyText.append(str);
+                bodyText.append("\n");
                 paraF[iPara] = ptrBody;
                 paraT[iPara] = ptrBody + str.length() + 1;
                 iPara++;
@@ -494,7 +455,7 @@ public class Utils {
                     lenWorkLine = workLine.length();
                 }
             }
-            if (Vars.agpShow) {
+            if (agpShow) {
                 agpText = " " + agpText;
                 bodyText.append(agpText);
                 agpF[iAgp] = ptrBody;
@@ -502,7 +463,7 @@ public class Utils {
                 iAgp++;
                 ptrBody += agpText.length();
             }
-            if (Vars.cevShow) {
+            if (cevShow) {
                 cevText = " " + cevText;
                 bodyText.append(cevText);
                 cevF[iCev] = ptrBody;
@@ -511,7 +472,7 @@ public class Utils {
                 ptrBody += cevText.length();
             }
             ptrBody++;
-            bodyText.append("\n");
+            bodyText.append(newLine);
         }
     }
 
@@ -520,7 +481,7 @@ public class Utils {
         ptr = workLine.indexOf("_]");
         String keyword = workLine.substring(2, ptr);
         if (keyword.substring(0, 1).equals("$")) {   // reference
-            String bibShort = Vars.shortBibleNames[parseInt(keyword.substring(1, 3))];
+            String bibShort = shortBibleNames[parseInt(keyword.substring(1, 3))];
             String showWord = " (" + bibShort + keyword.substring(4) + ") ";      // $01#12:34 -> (창12:34) 로 표시
             bodyText.append(showWord);
             referF[iRefer] = ptrBody;
@@ -538,7 +499,7 @@ public class Utils {
                     keywordT[iKeyword] = ptrBody + tilde;
                     keywords[iKeyword] = keyword.substring(0, tilde) + keyword.substring(tilde + 1);
                     ptrBody += tilde;
-                    bodyText.append(keyword.substring(0, tilde));
+                    bodyText.append(keyword,0, tilde);
                 } else {
                     keywordT[iKeyword] = ptrBody + keyword.length();
                     keywords[iKeyword] = keyword;
@@ -570,16 +531,16 @@ public class Utils {
 
         Typeface typeface = Typeface.create(Typeface.DEFAULT, BOLD);
         @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setColor(Vars.bibleColorF);
+        public void updateDrawState(@NonNull TextPaint ds) {
+            ds.setColor(bibleColorF);
             ds.setTypeface(typeface);
             ds.setUnderlineText(false);    // this remove the underline
         }
 
         @Override
-        public void onClick(View widget) {
-            Vars.keyWord = key;
-            Vars.nowVerse = verse;
+        public void onClick(@NonNull View widget) {
+            dictWord = key;
+            nowVerse = verse;
             generateKeyWord();
         }
     }
@@ -590,43 +551,43 @@ public class Utils {
         int verse;
         public referSpan(String key, int verse) { this.key = key; this.verse = verse;}
         @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setColor(Vars.referColorF);
+        public void updateDrawState(@NonNull TextPaint ds) {
+            ds.setColor(referColorF);
             ds.setTextSize(textSizeBibleRefer);
             ds.setUnderlineText(false);    // this remove the underline
         }
 
         @Override
-        public void onClick(View widget) {
-            Vars.keyWord = key;
-            Vars.nowVerse = verse;
+        public void onClick(@NonNull View widget) {
+            dictWord = key;
+            nowVerse = verse;
             generateRefer();
         }
     }
 
-    TextView tVTitle;
-    String hymnTitle = "";
+    private TextView tVTitle;
+    private String hymnTitle = "";
     public void generateHymnKeypad() {
 
-        ScrollView scrollView = new ScrollView(Vars.mContext);
+        ScrollView scrollView = new ScrollView(mContext);
         int ids[] = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
         Button b;
 
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
-        TextView tV0 = new TextView(Vars.mContext);
+        TextView tV0 = new TextView(mContext);
 
-        tV0.setText("\n");
+        tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
         tV0.setTextColor(Color.parseColor("#000000"));
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
-        tVTitle = new TextView(Vars.mContext);
-        if (Vars.nowHymn != 0)
-            hymnTitle = Vars.nowHymn + " : " + Vars.hymnTitles[Vars.nowHymn];
+        tVTitle = new TextView(mContext);
+        if (nowHymn != 0)
+            hymnTitle = nowHymn + " : " + hymnTitles[nowHymn];
         else
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
@@ -637,7 +598,7 @@ public class Utils {
         linearlayout.addView(tVTitle);
 
         for(int i = 0; i<5;i++) {
-            LinearLayout rowLayout = new LinearLayout(Vars.mContext);
+            LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             linearlayout.addView(rowLayout);
@@ -659,9 +620,9 @@ public class Utils {
                     buttonText = "" + id;
                     buttonWidth = 100;
                 }
-                LinearLayout columnLayout = new LinearLayout(Vars.mContext);
+                LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-                b = new Button(Vars.mContext);
+                b = new Button(mContext);
                 b.setBackgroundResource(R.drawable.button_number);
                 b.setTextSize(textSizeHymnKeypad);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -674,25 +635,25 @@ public class Utils {
                         @Override
                         public void onClick(View v) {
                         int nbr = v.getId();
-                        if (Vars.nowHymn *10 + nbr <= 645) {
-                            Vars.nowHymn = Vars.nowHymn * 10 + nbr;
-                            hymnTitle = Vars.nowHymn + " " + Vars.hymnTitles[Vars.nowHymn];
+                        if (nowHymn *10 + nbr <= 645) {
+                            nowHymn = nowHymn * 10 + nbr;
+                            hymnTitle = nowHymn + " " + hymnTitles[nowHymn];
                             tVTitle.setText(hymnTitle);
                         }
                         }
                     });
                 }
-                else if (id==100) {   // clear
+                else if (id==100) { // clear
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                        Vars.nowHymn = 0;
+                        nowHymn = 0;
                         hymnTitle = "";
                         tVTitle.setText(hymnTitle);
                         }
                     });
                 }
-                else if (id==200) {    // go
+                else {    // go
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -703,30 +664,65 @@ public class Utils {
                 rowLayout.addView(columnLayout);
             }
         }
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        TextView tVSort = new TextView(mContext);
+        tVSort.setText(newLine);
+        tVSort.setTextSize(textSizeHymnKeypad);
+        tVSort.setTextColor(Color.parseColor("#0b1849"));
+        tVSort.setGravity(Gravity.CENTER);
+        tVSort.setWidth(2000);
+        linearlayout.addView(tVSort);
+
+        for(int i = 0; i<4;i++) {
+            LinearLayout rowLayout = new LinearLayout(mContext);
+            rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+            rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+            linearlayout.addView(rowLayout);
+            for(int j = 0; j < 2; j++) {
+                String text = hymnTitles[sortedNumbers[(i+i+j)*81]].substring(0,5);
+                LinearLayout columnLayout = new LinearLayout(mContext);
+                columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+                b = new Button(mContext);
+                b.setTextSize(textSizeHymnText);
+                b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                b.setWidth(400);
+                b.setText(text);
+                columnLayout.addView(b);
+                b.setId((i+i+j)*81);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    int nbr = v.getId();
+                    generateSortedHymnList(nbr);
+                    }
+                });
+                rowLayout.addView(columnLayout);
+            }
+        }
+
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
     }
 
     public void generateHymnBody() {
 
-        ScrollView scrollView = new ScrollView(Vars.mContext);
-        String txt = "Hymn/" + Vars.nowHymn + ".txt";
+        ScrollView scrollView = new ScrollView(mContext);
+        String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = readBibleFile(txt);
         if (hymnTexts == null) {
-            Toast.makeText(Vars.mContext, "찬송가 " + Vars.nowHymn + " 파일 없음",Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "찬송가 " + nowHymn + " 파일 없음",Toast.LENGTH_LONG).show();
             return;
         }
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
 
         if (hymnImageShow) {
-            ImageView imV = new ImageView(Vars.mContext);
+            ImageView imV = new ImageView(mContext);
             linearlayout.addView(imV);
 
-            File imgFile = new File(Vars.packageFolder, "hymn_png/" + Vars.nowHymn + ".pngz");
+            File imgFile = new File(packageFolder, "hymn_png/" + nowHymn + ".pngz");
 
             if (imgFile.exists()) {
                 Bitmap hymnBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -736,10 +732,10 @@ public class Utils {
             }
         }
         if (hymnTextShow) {
-            TextView tVBody = new TextView(Vars.mContext);
+            TextView tVBody = new TextView(mContext);
             tVBody.setTextSize(textSizeHymnText);
             tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
-            tVBody.setWidth(Vars.xPixels);
+            tVBody.setWidth(xPixels);
             tVBody.setTextColor(Color.parseColor("#000000"));
             linearlayout.addView(tVBody);
 
@@ -748,95 +744,162 @@ public class Utils {
                 String workLine = "\n" + hymnText;
                 bodyText.append(workLine);
             }
-            bodyText.append("\n\n\n\n");
+            bodyText.append(new3Line + new2Line);
             SpannableString ssBody = new SpannableString(bodyText);
             tVBody.setText(ssBody);
             tVBody.setMovementMethod(LinkMovementMethod.getInstance());
         }
         pushHistory();
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
     }
 
+    public void generateSortedHymnList(int start) {
+
+        ScrollView scrollView = new ScrollView(mContext);
+
+        TextView titleTV; TextView numberTV;
+        LinearLayout linearlayout = new LinearLayout(mContext);
+        linearlayout.setOrientation(LinearLayout.VERTICAL);
+        linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        scrollView.addView(linearlayout);
+        TextView tV = new TextView(mContext);
+        tV.setText("");
+        tV.setTextSize(textSizeHymnText);
+        tV.setWidth(xPixels);
+        linearlayout.addView(tV);
+
+        for(int i = 0; i<81;i++) {
+            LinearLayout rowLayout = new LinearLayout(mContext);
+            rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearlayout.addView(rowLayout);
+
+            LinearLayout columnLayout = new LinearLayout(mContext);
+            columnLayout.setOrientation(LinearLayout.HORIZONTAL);
+            titleTV = new TextView(mContext);
+            titleTV.setText(hymnTitles[sortedNumbers[start]]);
+            titleTV.setTextColor(Color.BLACK);
+//            b.setWidth(800);
+            titleTV.setTextSize(textSizeHymnText);
+            columnLayout.addView(titleTV);
+            numberTV = new TextView(mContext);
+            String text = "  " + sortedNumbers[start] + " ";
+            numberTV.setText(text);
+            numberTV.setId(sortedNumbers[start]);
+//            bnbr.setWidth(120);
+            numberTV.setTextColor(paraColorF);
+            numberTV.setTextSize(textSizeHymnText);
+            numberTV.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            columnLayout.addView(numberTV);
+            numberTV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    nowHymn = v.getId();
+                    generateHymnBody();
+                }
+            });
+            rowLayout.addView(columnLayout);
+            start++;
+            if (start > 644)
+                break;
+        }
+        TextView tVb = new TextView(mContext);
+        tVb.setText(new3Line);
+        tVb.setTextSize(textSizeBibleTitle);
+        tVb.setWidth(xPixels);
+        tVb.setGravity(Gravity.CENTER);
+        linearlayout.addView(tVb);
+
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
+        mainActivity.makeTopBottomMenu();
+
+    }
     public void generateKeyWord() {
 
         int verse = nowVerse;
-        String txt = "dict/" + Vars.keyWord + ".txt";
+        String txt = "dict/" + dictWord + ".txt";
         popHistory();
         nowVerse = verse;
         pushHistory();
-        ScrollView scrollView = new ScrollView(Vars.mContext);
+        ScrollView scrollView = new ScrollView(mContext);
         String [] dicTexts = readBibleFile(txt);
         if (dicTexts != null) {
-            LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+            LinearLayout linearlayout = new LinearLayout(mContext);
             linearlayout.setOrientation(LinearLayout.VERTICAL);
-            linearlayout.setGravity(Gravity.LEFT);
+            linearlayout.setGravity(Gravity.START);
             scrollView.addView(linearlayout);
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
-            lp.setMargins(20,16,20,16);
+            lp.setMargins(20,36,20,16);
             linearlayout.setLayoutParams(lp);
             for (String line : dicTexts) {
-                if (line.substring(0, 1).equals("@")) {      // contains image file name
-                    File imgFile = new File(Vars.packageFolder, "dict_img/" + line.substring(1));
-                    if (imgFile.exists()) {
-                        Bitmap dictBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                        int height = 1000 * dictBitmap.getHeight() / dictBitmap.getWidth();
-                        ImageView imV = new ImageView(Vars.mContext);
-                        linearlayout.addView(imV);
-                        imV.setImageBitmap(Bitmap.createScaledBitmap(dictBitmap, 1000, height, false));
-                        //                        imV.setImageBitmap(dictBitmap);
+                switch (line.substring(0, 1)) {
+                    case "@":       // contains image file name
+                        File imgFile = new File(packageFolder, "dict_img/" + line.substring(1));
+                        if (imgFile.exists()) {
+                            Bitmap dictBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                            int height = 1000 * dictBitmap.getHeight() / dictBitmap.getWidth();
+                            ImageView imV = new ImageView(mContext);
+                            linearlayout.addView(imV);
+                            imV.setImageBitmap(Bitmap.createScaledBitmap(dictBitmap, 1000, height, false));
+                            //                        imV.setImageBitmap(dictBitmap);
 //                        imV.getLayoutParams().width = xPixels;
-                        imV.requestLayout();
-                    } else {
-                        log("no image", imgFile.toString());
+                            imV.requestLayout();
+                        }
+                        break;
+                    case "~": { // contains subject name
+                        TextView tVLine = new TextView(mContext);
+                        tVLine.setTextSize(textSizeBibleText + 3);
+                        tVLine.setTextColor(Color.BLACK);
+                        tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                        tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
+                        tVLine.setWidth(xPixels);
+                        linearlayout.addView(tVLine);
+                        tVLine.setText(line.substring(1));
+                        break;
                     }
-                } else if (line.substring(0, 1).equals("~")) { // contains subject name
-                    TextView tVLine = new TextView(Vars.mContext);
-                    tVLine.setTextSize(textSizeKeyword + 3);
-                    tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                    tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
-                    tVLine.setWidth(Vars.xPixels);
-                    linearlayout.addView(tVLine);
-                    tVLine.setText(line.substring(1));
-                } else {
-                    TextView tVLine = new TextView(Vars.mContext);
-                    tVLine.setTextSize(textSizeKeyword);
-                    tVLine.setGravity(Gravity.LEFT);
-                    tVLine.setWidth(Vars.xPixels);
-                    linearlayout.addView(tVLine);
-                    tVLine.setText(line);
+                    default: {
+                        TextView tVLine = new TextView(mContext);
+                        tVLine.setTextSize(textSizeBibleText);
+                        tVLine.setTextColor(Color.BLACK);
+                        tVLine.setGravity(Gravity.START);
+                        tVLine.setWidth(xPixels);
+                        linearlayout.addView(tVLine);
+                        tVLine.setText(line);
+                        break;
+                    }
                 }
             }
-            TextView tVBottom = new TextView(Vars.mContext);
-            tVBottom.setTextSize(textSizeKeyword);
-            tVBottom.setGravity(Gravity.LEFT);
-            tVBottom.setWidth(Vars.xPixels);
+            TextView tVBottom = new TextView(mContext);
+//            tVBottom.setTextSize(textSizeBibleText);
+//            tVBottom.setGravity(Gravity.START);
+//            tVBottom.setWidth(xPixels);
             linearlayout.addView(tVBottom);
-            tVBottom.setText("\n\n\n");
+            tVBottom.setText(new3Line);
         }
         else {
-            String errText = "[" + Vars.keyWord + "] not found";
-            Toast.makeText(Vars.mContext,errText,Toast.LENGTH_LONG).show();
-            log(Vars.logFile, errText);
+            String errText = "[" + dictWord + "] not found";
+            Toast.makeText(mContext,errText,Toast.LENGTH_LONG).show();
+            log(logFile, errText);
         }
-        topTab = Vars.TABMODE_DIC;
+        topTab = TABMODE_DIC;
 
         pushHistory();
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
     }
 
     public void generateRefer() {
 
-        String refer = Vars.keyWord; // 41#4:18
+        String refer = dictWord; // 41#4:18
         int verse = nowVerse;
         popHistory();
         nowVerse = verse;
         pushHistory();
         nowBible = parseInt(refer.substring(0,2));
-        Vars.topTab = (nowBible < 40) ? Vars.TABMODE_OLD : Vars.TABMODE_NEW;
+        topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
         refer = refer.substring(3) + "z";
         char[] chars  = refer.toCharArray();
         int ptr = getNumberPtr(chars,0);
@@ -853,78 +916,78 @@ public class Utils {
         }
         return 0;
     }
-    final int textSizeBible66Decrease = 1001;
-    final int textSizeBible66Increase = 1002;
-    final int textSizeBibleDecrease = 1011;
-    final int textSizeBibleIncrease = 1012;
-    final int textSizeReferDecrease = 1021;
-    final int textSizeReferIncrease = 1022;
-    final int textSizeHymnDecrease = 1031;
-    final int textSizeHymnIncrease = 1032;
-    final int hymnImageOnOff = 2005;
-    final int hymnTextOnOff = 2006;
-    final String yesShow = " 예 ";
-    final String noShow = " 아니오 ";
+    final private int TEXT_SIZE_BIBLE66_DECREASE = 1001;
+    final private int TEXT_SIZE_BIBLE66_INCREASE = 1002;
+    final private int TEXT_SIZE_BIBLE_DECREASE = 1011;
+    final private int TEXT_SIZE_BIBLE_INCREASE = 1012;
+    final private int TEXT_SIZE_REFER_DECREASE = 1021;
+    final private int TEXT_SIZE_REFER_INCREASE = 1022;
+    final private int TEXT_SIZE_HYMN_DECREASE = 1031;
+    final private int TEXT_SIZE_HYMN_INCREASE = 1032;
+    final private int HYMN_IMAGE_ON_OFF = 2005;
+    final private int HYMN_TEXT_ON_OFF = 2006;
 
     public void generateSettingBody() {
 
+        final String yesShow = " 예 ";
+        final String noShow = " 아니오 ";
         String text;
-        ScrollView scrollView = new ScrollView(Vars.mContext);
-        LinearLayout linearlayout = new LinearLayout(Vars.mContext);
+        ScrollView scrollView = new ScrollView(mContext);
+        LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
 
-        TextView tVBody = new TextView(Vars.mContext);
+        TextView tVBody = new TextView(mContext);
         tVBody.setTextSize(20); // fixed
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
-        tVBody.setWidth(Vars.xPixels);
+        tVBody.setWidth(xPixels);
         tVBody.setTextColor(Color.parseColor("#000000"));
         linearlayout.addView(tVBody);
 
         iRefer = 0;
         bodyText = new StringBuilder();
         ptrBody = 0;
-        text = "\n\n성경종류 크기  "; bodyText.append(text); ptrBody += text.length();
-        appendSetting("  -   ",textSizeBible66Decrease);
+        text = new2Line + "성경종류 크기  "; bodyText.append(text); ptrBody += text.length();
+        appendSetting("  -   ", TEXT_SIZE_BIBLE66_DECREASE);
         text = "  " + textSizeBible66 + "  ";  bodyText.append(text); ptrBody += text.length();
-        appendSetting("   +   ",textSizeBible66Increase);
+        appendSetting("   +   ", TEXT_SIZE_BIBLE66_INCREASE);
 
-        text = "\n\n성경말씀 크기  "; bodyText.append(text); ptrBody += text.length();
-        appendSetting("  -   ",textSizeBibleDecrease);
+        text = new2Line + "성경말씀 크기  "; bodyText.append(text); ptrBody += text.length();
+        appendSetting("  -   ", TEXT_SIZE_BIBLE_DECREASE);
         text = "  " + textSizeBibleText + "  ";  bodyText.append(text); ptrBody += text.length();
-        appendSetting("   +   ",textSizeBibleIncrease);
+        appendSetting("   +   ", TEXT_SIZE_BIBLE_INCREASE);
 
-        text = "\n\n성경관주 크기  "; bodyText.append(text); ptrBody += text.length();
-        appendSetting("  -   ",textSizeReferDecrease);
+        text = new2Line + "성경관주 크기  "; bodyText.append(text); ptrBody += text.length();
+        appendSetting("  -   ", TEXT_SIZE_REFER_DECREASE);
         text = "  " + textSizeBibleRefer + "  ";  bodyText.append(text); ptrBody += text.length();
-        appendSetting("   +   ",textSizeReferIncrease);
+        appendSetting("   +   ", TEXT_SIZE_REFER_INCREASE);
 
-        text = "\n\n찬송악보 보이기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + "찬송악보 보이기  "; bodyText.append(text); ptrBody += text.length();
         if (hymnImageShow)
-            appendSetting(noShow,hymnImageOnOff);
+            appendSetting(noShow, HYMN_IMAGE_ON_OFF);
         else
-            appendSetting(yesShow,hymnImageOnOff);
+            appendSetting(yesShow, HYMN_IMAGE_ON_OFF);
 
-        text = "\n\n찬송가사 보이기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + "찬송가사 보이기  "; bodyText.append(text); ptrBody += text.length();
         if (hymnTextShow) {
-            appendSetting(noShow, hymnTextOnOff);
-            text = "\n\n찬송가사 크기   "; bodyText.append(text); ptrBody += text.length();
-            appendSetting("  -   ",textSizeHymnDecrease);
+            appendSetting(noShow, HYMN_TEXT_ON_OFF);
+            text = new2Line + "찬송가사 크기   "; bodyText.append(text); ptrBody += text.length();
+            appendSetting("  -   ", TEXT_SIZE_HYMN_DECREASE);
             text = "  " + textSizeHymnText + "  ";  bodyText.append(text); ptrBody += text.length();
-            appendSetting("   +   ",textSizeHymnIncrease);
+            appendSetting("   +   ", TEXT_SIZE_HYMN_INCREASE);
         }
         else
-            appendSetting(yesShow,hymnTextOnOff);
+            appendSetting(yesShow, HYMN_TEXT_ON_OFF);
 
-        bodyText.append("\n\n\n");
+        bodyText.append(new3Line);
         SpannableString ss = settleSettingSpan();
         tVBody.setText(ss);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
         pushHistory();
 
-        Vars.mContainerBody.removeAllViewsInLayout();
-        Vars.mContainerBody.addView(scrollView);
+        mBody.removeAllViewsInLayout();
+        mBody.addView(scrollView);
         mainActivity.clearBottomMenu();
     }
 
@@ -938,7 +1001,7 @@ public class Utils {
     private SpannableString settleSettingSpan() {
         SpannableString ss = new SpannableString(bodyText);
         for (int i = 0; i < iRefer; i++) {
-            ss.setSpan(new BackgroundColorSpan(Vars.cevColorB), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new BackgroundColorSpan(cevColorB), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new settingSpan(referV[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return ss;
@@ -950,53 +1013,53 @@ public class Utils {
         Typeface typeface = Typeface.create(Typeface.DEFAULT, BOLD);
         public settingSpan(int what) { this.what = what;}
         @Override
-        public void updateDrawState(TextPaint ds) {
+        public void updateDrawState(@NonNull TextPaint ds) {
             ds.setTypeface(typeface);
             ds.setColor(Color.BLUE);
             ds.setUnderlineText(false);    // this remove the underline
         }
 
         @Override
-        public void onClick(View widget) {
+        public void onClick(@NonNull View widget) {
             switch (what) {
 
-                case textSizeBible66Decrease:
+                case TEXT_SIZE_BIBLE66_DECREASE:
                     textSizeBible66--;
                     editor.putInt("textSizeBible66", textSizeBible66).apply();
                     break;
-                case textSizeBible66Increase:
+                case TEXT_SIZE_BIBLE66_INCREASE:
                     textSizeBible66++;
                     editor.putInt("textSizeBible66", textSizeBible66).apply();
                     break;
-                case textSizeBibleDecrease:
+                case TEXT_SIZE_BIBLE_DECREASE:
                     textSizeBibleText--;
                     editor.putInt("textSizeBibleText", textSizeBibleText).apply();
                     break;
-                case textSizeBibleIncrease:
+                case TEXT_SIZE_BIBLE_INCREASE:
                     textSizeBibleText++;
                     editor.putInt("textSizeBibleText", textSizeBibleText).apply();
                     break;
-                case textSizeReferDecrease:
+                case TEXT_SIZE_REFER_DECREASE:
                     textSizeBibleRefer--;
                     editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
                     break;
-                case textSizeReferIncrease:
+                case TEXT_SIZE_REFER_INCREASE:
                     textSizeBibleRefer++;
                     editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
                     break;
-                case textSizeHymnDecrease:
+                case TEXT_SIZE_HYMN_DECREASE:
                     textSizeHymnText--;
                     editor.putInt("textSizeHymnText", textSizeHymnText).apply();
                     break;
-                case textSizeHymnIncrease:
+                case TEXT_SIZE_HYMN_INCREASE:
                     textSizeHymnText++;
                     editor.putInt("textSizeHymnText", textSizeHymnText).apply();
                     break;
-                case hymnImageOnOff:
+                case HYMN_IMAGE_ON_OFF:
                     hymnImageShow ^= true;
                     editor.putBoolean("hymnImageShow", hymnImageShow).apply();
                     break;
-                case hymnTextOnOff:
+                case HYMN_TEXT_ON_OFF:
                     hymnTextShow ^= true;
                     editor.putBoolean("hymnImageShow", hymnImageShow).apply();
                     break;
@@ -1013,7 +1076,7 @@ public class Utils {
     private int hymnStack[] = new int[STACK_SIZE];
     private String keyStack[] = new String[STACK_SIZE];
     private int stackP = 0;
-    public void pushHistory() {
+    void pushHistory() {
         if (stackP > 18) {
             for (int i = 0; i < 15; i++) {
                 topTabStack[i] = topTabStack[i+4];
@@ -1025,23 +1088,23 @@ public class Utils {
             }
             stackP -= 4;
         }
-        topTabStack[stackP] = Vars.topTab;
-        bibleStack[stackP] = Vars.nowBible;
-        chapterStack[stackP] = Vars.nowChapter;
-        verseStack[stackP] = Vars.nowVerse;
-        hymnStack[stackP] = Vars.nowHymn;
-        keyStack[stackP] = Vars.keyWord;
+        topTabStack[stackP] = topTab;
+        bibleStack[stackP] = nowBible;
+        chapterStack[stackP] = nowChapter;
+        verseStack[stackP] = nowVerse;
+        hymnStack[stackP] = nowHymn;
+        keyStack[stackP] = dictWord;
         stackP++;
     }
-    public void popHistory() {
+    void popHistory() {
         if (stackP > 0)
             stackP--;
-        Vars.topTab = topTabStack[stackP];
-        Vars.nowBible = bibleStack[stackP];
-        Vars.nowChapter = chapterStack[stackP];
-        Vars.nowVerse = verseStack[stackP];
-        Vars.nowHymn = hymnStack[stackP];
-        Vars.keyWord = keyStack[stackP];
+        topTab = topTabStack[stackP];
+        nowBible = bibleStack[stackP];
+        nowChapter = chapterStack[stackP];
+        nowVerse = verseStack[stackP];
+        nowHymn = hymnStack[stackP];
+        dictWord = keyStack[stackP];
 //        for (int i = 0; i < stackP; i++) {
 //            Log.w("pop "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
 //        }
