@@ -31,10 +31,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static android.graphics.Typeface.BOLD;
 import static com.urrecliner.andriod.myholybible.Vars.TABMODE_DIC;
@@ -86,8 +84,6 @@ public class Utils {
     public Utils (MainActivity activity) {
         mainActivity = activity;
     }
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss sss", Locale.KOREA);
     private final String newLine = "\n";
     private final String new2Line = "\n\n";
     private final String new3Line = "\n\n\n";
