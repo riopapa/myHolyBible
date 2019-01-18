@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -50,6 +54,7 @@ import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
 import static com.urrecliner.andriod.myholybible.Vars.oldName;
+import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
@@ -57,6 +62,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
+import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
 import static com.urrecliner.andriod.myholybible.Vars.xPixels;
 import static com.urrecliner.andriod.myholybible.Vars.yPixels;
 
@@ -109,8 +115,80 @@ public class MainActivity extends Activity {
                 vSetting.setLayoutParams(layoutParams);
             }
         });
+
+        onSwipeTouchListener = new OnSwipeTouchListener(MainActivity.this) {
+//
+//            @Override
+//            public void onClick() {
+//                super.onClick();
+//            }
+//
+//            @Override
+//            public void onDoubleClick() {
+//                super.onDoubleClick();
+//            }
+//
+//            @Override
+//            public void onLongClick() {
+//                super.onLongClick();
+//                // your on onLongClick here
+//            }
+//
+//            @Override
+//            public void onSwipeUp() {
+//                super.onSwipeUp();
+//                // your swipe up here
+//            }
+//
+//            @Override
+//            public void onSwipeDown() {
+//                super.onSwipeDown();
+//                // your swipe down here.
+//            }
+
+            @Override
+            public void onSwipeGoBack() {
+//                super.onSwipeGoBack();
+                Log.w("onSwipeGoBack","onSwipeGoBack");
+                goBack2Prev();
+            }
+
+            @Override
+            public void onSwipePrev() {
+//                super.onSwipePrev();
+                Log.w("onSwipePrev","onSwipePrev");
+                if (vLeftAction.getText().toString().equals(blank))
+                    return;
+                if (topTab < TAB_MODE_HYMN)
+                    makeBibleLeft();
+                else if (topTab == TAB_MODE_HYMN)
+                    makeHymnLeft();
+            }
+
+            @Override
+            public void onSwipeNext() {
+//                super.onSwipeNext();
+                Log.w("onSwipeNext","onSwipeNext");
+                if (vRightAction.getText().toString().equals(blank))
+                    return;
+                if (topTab < TAB_MODE_HYMN)
+                    makeBibleRight();
+                else if (topTab == TAB_MODE_HYMN)
+                    makeHymnRight();
+            }
+        };
+        mBody.setOnTouchListener(onSwipeTouchListener);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        windowYUpper = size.y * 3f / 4f;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev){
+        onSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
+        return super.dispatchTouchEvent(ev);
+    }
     private void initializeVariables() {
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
@@ -135,7 +213,6 @@ public class MainActivity extends Activity {
         }
         xPixels = dm.widthPixels;
         yPixels = dm.heightPixels;
-//        highLiteMenuColor = getResources().getColor(R.color.MenuHighLight, this.getTheme());
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x123456;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
 
 import java.io.File;
@@ -13,6 +14,9 @@ public class Vars {
 
     static Activity mActivity = null;
     static Context mContext = null;
+    static ConstraintLayout constraintBody;
+    static OnSwipeTouchListener onSwipeTouchListener;
+    static float windowYUpper;
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0;
     static int xPixels, yPixels;

@@ -135,23 +135,23 @@ public class Utils {
         Log.e("<" + tag + ">" , where + " " + text);
     }
 
-    public void customToast  (String text, int length) {
-
-        Toast toast = Toast.makeText(mContext, text, length);
-        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-        View toastView = toast.getView(); // This'll return the default View of the Toast.
-
-        /* And now you can get the TextView of the default View of the Toast. */
-        TextView toastMessage = toastView.findViewById(android.R.id.message);
-        toastMessage.setTextSize(12);
-        toastMessage.setTextColor(Color.BLACK);
-        toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
-        toastMessage.setGravity(Gravity.CENTER_VERTICAL);
-        toastMessage.setCompoundDrawablePadding(8);
-        toastMessage.setPadding(4,4,24,4);
-        toastView.setBackgroundColor(Color.YELLOW);
-        toast.show();
-    }
+//    public void customToast  (String text, int length) {
+//
+//        Toast toast = Toast.makeText(mContext, text, length);
+//        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
+//        View toastView = toast.getView(); // This'll return the default View of the Toast.
+//
+//        /* And now you can get the TextView of the default View of the Toast. */
+//        TextView toastMessage = toastView.findViewById(android.R.id.message);
+//        toastMessage.setTextSize(12);
+//        toastMessage.setTextColor(Color.BLACK);
+//        toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
+//        toastMessage.setGravity(Gravity.CENTER_VERTICAL);
+//        toastMessage.setCompoundDrawablePadding(8);
+//        toastMessage.setPadding(4,4,24,4);
+//        toastView.setBackgroundColor(Color.YELLOW);
+//        toast.show();
+//    }
 
     public void showBibleList() {
 

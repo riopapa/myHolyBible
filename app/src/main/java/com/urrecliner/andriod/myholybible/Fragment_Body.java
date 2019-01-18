@@ -20,6 +20,7 @@ public class Fragment_Body extends Fragment {
         ViewGroup.LayoutParams contentViewLayout = new ViewGroup.LayoutParams( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT );
         contentView.setLayoutParams( contentViewLayout );
 //        return inflater.inflate(R.layout.fragment_body, container, false);
+        Vars.constraintBody = contentView;
         return contentView;
     }
 }
