@@ -16,7 +16,7 @@
         <item name="android:paddingTop">8sp</item>
         <item name="android:background">#808080</item>
     </style>
-    <style name="SettingStyle" parent="@android:style/TextAppearance.Medium">
+    <style name="exitButton" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:paddingLeft">0sp</item>

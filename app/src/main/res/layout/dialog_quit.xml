@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/MistyRose"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:id="@+id/myFace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
         android:contentDescription="@string/riopapa_face"
         android:src="@mipmap/icon_riopapa_face"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,17 +30,17 @@
         android:text="@string/wanna_to_quit"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/myFace"
-        />
+        app:layout_constraintLeft_toRightOf="@id/myFace" />
 
     <TextView
-        android:id="@+id/sure2Quit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12sp"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:background="@drawable/exit_button"
         android:textColor="@android:color/background_dark"
+        android:padding="8sp"
         android:text="@string/sure_to_quit"
         android:onClick="finish_bye"
         app:layout_constraintTop_toBottomOf="@id/wannaQuit"

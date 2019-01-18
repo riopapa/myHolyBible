@@ -99,7 +99,7 @@ public class MainActivity extends Activity {
 
         makeTopBottomMenu();
         makeBibleList();
-        assignButtonListeners();
+        assignAllButtonListeners();
         vSetting.post(new Runnable() {
             @Override
             public void run() {
@@ -252,7 +252,7 @@ public class MainActivity extends Activity {
         vCevBible.setBackgroundColor(normalMenuColor);
     }
 
-    public void assignButtonListeners() {
+    public void assignAllButtonListeners() {
         vSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -514,33 +514,32 @@ public class MainActivity extends Activity {
         }
         else{
             mMainDialog = new MainDialog();
-            mMainDialog.show(getFragmentManager(), "MYTAG");
+            mMainDialog.show(getFragmentManager(), null);
 
 //            quitApp();
         }
     }
-    private void quitApp()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.mipmap.icon_riopapa_face);
-        builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
-        builder.setPositiveButton("그래요, 다음에 또 봅시다",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                });
-        builder.setNegativeButton("앗, 잘못 눌렀군요",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-                    }
-                });
-        builder.show();
-    }
-
+//    private void quitApp()
+//    {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setIcon(R.mipmap.icon_riopapa_face);
+//        builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
+//        builder.setPositiveButton("그래요, 다음에 또 봅시다",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                        System.exit(0);
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                    }
+//                });
+//        builder.setNegativeButton("앗, 잘못 눌렀군요",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//        builder.show();
+//    }
 
     public static class MainDialog extends DialogFragment {
 

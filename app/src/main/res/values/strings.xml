@@ -3,7 +3,6 @@
     <string name="oldBible">구약</string>
     <string name="newBible">신약</string>
     <string name="hymn">찬송가</string>
-    <string name="dnArrow">  ▼  </string>
     <string name="goBack">←</string>
     <string name="nowBible">데살로니가전서2장</string>
     <string name="nextBible">왕하12</string>
@@ -11,4 +10,7 @@
     <string name="prevBible">열왕33</string>
     <string name="agpBible">AGP</string>
     <string name="setting">setting</string>
+    <string name="riopapa_face">riopapa face</string>
+    <string name="wanna_to_quit"> 마이 바이블을 종료할까요? </string>
+    <string name="sure_to_quit">그래요, 다음에 봅시다</string>
 </resources>
