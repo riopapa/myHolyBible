@@ -4,6 +4,8 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -14,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -502,6 +505,7 @@ public class MainActivity extends Activity {
     @Override
     public void onBackPressed() {
 
+        MainDialog mMainDialog;
 //        Log.w("timegap", " " + (System.currentTimeMillis()-backKeyPressedTime));
 //        Log.w("back", " topTab " + topTab + " bible " + nowBible+" chap "+ nowChapter+" hymn "+ nowHymn);
         if(System.currentTimeMillis()>backKeyPressedTime+500){
@@ -509,13 +513,16 @@ public class MainActivity extends Activity {
             goBack2Prev();
         }
         else{
-            quitApp();
+            mMainDialog = new MainDialog();
+            mMainDialog.show(getFragmentManager(), "MYTAG");
+
+//            quitApp();
         }
     }
     private void quitApp()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.mipmap.icon_myface);
+        builder.setIcon(R.mipmap.icon_riopapa_face);
         builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
         builder.setPositiveButton("그래요, 다음에 또 봅시다",
                 new DialogInterface.OnClickListener() {
@@ -533,6 +540,35 @@ public class MainActivity extends Activity {
                 });
         builder.show();
     }
+
+
+    public static class MainDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(
+                    getActivity());
+            LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
+            mBuilder.setView(mLayoutInflater
+                    .inflate(R.layout.dialog_quit, null));
+//            mBuilder.setTitle("Dialog Titleeeeee");
+//            mBuilder.setMessage("Dialog Messageeeeeee");
+            return mBuilder.create();
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+        }
+
+    }
+
+    public void finish_bye(View v) {
+        finish();
+        System.exit(0);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
 }
 
 //
