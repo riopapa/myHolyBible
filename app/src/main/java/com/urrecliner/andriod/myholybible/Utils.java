@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -35,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
-import static com.urrecliner.andriod.myholybible.Vars.TABMODE_DIC;
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
@@ -65,6 +66,8 @@ import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
+import static com.urrecliner.andriod.myholybible.Vars.stackMax;
+import static com.urrecliner.andriod.myholybible.Vars.stackP;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleNumber;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -210,7 +213,7 @@ public class Utils {
         tVb.setText(new3Line);
         tVb.setTextSize(textSizeBibleTitle);
         tVb.setWidth(xPixels);
-        tVb.setTextColor(Color.parseColor("#000000"));
+        tVb.setTextColor(0);
         tVb.setGravity(Gravity.CENTER);
         linearlayout.addView(tVb);
 
@@ -234,7 +237,7 @@ public class Utils {
         tV.setText(fullBibleNames[nowBible]);
         tV.setTextSize(textSizeBibleTitle);
         tV.setWidth(xPixels);
-        tV.setTextColor(Color.parseColor("#000000"));
+        tV.setTextColor(0);
         tV.setGravity(Gravity.CENTER);
         linearlayout.addView(tV);
         for(int i = 0; i<31;i++) {
@@ -275,7 +278,7 @@ public class Utils {
         tV.setText(new2Line);
         tV.setTextSize(28);
         tV.setWidth(10);
-        tV.setTextColor(Color.parseColor("#000000"));
+        tV.setTextColor(0);
         linearlayout.addView(tV);
 
         return scrollView;
@@ -340,7 +343,7 @@ public class Utils {
         tV.setTextSize(textSizeBibleText);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
-        tV.setTextColor(Color.parseColor("#000000"));
+        tV.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
         lp.setMargins(20,16,20,16);
         linearlayout.setLayoutParams(lp);
@@ -577,7 +580,7 @@ public class Utils {
 
         tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
-        tV0.setTextColor(Color.parseColor("#000000"));
+        tV0.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
@@ -588,7 +591,7 @@ public class Utils {
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
         tVTitle.setTextSize(textSizeHymnKeypad);
-        tVTitle.setTextColor(Color.parseColor("#0b1849"));
+        tVTitle.setTextColor(ContextCompat.getColor(mContext,R.color.Charcoal));
         tVTitle.setGravity(Gravity.CENTER);
         tVTitle.setWidth(2000);
         linearlayout.addView(tVTitle);
@@ -663,7 +666,7 @@ public class Utils {
         TextView tVSort = new TextView(mContext);
         tVSort.setText(newLine);
         tVSort.setTextSize(textSizeHymnKeypad);
-        tVSort.setTextColor(Color.parseColor("#0b1849"));
+        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
         tVSort.setGravity(Gravity.CENTER);
         tVSort.setWidth(2000);
         linearlayout.addView(tVSort);
@@ -732,7 +735,7 @@ public class Utils {
             tVBody.setTextSize(textSizeHymnText);
             tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
             tVBody.setWidth(xPixels);
-            tVBody.setTextColor(Color.parseColor("#000000"));
+            tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
             linearlayout.addView(tVBody);
 
             bodyText = new StringBuilder();
@@ -879,7 +882,7 @@ public class Utils {
             Toast.makeText(mContext,errText,Toast.LENGTH_LONG).show();
             log(logFile, errText);
         }
-        topTab = TABMODE_DIC;
+        topTab = TAB_MODE_DIC;
 
         pushHistory();
         mBody.removeAllViewsInLayout();
@@ -938,7 +941,7 @@ public class Utils {
         tVBody.setTextSize(20); // fixed
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(Color.parseColor("#000000"));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
         linearlayout.addView(tVBody);
 
         iRefer = 0;
@@ -984,7 +987,7 @@ public class Utils {
 
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
-        mainActivity.clearBottomMenu();
+        mainActivity.clearMenuMenu();
     }
 
     private void appendSetting(String text, int what2do) {
@@ -1071,7 +1074,6 @@ public class Utils {
     private int verseStack [] = new int[STACK_SIZE];
     private int hymnStack[] = new int[STACK_SIZE];
     private String keyStack[] = new String[STACK_SIZE];
-    private int stackP = 0;
     void pushHistory() {
         if (stackP > 18) {
             for (int i = 0; i < 15; i++) {
@@ -1083,6 +1085,7 @@ public class Utils {
                 keyStack[i] = keyStack[i+4];
             }
             stackP -= 4;
+            stackMax -= 4;
         }
         topTabStack[stackP] = topTab;
         bibleStack[stackP] = nowBible;
@@ -1091,18 +1094,27 @@ public class Utils {
         hymnStack[stackP] = nowHymn;
         keyStack[stackP] = dictWord;
         stackP++;
+        if (stackP > stackMax)
+            stackMax++;
     }
     void popHistory() {
-        if (stackP > 0)
+        if (stackP > 0) {
             stackP--;
+        }
         topTab = topTabStack[stackP];
         nowBible = bibleStack[stackP];
         nowChapter = chapterStack[stackP];
         nowVerse = verseStack[stackP];
         nowHymn = hymnStack[stackP];
         dictWord = keyStack[stackP];
-//        for (int i = 0; i < stackP; i++) {
-//            Log.w("pop "+i, topTabStack[i]+" b "+bibleStack[i]+" c "+chapterStack[i]+" v "+verseStack[i]+" h "+hymnStack[i]);
-//        }
+    }
+    void showHistory() {
+        stackP++;
+        topTab = topTabStack[stackP];
+        nowBible = bibleStack[stackP];
+        nowChapter = chapterStack[stackP];
+        nowVerse = verseStack[stackP];
+        nowHymn = hymnStack[stackP];
+        dictWord = keyStack[stackP];
     }
 }

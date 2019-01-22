@@ -57,11 +57,13 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
                 float diffX = e1X - e2X;
 //                Log.w("x ", e1X+" > "+e2X+" d= "+diffX+" y=" + e1Y);
                 if (diffX > SWIPE_THRESHOLD && e1Y < windowYUpper)
+                    onSwipeGoFore();
+                else if (diffX < -SWIPE_THRESHOLD && e1Y < windowYUpper)
                     onSwipeGoBack();
                 else if (diffX > SWIPE_THRESHOLD && e1Y > windowYUpper)
-                    onSwipePrev();
-                else if (diffX < -SWIPE_THRESHOLD && e1Y > windowYUpper)
                     onSwipeNext();
+                else if (diffX < -SWIPE_THRESHOLD && e1Y > windowYUpper)
+                    onSwipePrev();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
@@ -70,6 +72,8 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     }
 
     public void onSwipeGoBack() { }
+
+    public void onSwipeGoFore() { }
 
     public void onSwipePrev() { }
 

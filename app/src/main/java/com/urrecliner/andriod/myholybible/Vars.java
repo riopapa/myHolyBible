@@ -3,7 +3,6 @@ package com.urrecliner.andriod.myholybible;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
 
@@ -27,23 +26,18 @@ public class Vars {
     static int TAB_MODE_OLD = 1;
     static int TAB_MODE_NEW = 2;
     static int TAB_MODE_HYMN = 4;
-    static int TABMODE_DIC = 8;
+    static int TAB_MODE_DIC = 8;
 
+    static int stackP = 0;
+    static int stackMax = 0;
     static int topTab = TAB_MODE_NEW;    // if topTab < TAB_MODE_HYMN then it means OLD or NEW
     static String logFile = "log.txt";
 
     static boolean agpShow = false;
     static boolean cevShow = false;
 
-    static int bibleColorF = Color.parseColor("#000000");
-    static int verseColorF = Color.parseColor("#00009C");
-    static int paraColorF = Color.parseColor("#0000CD");
-    static int referColorF = Color.parseColor("#60318e");
-    static int cevColorF = Color.parseColor("#2c538c");
-    static int cevColorB = Color.parseColor("#eff0f7");
-    static int agpColorF = Color.parseColor("#466d10");
-    static int agpColorB = Color.parseColor("#edf7e3");
-//    static int hymnColorF = Color.parseColor("#00009C");
+    static int bibleColorF, verseColorF, paraColorF, referColorF;
+    static int cevColorF, cevColorB, agpColorF, agpColorB;
 
     static ViewGroup mBody; // assigned to Fragment_Body
     static String dictWord;
