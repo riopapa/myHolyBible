@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import java.io.File;
 
@@ -15,7 +16,7 @@ public class Vars {
     static Context mContext = null;
     static ConstraintLayout constraintBody;
     static OnSwipeTouchListener onSwipeTouchListener;
-    static float windowYUpper;
+    static float windowYUpper, windowXCenter;
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0;
     static int xPixels, yPixels;
@@ -36,10 +37,11 @@ public class Vars {
     static boolean agpShow = false;
     static boolean cevShow = false;
 
-    static int bibleColorF, verseColorF, paraColorF, referColorF;
+    static int bibleColorF, verseColorF, paraColorF, referColorF, numberColorF;
     static int cevColorF, cevColorB, agpColorF, agpColorB;
 
     static ViewGroup mBody; // assigned to Fragment_Body
+    static ScrollView scrollView;
     static String dictWord;
 
     static int textSizeBibleNumber = 20;
@@ -56,6 +58,7 @@ public class Vars {
     static int textSizeBibleText = 20;
     static boolean hymnImageShow = true;
     static boolean hymnTextShow = true;
+    static boolean alwaysOn = true;
 
     static int nbrofChapters [] = {0,50,40,27,36,34,24,21,4,31,24,22,25,29,36,10,13,10,42,150,31,12,8,66,52,5,48,12,14,3,9,1,4,7,3,3,3,2,14,4,28,16,24,21,28,16,16,13,6,6,4,4,5,3,6,4,3,1,13,5,5,3,5,1,1,1,22, 0 };
 

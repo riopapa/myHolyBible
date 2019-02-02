@@ -18,7 +18,6 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,6 +37,7 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorF;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
+import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
@@ -59,6 +59,7 @@ import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.numberColorF;
 import static com.urrecliner.andriod.myholybible.Vars.oldName;
 import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
@@ -73,6 +74,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
+import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
 import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
 import static com.urrecliner.andriod.myholybible.Vars.xPixels;
 import static com.urrecliner.andriod.myholybible.Vars.yPixels;
@@ -80,7 +82,7 @@ import static com.urrecliner.andriod.myholybible.Vars.yPixels;
 public class MainActivity extends Activity {
 
     ImageView vSetting;
-    TextView vOldBible, vNewBible, vHymn, vGoBack;
+    TextView vOldBible, vNewBible, vHymn;
     TextView vAgpBible, vLeftAction, vCurrBible, vRightAction, vCevBible;
     long backKeyPressedTime;
     private Utils utils;
@@ -99,12 +101,22 @@ public class MainActivity extends Activity {
         editor = mSettings.edit();
         textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
         textSizeBibleText = mSettings.getInt("textSizeBibleText", 20);
-        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 30);
+        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
         textSizeHymnText = mSettings.getInt("textSizeHymnText", 20);
         hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
         hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
+        alwaysOn = mSettings.getBoolean("alwaysOn",true);
 
         setContentView(R.layout.activity_main);
+//        View someView = findViewById(R.id.fragment_body);
+//        View root = someView.getRootView();
+//        int color = ContextCompat.getColor(mContext,R.color.SlateBlue) | 0x01000000;
+//        root.setBackgroundColor(color);
+
+        if (alwaysOn)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         initializeVariables();
 
@@ -131,20 +143,16 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSwipeGoBack() {
-                Log.w("stack goback ","P="+stackP+" X="+stackMax);
                 goBack2Back();
             }
 
             @Override
             public void onSwipeGoFore() {
-                Log.w("stack gofore","P="+stackP+" X="+stackMax);
                 goBack2Fore();
             }
 
             @Override
             public void onSwipePrev() {
-//                super.onSwipePrev();
-                Log.w("onSwipePrev","onSwipePrev");
                 if (vLeftAction.getText().toString().equals(blank))
                     return;
                 if (topTab < TAB_MODE_HYMN)
@@ -155,8 +163,6 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSwipeNext() {
-//                super.onSwipeNext();
-                Log.w("onSwipeNext","onSwipeNext");
                 if (vRightAction.getText().toString().equals(blank))
                     return;
                 if (topTab < TAB_MODE_HYMN)
@@ -169,7 +175,8 @@ public class MainActivity extends Activity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        windowYUpper = size.y * 7f / 10f;
+        windowYUpper = size.y * 6f / 10f;
+        windowXCenter = size.x / 2f;
     }
 
     @Override
@@ -206,8 +213,9 @@ public class MainActivity extends Activity {
 
         bibleColorF = ContextCompat.getColor(mContext,R.color.Black);
         verseColorF = ContextCompat.getColor(mContext,R.color.EarthBlue);
-        paraColorF = ContextCompat.getColor(mContext,R.color.Midnight);
+        paraColorF = ContextCompat.getColor(mContext,R.color.Indigo);
         referColorF = ContextCompat.getColor(mContext,R.color.RoyalBlue);
+        numberColorF = ContextCompat.getColor(mContext,R.color.MidnightBlue);
 
         cevColorF = ContextCompat.getColor(mContext,R.color.Navy);
         cevColorB = ContextCompat.getColor(mContext,R.color.PowderBlue);
@@ -216,61 +224,31 @@ public class MainActivity extends Activity {
     }
 
     public void makeTopBottomMenu() {
-        makeTopMenu();
-        makeBottomMenu();
-    }
 
-    public void makeTopMenu() {
-        if (topTab == TAB_MODE_OLD)
-            vOldBible.setBackgroundColor(highLiteMenuColor);
-        else
-            vOldBible.setBackgroundColor(normalMenuColor);
-        if (topTab == TAB_MODE_NEW)
-            vNewBible.setBackgroundColor(highLiteMenuColor);
-        else
-            vNewBible.setBackgroundColor(normalMenuColor);
-        if (topTab == TAB_MODE_HYMN)
-            vHymn.setBackgroundColor(highLiteMenuColor);
-        else
-            vHymn.setBackgroundColor(normalMenuColor);
+        vOldBible.setBackgroundColor((topTab == TAB_MODE_OLD)? highLiteMenuColor:normalMenuColor);
+        vNewBible.setBackgroundColor((topTab == TAB_MODE_NEW)? highLiteMenuColor:normalMenuColor);
+        vHymn.setBackgroundColor((topTab == TAB_MODE_HYMN)? highLiteMenuColor:normalMenuColor);
         vAgpBible.setText(blank);
         vCevBible.setText(blank);
         vAgpBible.setBackgroundColor(normalMenuColor);
         vCevBible.setBackgroundColor(normalMenuColor);
-    }
-
-    public void makeBottomMenu() {
 
         if (topTab < 4)
-            makeBibleBottomMenu();
+            makeBibleMenu();
         else if (topTab == TAB_MODE_HYMN)
-            goHymnBottomMenu();
+            makeHymnMenu();
         else
-            clearMenuMenu();
+            clearMenu();
     }
 
-    public void makeBibleBottomMenu() {
-        if (nowBible == 0)
-            makeBibleMenuClear();
+    public void makeBibleMenu() {
+        if (nowBible == 0) {
+            vLeftAction.setText((blank));
+            vRightAction.setText((blank));
+            vCurrBible.setText((topTab == TAB_MODE_OLD) ? oldName : newName);
+        }
         else
             makeBibleMenuNormal();
-    }
-
-    public void makeBibleMenuClear() {
-        vAgpBible.setText(blank);
-        vLeftAction.setText((blank));
-        String text;
-        if (topTab == TAB_MODE_OLD)
-            text = oldName;
-        else if (topTab == TAB_MODE_NEW)
-            text = newName;
-        else if (topTab == TAB_MODE_HYMN)
-            text = hymnName;
-        else
-            text = blank;
-        vCurrBible.setText(text);
-        vRightAction.setText((blank));
-        vCevBible.setText(blank);
     }
 
     public void makeBibleMenuNormal() {
@@ -284,10 +262,7 @@ public class MainActivity extends Activity {
         }
         else {
             vAgpBible.setText("AGP");
-            if (agpShow)
-                vAgpBible.setBackgroundColor(highLiteMenuColor);
-            else
-                vAgpBible.setBackgroundColor(normalMenuColor);
+            vAgpBible.setBackgroundColor((agpShow)? highLiteMenuColor:normalMenuColor);
             int chapter = nowChapter - 1;
             if (chapter > 0)
                 txt = shortBibleNames[nowBible] + chapter;
@@ -306,21 +281,15 @@ public class MainActivity extends Activity {
                 txt = shortBibleNames[nowBible] + chapter;
             else {
                 int next = nowBible + 1;
-                if (next > 66)
-                    txt = blank;
-                else
-                    txt = shortBibleNames[next] + "1";
+                txt = (next > 66) ? blank:shortBibleNames[next] + "1";
             }
             vRightAction.setText(txt);
             vCevBible.setText("CEV");
-            if (cevShow)
-                vCevBible.setBackgroundColor(highLiteMenuColor);
-            else
-                vCevBible.setBackgroundColor(normalMenuColor);
+            vCevBible.setBackgroundColor((cevShow)? highLiteMenuColor:normalMenuColor);
         }
     }
 
-    public void clearMenuMenu() {
+    public void clearMenu() {
         vLeftAction.setText(blank);
         vCurrBible.setText(blank);
         vRightAction.setText(blank);
@@ -358,15 +327,16 @@ public class MainActivity extends Activity {
         vOldBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveScrollY();
                 topTab = TAB_MODE_OLD;
                 nowBible = 0;
-                makeBibleBottomMenu();
                 makeBibleList();
             }
         });
         vNewBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveScrollY();
                 topTab = TAB_MODE_NEW;
                 nowBible = 0;
                 makeBibleList();
@@ -375,6 +345,7 @@ public class MainActivity extends Activity {
         vHymn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveScrollY();
                 topTab = TAB_MODE_HYMN;
                 nowBible = 0;
                 nowHymn = 0;
@@ -384,6 +355,7 @@ public class MainActivity extends Activity {
         vAgpBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveScrollY();
                 if (vAgpBible.getText().toString().equals(blank))
                     return;
                 agpShow ^= true;
@@ -394,6 +366,7 @@ public class MainActivity extends Activity {
         vCevBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveScrollY();
                 if (vCevBible.getText().toString().equals(blank))
                     return;
                 cevShow ^= true;
@@ -446,31 +419,17 @@ public class MainActivity extends Activity {
         utils.generateHymnBody();
     }
 
-    public void goHymnBottomMenu() {
-        String txt = "";
-        vAgpBible.setText(txt);
-        vCevBible.setText(txt);
-        ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
-        int normal = cd.getColor();
-        vAgpBible.setBackgroundColor(normal);
-        vCevBible.setBackgroundColor(normal);
+    public void makeHymnMenu() {
+        String txt = blank;
         if (nowHymn == 0) {
             vLeftAction.setText(txt);
             vRightAction.setText(txt);
             vCurrBible.setText(hymnName);
         }
         else {
-            if (nowHymn > 1)
-                txt = "" + (nowHymn - 1);
-            else
-                txt = blank;
-            vLeftAction.setText(txt);
+            vLeftAction.setText((nowHymn > 1) ? "" + (nowHymn - 1):blank);
             vCurrBible.setText(hymnTitles[nowHymn]);
-            if (nowHymn < 645)
-                txt = "" + (nowHymn + 1);
-            else
-                txt = blank;
-            vRightAction.setText(txt);
+            vRightAction.setText((nowHymn < 645) ? "" + (nowHymn + 1):blank);
         }
     }
 
@@ -480,8 +439,9 @@ public class MainActivity extends Activity {
     }
 
     private void goBack2Back() {
-        if (stackP == 1)
-            Toast.makeText(mContext,"맨 처음 입니다",Toast.LENGTH_SHORT).show();
+        if (stackP == 1) {
+            Toast.makeText(mContext,"맨 처음 입니다." , Toast.LENGTH_LONG).show();
+        }
         else {
             utils.popHistory();
             utils.popHistory();
@@ -497,23 +457,27 @@ public class MainActivity extends Activity {
     }
 
     private void goBack2Fore() {
-        if (stackP == stackMax) {
-            Toast.makeText(mContext, "더이상 없습니다", Toast.LENGTH_SHORT).show();
+        if (stackP == stackMax || !utils.shiftHistory()) {
+            Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
             return;
         }
-        utils.showHistory();
         if (topTab < TAB_MODE_HYMN && nowBible > 0) {
             utils.generateBibleBody();
         } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
             utils.generateHymnBody();
-        }
-        else if (topTab == TAB_MODE_DIC) {
+        } else if (topTab == TAB_MODE_DIC) {
             utils.generateKeyWord();
-        }
-        else
+        } else
             makeTopBottomMenu();
     }
 
+    void saveScrollY() {
+//        nowVerse = - scrollView.getScrollY();
+//        Log.w("saving ","Y "+nowVerse);
+//        if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD) {
+//            utils.setHistoryVerse();
+//        }
+    }
 // ↓ ↓ ↓ P E R M I S S I O N    RELATED /////// ↓ ↓ ↓ ↓
     ArrayList<String> permissions = new ArrayList<>();
     private final static int ALL_PERMISSIONS_RESULT = 101;
@@ -607,29 +571,7 @@ public class MainActivity extends Activity {
 //            quitApp();
         }
     }
-//    private void quitApp()
-//    {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setIcon(R.mipmap.icon_riopapa_face);
-//        builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
-//        builder.setPositiveButton("그래요, 다음에 또 봅시다",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                        System.exit(0);
-//                        android.os.Process.killProcess(android.os.Process.myPid());
-//                    }
-//                });
-//        builder.setNegativeButton("앗, 잘못 눌렀군요",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//        builder.show();
-//    }
-
-    public static class MainDialog extends DialogFragment {
+   public static class MainDialog extends DialogFragment {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -675,4 +617,26 @@ public class MainActivity extends Activity {
 //        spannableString.setSpan(new UnderlineSpan(), 104, 116, 0);
 //        spannableString.setSpan(new RelativeSizeSpan(1.5f), 116, 139, 0);
 //        spannableString.setSpan(new StrikethroughSpan(), 153, 170, 0);
+
+//    private void quitApp()
+//    {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setIcon(R.mipmap.icon_riopapa_face);
+//        builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
+//        builder.setPositiveButton("그래요, 다음에 또 봅시다",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                        System.exit(0);
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                    }
+//                });
+//        builder.setNegativeButton("앗, 잘못 눌렀군요",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+//                    }
+//                });
+//        builder.show();
+//    }
 

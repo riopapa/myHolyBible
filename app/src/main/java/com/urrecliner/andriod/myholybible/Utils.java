@@ -19,6 +19,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -42,6 +43,7 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorF;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
+import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
@@ -61,9 +63,11 @@ import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.numberColorF;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
+import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.stackMax;
@@ -158,7 +162,7 @@ public class Utils {
 
     public void showBibleList() {
 
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         int loop = (topTab == TAB_MODE_OLD) ?  39: 27;
         int start = (topTab == TAB_MODE_OLD) ? 1 : 40;
         int count = 1;
@@ -226,7 +230,7 @@ public class Utils {
         int verseMax = nbrofChapters[nowBible];
         int verse = 1;
         TextView tVNbr;
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         final int nbrColumn = 5;
         int buttonWidth = xPixels / nbrColumn;
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -249,7 +253,8 @@ public class Utils {
                 tVNbr = new TextView(mContext);
                 String text = ""+verse;
                 tVNbr.setText(text);
-                tVNbr.setTextColor(paraColorF);
+                tVNbr.setTextColor(numberColorF);
+                tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 tVNbr.setWidth(buttonWidth);
                 tVNbr.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -362,6 +367,7 @@ public class Utils {
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
+        Vars.scrollView = scrollView;
         scrollView.post(new Runnable() {
             @Override
             public void run() {
@@ -383,6 +389,7 @@ public class Utils {
         for (int i = 0; i < iPara; i++) {
             ss.setSpan(new ForegroundColorSpan(paraColorF), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new UnderlineSpan(), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new StyleSpan(BOLD), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iRefer; i++) {
             ss.setSpan(new referSpan(refers[i], referV[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -552,7 +559,7 @@ public class Utils {
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
             ds.setColor(referColorF);
-            ds.setTextSize(textSizeBibleRefer);
+            ds.setTextSize(textSizeBibleRefer+textSizeBibleRefer);  // double size
             ds.setUnderlineText(false);    // this remove the underline
         }
 
@@ -568,7 +575,7 @@ public class Utils {
     private String hymnTitle = "";
     public void generateHymnKeypad() {
 
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         int ids[] = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
         Button b;
 
@@ -705,7 +712,7 @@ public class Utils {
 
     public void generateHymnBody() {
 
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = readBibleFile(txt);
         if (hymnTexts == null) {
@@ -756,7 +763,7 @@ public class Utils {
 
     public void generateSortedHymnList(int start) {
 
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
 
         TextView titleTV; TextView numberTV;
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -822,7 +829,7 @@ public class Utils {
         popHistory();
         nowVerse = verse;
         pushHistory();
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         String [] dicTexts = readBibleFile(txt);
         if (dicTexts != null) {
             LinearLayout linearlayout = new LinearLayout(mContext);
@@ -925,13 +932,14 @@ public class Utils {
     final private int TEXT_SIZE_HYMN_INCREASE = 1032;
     final private int HYMN_IMAGE_ON_OFF = 2005;
     final private int HYMN_TEXT_ON_OFF = 2006;
+    final private int ALWAYS_ON_OFF = 3007;
 
     public void generateSettingBody() {
 
         final String yesShow = " 예 ";
         final String noShow = " 아니오 ";
         String text;
-        ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -962,13 +970,10 @@ public class Utils {
         text = "  " + textSizeBibleRefer + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_REFER_INCREASE);
 
-        text = new2Line + "찬송악보 보이기  "; bodyText.append(text); ptrBody += text.length();
-        if (hymnImageShow)
-            appendSetting(noShow, HYMN_IMAGE_ON_OFF);
-        else
-            appendSetting(yesShow, HYMN_IMAGE_ON_OFF);
+        text = new2Line + "찬송악보를 보렵니까?  "; bodyText.append(text); ptrBody += text.length();
+        appendSetting((hymnImageShow)? noShow:yesShow, HYMN_IMAGE_ON_OFF);
 
-        text = new2Line + "찬송가사 보이기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + "찬송가사를 보렵니까?  "; bodyText.append(text); ptrBody += text.length();
         if (hymnTextShow) {
             appendSetting(noShow, HYMN_TEXT_ON_OFF);
             text = new2Line + "찬송가사 크기   "; bodyText.append(text); ptrBody += text.length();
@@ -978,6 +983,8 @@ public class Utils {
         }
         else
             appendSetting(yesShow, HYMN_TEXT_ON_OFF);
+        text = new2Line + "화면을 계속 켜 둘까요?  "; bodyText.append(text); ptrBody += text.length();
+        appendSetting((alwaysOn)? noShow:yesShow, ALWAYS_ON_OFF);
 
         bodyText.append(new3Line);
         SpannableString ss = settleSettingSpan();
@@ -987,7 +994,7 @@ public class Utils {
 
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
-        mainActivity.clearMenuMenu();
+        mainActivity.clearMenu();
     }
 
     private void appendSetting(String text, int what2do) {
@@ -1060,7 +1067,15 @@ public class Utils {
                     break;
                 case HYMN_TEXT_ON_OFF:
                     hymnTextShow ^= true;
-                    editor.putBoolean("hymnImageShow", hymnImageShow).apply();
+                    editor.putBoolean("hymnTextShow", hymnTextShow).apply();
+                    break;
+                case ALWAYS_ON_OFF:
+                    alwaysOn ^= true;
+                    editor.putBoolean("alwaysOn", alwaysOn).apply();
+                    if (alwaysOn)
+                        mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    else
+                        mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     break;
             }
             generateSettingBody();
@@ -1108,13 +1123,20 @@ public class Utils {
         nowHymn = hymnStack[stackP];
         dictWord = keyStack[stackP];
     }
-    void showHistory() {
-        stackP++;
-        topTab = topTabStack[stackP];
-        nowBible = bibleStack[stackP];
-        nowChapter = chapterStack[stackP];
-        nowVerse = verseStack[stackP];
-        nowHymn = hymnStack[stackP];
-        dictWord = keyStack[stackP];
+    boolean shiftHistory() {
+        if (topTabStack[stackP+1] > 0) {
+            stackP++;
+            topTab = topTabStack[stackP];
+            nowBible = bibleStack[stackP];
+            nowChapter = chapterStack[stackP];
+            nowVerse = verseStack[stackP];
+            nowHymn = hymnStack[stackP];
+            dictWord = keyStack[stackP];
+            return true;
+        }
+        return false;
+    }
+    void setHistoryVerse() {
+        verseStack[stackP] = nowVerse;
     }
 }

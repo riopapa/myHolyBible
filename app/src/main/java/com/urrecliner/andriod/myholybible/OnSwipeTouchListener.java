@@ -23,8 +23,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
-        private static final int SWIPE_VELOCITY_THRESHOLD = 300;
-        private static final int SWIPE_THRESHOLD = 200;
+        private static final int SWIPE_THRESHOLD = 500;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -39,7 +38,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            onDoubleClick();
+//            onDoubleClick(e);
             return super.onDoubleTap(e);
         }
 
@@ -53,16 +52,16 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
-                float e1X = e1.getX(); float e2X = e2.getX(); float e1Y = e1.getY();
+                float e1X = e1.getX(); float e2X = e2.getX(); float e1Y = e1.getY();float e2Y = e2.getY();
                 float diffX = e1X - e2X;
 //                Log.w("x ", e1X+" > "+e2X+" d= "+diffX+" y=" + e1Y);
-                if (diffX > SWIPE_THRESHOLD && e1Y < windowYUpper)
+                if (diffX > SWIPE_THRESHOLD && e2Y < windowYUpper)
                     onSwipeGoFore();
-                else if (diffX < -SWIPE_THRESHOLD && e1Y < windowYUpper)
+                else if (diffX < -SWIPE_THRESHOLD && e2Y < windowYUpper)
                     onSwipeGoBack();
-                else if (diffX > SWIPE_THRESHOLD && e1Y > windowYUpper)
+                else if (diffX > SWIPE_THRESHOLD && e1Y > windowYUpper && e2Y > windowYUpper)
                     onSwipeNext();
-                else if (diffX < -SWIPE_THRESHOLD && e1Y > windowYUpper)
+                else if (diffX < -SWIPE_THRESHOLD && e1Y > windowYUpper && e2Y > windowYUpper)
                     onSwipePrev();
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -81,7 +80,14 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public void onClick() { }
 
-    public void onDoubleClick() { }
+//    public void onDoubleClick(MotionEvent e) {
+//        float eX = e.getX(); float eY = e.getY();
+////        Log.w("doubleclick",eX+" , "+eY+" XCenter="+windowXCenter+" Yup="+windowYUpper);
+//        if (eY > windowYUpper && eX < windowXCenter)
+//            onSwipePrev();
+//        else if (eY > windowYUpper && eX > windowXCenter)
+//            onSwipeNext();
+//    }
 
     public void onLongClick() { }
 }
