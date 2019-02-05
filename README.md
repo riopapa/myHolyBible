@@ -27,13 +27,13 @@
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="./app/screenshots/chapter_list.jpg" width=240 height=480>
 
-<H3>Script Contents</H3>
+<H3>Scripture Contents</H3>
  
 - By pressing AGP and/or CEV, you can show other scriptures accordingly
 - Paragraph name is displayed in bold and underlined style
 - At the bottom, current Bible name and chapter is displayed
 - Clicking left/right short bible name + chapter nuber will lead that chapter
-- By clicking short bible name + chapter number + verse number at the last of each verse with smaller size, it will jump to relevant bible scripture
+- By clicking \(bible crossing) (short bible name + chapter number + verse number within parentheses), it will jump to relevant bible scripture
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="./app/screenshots/bible_content1.jpg" width=240 height=480>
