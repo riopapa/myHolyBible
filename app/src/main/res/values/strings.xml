@@ -11,6 +11,14 @@
     <string name="agpBible">AGP</string>
     <string name="setting">setting</string>
     <string name="riopapa_face">riopapa face</string>
-    <string name="wanna_to_quit"> 마이 바이블을 종료할까요? </string>
+    <string name="wanna_to_quit">[Ver 2019/01/27]\n종료할까요?</string>
     <string name="sure_to_quit">그래요, 다음에 봅시다</string>
+    <string name="blank" />
+    <string name="bible_name_size">성경종류 크기</string>
+    <string name="scripture_size">성경말씀 크기</string>
+    <string name="bible_crossing_size">성경관주 크기</string>
+    <string name="wanna_show_hymn_sheet">찬송악보를 보렵니까?</string>
+    <string name="wanna_show_hymn_lyric">찬송가사를 보렵니까?</string>
+    <string name="hymn_lyric_size">찬송가사 크기</string>
+    <string name="keep_screen_on">화면을 계속 켜 둘까요?</string>
 </resources>

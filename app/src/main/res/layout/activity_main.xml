@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
-    android:background="@color/BackColor"
+    android:background="@color/BackgroundColor"
     tools:context=".MainActivity">
 
     <fragment
@@ -34,3 +33,4 @@
 
 </android.support.constraint.ConstraintLayout>
 
+    <!--android:keepScreenOn="true"-->

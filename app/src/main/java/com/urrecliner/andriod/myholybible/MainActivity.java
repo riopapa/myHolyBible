@@ -108,10 +108,6 @@ public class MainActivity extends Activity {
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
 
         setContentView(R.layout.activity_main);
-//        View someView = findViewById(R.id.fragment_body);
-//        View root = someView.getRootView();
-//        int color = ContextCompat.getColor(mContext,R.color.SlateBlue) | 0x01000000;
-//        root.setBackgroundColor(color);
 
         if (alwaysOn)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -604,19 +600,11 @@ public class MainActivity extends Activity {
 //        //add Url Span
 //        URLSpan urlSpan = new URLSpan("https://www.google.com") {
 //        spannableString.setSpan(urlSpan, 55, 78, 0);
-//@Override
-//public void onClick(View widget) {
-//        Intent urlIntent = new Intent(Intent.ACTION_VIEW);
-//        urlIntent.setData(Uri.parse(getURL()));
-//        startActivity(urlIntent);
-//        }
-//        };
-//
-//        spannableString.setSpan(new SubscriptSpan(), 79, 89, 0);
-//        spannableString.setSpan(new SuperscriptSpan(), 92, 104, 0);
-//        spannableString.setSpan(new UnderlineSpan(), 104, 116, 0);
-//        spannableString.setSpan(new RelativeSizeSpan(1.5f), 116, 139, 0);
-//        spannableString.setSpan(new StrikethroughSpan(), 153, 170, 0);
+//        SubscriptSpan(), 79, 89, 0);
+//        SuperscriptSpan(), 92, 104, 0);
+//        UnderlineSpan(), 104, 116, 0);
+//        RelativeSizeSpan(1.5f), 116, 139, 0);
+//        StrikethroughSpan(), 153, 170, 0);
 
 //    private void quitApp()
 //    {

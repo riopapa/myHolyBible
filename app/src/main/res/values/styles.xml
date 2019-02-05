@@ -7,14 +7,14 @@
     <style name="MenuStyle" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/RoyalBlue</item>
+        <item name="android:textColor">@color/Lime</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">0sp</item>
         <item name="android:paddingRight">0sp</item>
         <item name="android:paddingBottom">8sp</item>
         <item name="android:paddingTop">8sp</item>
-        <item name="android:background">@color/Gray</item>
+        <item name="android:background">@color/SlateBlue</item>
     </style>
     <style name="exitButton" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_height">wrap_content</item>
@@ -23,7 +23,7 @@
         <item name="android:paddingRight">0sp</item>
         <item name="android:paddingBottom">0sp</item>
         <item name="android:paddingTop">0sp</item>
-        <item name="android:background">@color/Gray</item>
+        <item name="android:background">@color/SlateBlue</item>
     </style>
 
 </resources>

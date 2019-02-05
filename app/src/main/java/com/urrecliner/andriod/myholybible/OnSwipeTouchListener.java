@@ -48,7 +48,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
             super.onLongPress(e);
         }
 
-        // Determines the fling velocity and then fires the appropriate swipe event accordingly
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
@@ -79,15 +78,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeNext() { }
 
     public void onClick() { }
-
-//    public void onDoubleClick(MotionEvent e) {
-//        float eX = e.getX(); float eY = e.getY();
-////        Log.w("doubleclick",eX+" , "+eY+" XCenter="+windowXCenter+" Yup="+windowYUpper);
-//        if (eY > windowYUpper && eX < windowXCenter)
-//            onSwipePrev();
-//        else if (eY > windowYUpper && eX > windowXCenter)
-//            onSwipeNext();
-//    }
 
     public void onLongClick() { }
 }

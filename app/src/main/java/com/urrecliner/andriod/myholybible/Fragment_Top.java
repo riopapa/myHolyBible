@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 public class Fragment_Top extends Fragment {
     public Fragment_Top() {
-        // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

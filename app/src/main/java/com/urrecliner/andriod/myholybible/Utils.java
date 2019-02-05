@@ -142,24 +142,6 @@ public class Utils {
         Log.e("<" + tag + ">" , where + " " + text);
     }
 
-//    public void customToast  (String text, int length) {
-//
-//        Toast toast = Toast.makeText(mContext, text, length);
-//        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER, 0,0);
-//        View toastView = toast.getView(); // This'll return the default View of the Toast.
-//
-//        /* And now you can get the TextView of the default View of the Toast. */
-//        TextView toastMessage = toastView.findViewById(android.R.id.message);
-//        toastMessage.setTextSize(12);
-//        toastMessage.setTextColor(Color.BLACK);
-//        toastMessage.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_launcher, 0, 0, 0);
-//        toastMessage.setGravity(Gravity.CENTER_VERTICAL);
-//        toastMessage.setCompoundDrawablePadding(8);
-//        toastMessage.setPadding(4,4,24,4);
-//        toastView.setBackgroundColor(Color.YELLOW);
-//        toast.show();
-//    }
-
     public void showBibleList() {
 
         scrollView = new ScrollView(mContext);
@@ -173,13 +155,6 @@ public class Utils {
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
-//        TextView tV = new TextView(mContext);
-//        tV.setText(blank);
-//        tV.setTextSize(textSizeBibleTitle);
-//        tV.setWidth(xPixels);
-//        tV.setTextColor(Color.parseColor("#000000"));
-//        tV.setGravity(Gravity.CENTER);
-//        linearlayout.addView(tV);
         for(int i = 0; i<15;i++) {
             LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -420,6 +395,7 @@ public class Utils {
             String cevText = workLine.substring(idx2nd + 2, lenWorkLine);
             workLine = workLine.substring(0, idx);
             lenWorkLine = workLine.length();
+// bible script sample 
 // {천지 창조}[_태초_]에 [_하나님_]이 [_천지_]를 [_창조_]하시니라[_#v43#1:3_][_$58#1:10_]
 // `a태초에 하나님께서 하늘과 땅을 창조하셨습니다.
 // `cIn the beginning God created the heavens and the earth.
@@ -786,14 +762,12 @@ public class Utils {
             titleTV = new TextView(mContext);
             titleTV.setText(hymnTitles[sortedNumbers[start]]);
             titleTV.setTextColor(Color.BLACK);
-//            b.setWidth(800);
             titleTV.setTextSize(textSizeHymnText);
             columnLayout.addView(titleTV);
             numberTV = new TextView(mContext);
             String text = "  " + sortedNumbers[start] + " ";
             numberTV.setText(text);
             numberTV.setId(sortedNumbers[start]);
-//            bnbr.setWidth(120);
             numberTV.setTextColor(paraColorF);
             numberTV.setTextSize(textSizeHymnText);
             numberTV.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -849,8 +823,6 @@ public class Utils {
                             ImageView imV = new ImageView(mContext);
                             linearlayout.addView(imV);
                             imV.setImageBitmap(Bitmap.createScaledBitmap(dictBitmap, 1000, height, false));
-                            //                        imV.setImageBitmap(dictBitmap);
-//                        imV.getLayoutParams().width = xPixels;
                             imV.requestLayout();
                         }
                         break;
@@ -878,9 +850,6 @@ public class Utils {
                 }
             }
             TextView tVBottom = new TextView(mContext);
-//            tVBottom.setTextSize(textSizeBibleText);
-//            tVBottom.setGravity(Gravity.START);
-//            tVBottom.setWidth(xPixels);
             linearlayout.addView(tVBottom);
             tVBottom.setText(new3Line);
         }
@@ -955,35 +924,35 @@ public class Utils {
         iRefer = 0;
         bodyText = new StringBuilder();
         ptrBody = 0;
-        text = new2Line + "성경종류 크기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.bible_name_size); bodyText.append(text); ptrBody += text.length();
         appendSetting("  -   ", TEXT_SIZE_BIBLE66_DECREASE);
         text = "  " + textSizeBible66 + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_BIBLE66_INCREASE);
 
-        text = new2Line + "성경말씀 크기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.scripture_size); bodyText.append(text); ptrBody += text.length();
         appendSetting("  -   ", TEXT_SIZE_BIBLE_DECREASE);
         text = "  " + textSizeBibleText + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_BIBLE_INCREASE);
 
-        text = new2Line + "성경관주 크기  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.bible_crossing_size); bodyText.append(text); ptrBody += text.length();
         appendSetting("  -   ", TEXT_SIZE_REFER_DECREASE);
         text = "  " + textSizeBibleRefer + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_REFER_INCREASE);
 
-        text = new2Line + "찬송악보를 보렵니까?  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.wanna_show_hymn_sheet); bodyText.append(text); ptrBody += text.length();
         appendSetting((hymnImageShow)? noShow:yesShow, HYMN_IMAGE_ON_OFF);
 
-        text = new2Line + "찬송가사를 보렵니까?  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.wanna_show_hymn_lyric); bodyText.append(text); ptrBody += text.length();
         if (hymnTextShow) {
             appendSetting(noShow, HYMN_TEXT_ON_OFF);
-            text = new2Line + "찬송가사 크기   "; bodyText.append(text); ptrBody += text.length();
+            text = new2Line + mainActivity.getString(R.string.hymn_lyric_size); bodyText.append(text); ptrBody += text.length();
             appendSetting("  -   ", TEXT_SIZE_HYMN_DECREASE);
             text = "  " + textSizeHymnText + "  ";  bodyText.append(text); ptrBody += text.length();
             appendSetting("   +   ", TEXT_SIZE_HYMN_INCREASE);
         }
         else
             appendSetting(yesShow, HYMN_TEXT_ON_OFF);
-        text = new2Line + "화면을 계속 켜 둘까요?  "; bodyText.append(text); ptrBody += text.length();
+        text = new2Line + mainActivity.getString(R.string.keep_screen_on); bodyText.append(text); ptrBody += text.length();
         appendSetting((alwaysOn)? noShow:yesShow, ALWAYS_ON_OFF);
 
         bodyText.append(new3Line);
@@ -1082,16 +1051,17 @@ public class Utils {
         }
     }
 
-    private int STACK_SIZE = 20;
+    private int STACK_SIZE = 40;
     private int topTabStack [] = new int[STACK_SIZE];
     private int bibleStack [] = new int[STACK_SIZE];
     private int chapterStack [] = new int[STACK_SIZE];
     private int verseStack [] = new int[STACK_SIZE];
     private int hymnStack[] = new int[STACK_SIZE];
     private String keyStack[] = new String[STACK_SIZE];
+    
     void pushHistory() {
-        if (stackP > 18) {
-            for (int i = 0; i < 15; i++) {
+        if (stackP > 38) {
+            for (int i = 0; i < 35; i++) {
                 topTabStack[i] = topTabStack[i+4];
                 bibleStack[i] = bibleStack[i+4];
                 chapterStack[i] = chapterStack[i+4];
@@ -1135,8 +1105,5 @@ public class Utils {
             return true;
         }
         return false;
-    }
-    void setHistoryVerse() {
-        verseStack[stackP] = nowVerse;
     }
 }
