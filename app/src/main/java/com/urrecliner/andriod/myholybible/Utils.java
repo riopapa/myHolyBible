@@ -36,6 +36,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.photoview.PhotoViewAttacher;
+
 import static android.graphics.Typeface.BOLD;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
@@ -103,7 +105,7 @@ public class Utils {
         }
         catch(IOException e)
         {
-            String message = filename+"이 없거나, 파일읽기가 거부되어 있습니다.";
+            String message = filename+" 이 없거나, 파일읽기가 거부되어 있습니다.";
             new AlertDialog.Builder(mActivity)
                     .setMessage(message)
                     .setPositiveButton("OK", null)
@@ -300,7 +302,7 @@ public class Utils {
     private int ptrBody;
     StringBuilder bodyText;
 
-    public void generateBibleBody() {
+    void generateBibleBody() {
 
         final ScrollView scrollView = new ScrollView(mContext);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
@@ -341,6 +343,7 @@ public class Utils {
         tV.setMovementMethod(LinkMovementMethod.getInstance());
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
+        nowHymn = 0;
         mainActivity.makeTopBottomMenu();
         Vars.scrollView = scrollView;
         scrollView.post(new Runnable() {
@@ -703,14 +706,13 @@ public class Utils {
         if (hymnImageShow) {
             ImageView imV = new ImageView(mContext);
             linearlayout.addView(imV);
-
             File imgFile = new File(packageFolder, "hymn_png/" + nowHymn + ".pngz");
-
             if (imgFile.exists()) {
                 Bitmap hymnBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imV.setImageBitmap(hymnBitmap);
-            } else {
-                Log.e("no image", imgFile.toString());
+                PhotoViewAttacher pA;
+                pA = new PhotoViewAttacher(imV);
+                pA.update();
             }
         }
         if (hymnTextShow) {
@@ -824,6 +826,9 @@ public class Utils {
                             linearlayout.addView(imV);
                             imV.setImageBitmap(Bitmap.createScaledBitmap(dictBitmap, 1000, height, false));
                             imV.requestLayout();
+                            PhotoViewAttacher pA;
+                            pA = new PhotoViewAttacher(imV);
+                            pA.update();
                         }
                         break;
                     case "~": { // contains subject name
