@@ -91,6 +91,10 @@
 
 - SpannableString / setSpan...,  Swipe Touch, Fragment Layout, Scrollable View
 
+<H3>Updates / Changes</H3>
+
+- 2019.02.07 : apply images zoomable ('com.commit451:PhotoView:1.2.4')
+
 <H3>Issues not fixed yet</H3>
 
 - Go prev/next thru navigation sometimes is not perfect, sorry :-p
