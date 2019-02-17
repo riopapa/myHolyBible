@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,10 +45,10 @@ import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorF;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
-import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
+import static com.urrecliner.andriod.myholybible.Vars.dictColorF;
 import static com.urrecliner.andriod.myholybible.Vars.dictWord;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
@@ -409,7 +408,7 @@ public class Utils {
                 workLine = workLine.substring(endIdx + 1);
                 lenWorkLine = workLine.length();
                 bodyText.append(str);
-                bodyText.append("\n");
+                bodyText.append(newLine);
                 paraF[iPara] = ptrBody;
                 paraT[iPara] = ptrBody + str.length() + 1;
                 iPara++;
@@ -514,12 +513,12 @@ public class Utils {
         int verse;
         public keywordSpan(String key, int verse) { this.key = key; this.verse = verse;}
 
-        Typeface typeface = Typeface.create(Typeface.DEFAULT, BOLD);
+        Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
-            ds.setColor(bibleColorF);
-            ds.setTypeface(typeface);
-            ds.setUnderlineText(false);    // this remove the underline
+            ds.setColor(dictColorF);
+            ds.setTypeface(boldface);
+            ds.setTextSize(ds.getTextSize()+2);
         }
 
         @Override
@@ -704,12 +703,14 @@ public class Utils {
         scrollView.addView(linearlayout);
 
         if (hymnImageShow) {
-            ImageView imV = new ImageView(mContext);
-            linearlayout.addView(imV);
             File imgFile = new File(packageFolder, "hymn_png/" + nowHymn + ".pngz");
             if (imgFile.exists()) {
-                Bitmap hymnBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                imV.setImageBitmap(hymnBitmap);
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
+                ImageView imV = new ImageView(mContext);
+                linearlayout.addView(imV);
+                imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
+                imV.requestLayout();
                 PhotoViewAttacher pA;
                 pA = new PhotoViewAttacher(imV);
                 pA.update();
@@ -725,7 +726,7 @@ public class Utils {
 
             bodyText = new StringBuilder();
             for (String hymnText : hymnTexts) {
-                String workLine = "\n" + hymnText;
+                String workLine = newLine + hymnText;
                 bodyText.append(workLine);
             }
             bodyText.append(new3Line + new2Line);
@@ -820,11 +821,11 @@ public class Utils {
                     case "@":       // contains image file name
                         File imgFile = new File(packageFolder, "dict_img/" + line.substring(1));
                         if (imgFile.exists()) {
-                            Bitmap dictBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                            int height = 1000 * dictBitmap.getHeight() / dictBitmap.getWidth();
+                            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                            int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
                             ImageView imV = new ImageView(mContext);
                             linearlayout.addView(imV);
-                            imV.setImageBitmap(Bitmap.createScaledBitmap(dictBitmap, 1000, height, false));
+                            imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
                             imV.requestLayout();
                             PhotoViewAttacher pA;
                             pA = new PhotoViewAttacher(imV);
@@ -854,6 +855,9 @@ public class Utils {
                     }
                 }
             }
+            TextView tVLine = new TextView(mContext);
+            linearlayout.addView(tVLine);
+            tVLine.setText(new3Line);
             TextView tVBottom = new TextView(mContext);
             linearlayout.addView(tVBottom);
             tVBottom.setText(new3Line);

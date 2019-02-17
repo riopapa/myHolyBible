@@ -38,7 +38,7 @@ public class Vars {
     static boolean cevShow = false;
 
     static int bibleColorF, verseColorF, paraColorF, referColorF, numberColorF;
-    static int cevColorF, cevColorB, agpColorF, agpColorB;
+    static int cevColorF, cevColorB, agpColorF, agpColorB, dictColorF;
 
     static ViewGroup mBody; // assigned to Fragment_Body
     static ScrollView scrollView;

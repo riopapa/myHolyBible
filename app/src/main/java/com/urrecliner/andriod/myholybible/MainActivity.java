@@ -43,6 +43,7 @@ import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
+import static com.urrecliner.andriod.myholybible.Vars.dictColorF;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
@@ -217,6 +218,7 @@ public class MainActivity extends Activity {
         cevColorB = ContextCompat.getColor(mContext,R.color.PowderBlue);
         agpColorF = ContextCompat.getColor(mContext,R.color.DarkOrchid);
         agpColorB = ContextCompat.getColor(mContext,R.color.Lavender);
+        dictColorF = ContextCompat.getColor(mContext,R.color.Blue);
     }
 
     public void makeTopBottomMenu() {

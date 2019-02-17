@@ -42,3 +42,4 @@ dependencies {
     implementation 'com.commit451:PhotoView:1.2.4'
     testImplementation 'junit:junit:4.12'
 }
+//implementation 'com.github.chrisbanes:PhotoView:2.0.0'

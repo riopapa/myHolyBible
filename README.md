@@ -49,7 +49,7 @@
 
 <H3>Hymn Selection</H3>
  
-- If you click \<Hymn>, you will have keypard to input Hymn number
+- If you click \<Hymn>, you will have keypad to input Hymn number
 - If pressed properly, hymn name will be displayed on the top of keypad
 - You may go back to scripture screen by clicking \<back> button on phone button menu or swiping left
 - If mistyped, start again with pressing \<clear> button
@@ -62,6 +62,7 @@
 - If you click \<Go> at Hymn selection, Hymn will be displayed
 - By default, sheet musics and lyrics both will be displayed, you may make them visible/invisible on setting menu
 - If you swipe left or right around phone buttom area, previous or next hymn will be displayed and it will be kept in navigation history.
+- Hymn sheet musics is zoomable 
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="./app/screenshots/hymn_contents.jpg" width=240 height=480>
@@ -89,7 +90,7 @@
 
 <H3>What I learned in this application</H3>
 
-- SpannableString / setSpan...,  Swipe Touch, Fragment Layout, Scrollable View
+- SpannableString (with setSpan...),  Swipe Touch, Fragment Layout, Scrollable View
 
 <H3>Updates / Changes</H3>
 
