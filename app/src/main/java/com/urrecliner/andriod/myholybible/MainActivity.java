@@ -22,6 +22,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -73,6 +74,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
 import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
@@ -94,8 +96,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         mActivity = this;
+        mBody = (ViewGroup) findViewById(R.id.fragment_body);
         utils = new Utils(this);
         askPermission();
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
@@ -104,11 +108,35 @@ public class MainActivity extends Activity {
         textSizeBibleText = mSettings.getInt("textSizeBibleText", 20);
         textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
         textSizeHymnText = mSettings.getInt("textSizeHymnText", 20);
+        textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
         hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
         hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
 
-        setContentView(R.layout.activity_main);
+        packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
+
+        final ViewGroup fTop = (ViewGroup) findViewById(R.id.fragment_top);
+        final ViewGroup fBtm = (ViewGroup) findViewById(R.id.fragment_bottom);
+        vSetting = (ImageView) fTop.findViewById(R.id.setting);
+        vOldBible = (TextView) fTop.findViewById(R.id.oldBible);
+        vNewBible = (TextView) fTop.findViewById(R.id.newBible);
+        vHymn = (TextView) fTop.findViewById(R.id.hymn);
+        vAgpBible = (TextView) fTop.findViewById(R.id.agpBible);
+        vCevBible = (TextView) findViewById(R.id.cevBible);
+
+        vLeftAction = (TextView) fBtm.findViewById(R.id.leftAction);
+        vCurrBible = (TextView) fBtm.findViewById(R.id.currBible);
+        vRightAction = (TextView) fBtm.findViewById(R.id.rightAction);
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
+        try {
+            assert windowManager != null;
+            windowManager.getDefaultDisplay().getMetrics(dm);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        xPixels = dm.widthPixels;
+        yPixels = dm.heightPixels;
 
         if (alwaysOn)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -182,28 +210,7 @@ public class MainActivity extends Activity {
         return super.dispatchTouchEvent(ev);
     }
     private void initializeVariables() {
-        packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
-        mBody = findViewById(R.id.fragment_body);
-        vSetting = findViewById(R.id.setting);
-        vOldBible = findViewById(R.id.oldBible);
-        vNewBible = findViewById(R.id.newBible);
-        vHymn = findViewById(R.id.hymn);
-        vAgpBible = findViewById(R.id.agpBible);
-        vLeftAction = findViewById(R.id.leftAction);
-        vCurrBible = findViewById(R.id.currBible);
-        vRightAction = findViewById(R.id.rightAction);
-        vCevBible = findViewById(R.id.cevBible);
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
-        try {
-            assert windowManager != null;
-            windowManager.getDefaultDisplay().getMetrics(dm);
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        xPixels = dm.widthPixels;
-        yPixels = dm.heightPixels;
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x444444;

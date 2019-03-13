@@ -56,6 +56,7 @@ public class Vars {
     static int textSizeBibleRefer = 40;
     static int textSizeHymnText = 20;
     static int textSizeBibleText = 20;
+    static int textSizeKeyWord = 20;
     static boolean hymnImageShow = true;
     static boolean hymnTextShow = true;
     static boolean alwaysOn = true;

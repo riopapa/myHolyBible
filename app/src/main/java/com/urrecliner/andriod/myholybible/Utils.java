@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,6 +82,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnKeypad;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnTitle;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
 import static com.urrecliner.andriod.myholybible.Vars.xPixels;
@@ -89,12 +91,13 @@ import static java.lang.Integer.parseInt;
 public class Utils {
 
     private MainActivity mainActivity;
-    public Utils (MainActivity activity) {
-        mainActivity = activity;
-    }
+
+    public Utils (MainActivity activity) { mainActivity = activity; }
     private final String newLine = "\n";
     private final String new2Line = "\n\n";
     private final String new3Line = "\n\n\n";
+
+    TextView tv;
     public String[] readBibleFile(String filename) {
         String file2read = packageFolder + "/" + filename;
         String[] lines;
@@ -144,7 +147,6 @@ public class Utils {
     }
 
     public void showBibleList() {
-
         scrollView = new ScrollView(mContext);
         int loop = (topTab == TAB_MODE_OLD) ?  39: 27;
         int start = (topTab == TAB_MODE_OLD) ? 1 : 40;
@@ -302,7 +304,6 @@ public class Utils {
     StringBuilder bodyText;
 
     void generateBibleBody() {
-
         final ScrollView scrollView = new ScrollView(mContext);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         final String bibleTexts[] = readBibleFile(file2read);
@@ -514,11 +515,12 @@ public class Utils {
         public keywordSpan(String key, int verse) { this.key = key; this.verse = verse;}
 
         Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
+        Float dicTextSize = textSizeKeyWord * 2f;
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
             ds.setColor(dictColorF);
             ds.setTypeface(boldface);
-            ds.setTextSize(ds.getTextSize()+2);
+            ds.setTextSize(dicTextSize);
         }
 
         @Override
@@ -551,7 +553,8 @@ public class Utils {
 
     private TextView tVTitle;
     private String hymnTitle = "";
-    public void generateHymnKeypad() {
+
+    void generateHymnKeypad() {
 
         scrollView = new ScrollView(mContext);
         int ids[] = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
@@ -688,7 +691,7 @@ public class Utils {
         mainActivity.makeTopBottomMenu();
     }
 
-    public void generateHymnBody() {
+    void generateHymnBody() {
 
         scrollView = new ScrollView(mContext);
         String txt = "Hymn/" + nowHymn + ".txt";
@@ -799,7 +802,7 @@ public class Utils {
         mainActivity.makeTopBottomMenu();
 
     }
-    public void generateKeyWord() {
+    void generateKeyWord() {
 
         int verse = nowVerse;
         String txt = "dict/" + dictWord + ".txt";
@@ -814,7 +817,7 @@ public class Utils {
             linearlayout.setGravity(Gravity.START);
             scrollView.addView(linearlayout);
             FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
-            lp.setMargins(20,36,20,16);
+            lp.setMargins(60,36,60,40);
             linearlayout.setLayoutParams(lp);
             for (String line : dicTexts) {
                 switch (line.substring(0, 1)) {
@@ -904,10 +907,12 @@ public class Utils {
     final private int TEXT_SIZE_BIBLE66_INCREASE = 1002;
     final private int TEXT_SIZE_BIBLE_DECREASE = 1011;
     final private int TEXT_SIZE_BIBLE_INCREASE = 1012;
-    final private int TEXT_SIZE_REFER_DECREASE = 1021;
-    final private int TEXT_SIZE_REFER_INCREASE = 1022;
-    final private int TEXT_SIZE_HYMN_DECREASE = 1031;
-    final private int TEXT_SIZE_HYMN_INCREASE = 1032;
+    final private int TEXT_SIZE_KEYWORD_DECREASE = 1021;
+    final private int TEXT_SIZE_KEYWORD_INCREASE = 1022;
+    final private int TEXT_SIZE_REFER_DECREASE = 1031;
+    final private int TEXT_SIZE_REFER_INCREASE = 1032;
+    final private int TEXT_SIZE_HYMN_DECREASE = 1051;
+    final private int TEXT_SIZE_HYMN_INCREASE = 1052;
     final private int HYMN_IMAGE_ON_OFF = 2005;
     final private int HYMN_TEXT_ON_OFF = 2006;
     final private int ALWAYS_ON_OFF = 3007;
@@ -942,6 +947,12 @@ public class Utils {
         appendSetting("  -   ", TEXT_SIZE_BIBLE_DECREASE);
         text = "  " + textSizeBibleText + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_BIBLE_INCREASE);
+
+
+        text = new2Line + mainActivity.getString(R.string.keyword_size); bodyText.append(text); ptrBody += text.length();
+        appendSetting("  -   ", TEXT_SIZE_KEYWORD_DECREASE);
+        text = "  " + textSizeKeyWord + "  ";  bodyText.append(text); ptrBody += text.length();
+        appendSetting("   +   ", TEXT_SIZE_KEYWORD_INCREASE);
 
         text = new2Line + mainActivity.getString(R.string.bible_crossing_size); bodyText.append(text); ptrBody += text.length();
         appendSetting("  -   ", TEXT_SIZE_REFER_DECREASE);
@@ -1022,6 +1033,14 @@ public class Utils {
                 case TEXT_SIZE_BIBLE_INCREASE:
                     textSizeBibleText++;
                     editor.putInt("textSizeBibleText", textSizeBibleText).apply();
+                    break;
+                case TEXT_SIZE_KEYWORD_DECREASE:
+                    textSizeKeyWord--;
+                    editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
+                    break;
+                case TEXT_SIZE_KEYWORD_INCREASE:
+                    textSizeKeyWord++;
+                    editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
                     break;
                 case TEXT_SIZE_REFER_DECREASE:
                     textSizeBibleRefer--;
