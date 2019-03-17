@@ -56,6 +56,7 @@ import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
+import static com.urrecliner.andriod.myholybible.Vars.lastVerse;
 import static com.urrecliner.andriod.myholybible.Vars.logFile;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
@@ -384,9 +385,9 @@ public class Utils {
     }
 
     private void generateBibleAllVerses(String bibleTexts[]) {
-        int lines = bibleTexts.length;
+        lastVerse  = bibleTexts.length;
         versePtr = 0;
-        for (int line = 0; line < lines; line++) {
+        for (int line = 0; line < lastVerse; line++) {
             if (line == (nowVerse-2))
                 versePtr = ptrBody;
             String str;

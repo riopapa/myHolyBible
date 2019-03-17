@@ -18,7 +18,7 @@ public class Vars {
     static OnSwipeTouchListener onSwipeTouchListener;
     static float windowYUpper, windowXCenter;
 
-    static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0;
+    static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, lastVerse = 0;
     static int xPixels, yPixels;
 
     static String oldName = "구 약";

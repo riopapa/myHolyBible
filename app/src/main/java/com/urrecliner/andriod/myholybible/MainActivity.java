@@ -51,6 +51,7 @@ import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
+import static com.urrecliner.andriod.myholybible.Vars.lastVerse;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
@@ -67,6 +68,7 @@ import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
+import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.stackMax;
 import static com.urrecliner.andriod.myholybible.Vars.stackP;
@@ -168,12 +170,12 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSwipeGoBack() {
-                goBack2Back();
+                goBackward();
             }
 
             @Override
             public void onSwipeGoFore() {
-                goBack2Fore();
+                goForeward();
             }
 
             @Override
@@ -332,7 +334,7 @@ public class MainActivity extends Activity {
         vOldBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveScrollY();
+                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_OLD;
                 nowBible = 0;
                 makeBibleList();
@@ -341,7 +343,7 @@ public class MainActivity extends Activity {
         vNewBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveScrollY();
+                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_NEW;
                 nowBible = 0;
                 makeBibleList();
@@ -350,7 +352,7 @@ public class MainActivity extends Activity {
         vHymn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveScrollY();
+                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_HYMN;
                 nowBible = 0;
                 nowHymn = 0;
@@ -360,22 +362,24 @@ public class MainActivity extends Activity {
         vAgpBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveScrollY();
+                int currVerse = getCurrentVerse();
                 if (vAgpBible.getText().toString().equals(blank))
                     return;
-                agpShow ^= true;
+                agpShow = !agpShow;
                 utils.popHistory();
+                nowVerse = currVerse;
                 utils.generateBibleBody();
             }
         });
         vCevBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveScrollY();
+                int currVerse = getCurrentVerse();
                 if (vCevBible.getText().toString().equals(blank))
                     return;
-                cevShow ^= true;
+                cevShow = !cevShow;
                 utils.popHistory();
+                nowVerse = currVerse;
                 utils.generateBibleBody();
             }
         });
@@ -443,7 +447,7 @@ public class MainActivity extends Activity {
         utils.showBibleList();
     }
 
-    private void goBack2Back() {
+    private void goBackward() {
         if (stackP == 1) {
             Toast.makeText(mContext,"맨 처음 입니다." , Toast.LENGTH_LONG).show();
         }
@@ -461,7 +465,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void goBack2Fore() {
+    private void goForeward() {
         if (stackP == stackMax || !utils.shiftHistory()) {
             Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
             return;
@@ -476,12 +480,12 @@ public class MainActivity extends Activity {
             makeTopBottomMenu();
     }
 
-    void saveScrollY() {
-//        nowVerse = - scrollView.getScrollY();
-//        Log.w("saving ","Y "+nowVerse);
-//        if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD) {
-//            utils.setHistoryVerse();
-//        }
+    private int getCurrentVerse() {
+        if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD) {
+            int verse = lastVerse *  scrollView.getScrollY() / scrollView.getChildAt(0).getHeight() + 2;
+            return verse;
+        }
+        return 0;
     }
 // ↓ ↓ ↓ P E R M I S S I O N    RELATED /////// ↓ ↓ ↓ ↓
     ArrayList<String> permissions = new ArrayList<>();
@@ -565,15 +569,13 @@ public class MainActivity extends Activity {
         MainDialog mMainDialog;
 //        Log.w("timegap", " " + (System.currentTimeMillis()-backKeyPressedTime));
 //        Log.w("back", " topTab " + topTab + " bible " + nowBible+" chap "+ nowChapter+" hymn "+ nowHymn);
-        if(System.currentTimeMillis()>backKeyPressedTime+500){
+        if(System.currentTimeMillis()>backKeyPressedTime+2500){
             backKeyPressedTime = System.currentTimeMillis();
-            goBack2Back();
+            goBackward();
         }
         else{
             mMainDialog = new MainDialog();
             mMainDialog.show(getFragmentManager(), null);
-
-//            quitApp();
         }
     }
    public static class MainDialog extends DialogFragment {
