@@ -77,6 +77,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
 import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
@@ -111,6 +112,7 @@ public class MainActivity extends Activity {
         textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
         textSizeHymnText = mSettings.getInt("textSizeHymnText", 20);
         textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
+        textSizeSpace = mSettings.getInt("textSizeSpace", 15);
         hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
         hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
@@ -482,8 +484,7 @@ public class MainActivity extends Activity {
 
     private int getCurrentVerse() {
         if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD) {
-            int verse = lastVerse *  scrollView.getScrollY() / scrollView.getChildAt(0).getHeight() + 2;
-            return verse;
+            return lastVerse *  scrollView.getScrollY() / scrollView.getChildAt(0).getHeight() + 2;
         }
         return 0;
     }
@@ -562,16 +563,21 @@ public class MainActivity extends Activity {
     }
 // ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
 
-
     @Override
     public void onBackPressed() {
 
         MainDialog mMainDialog;
 //        Log.w("timegap", " " + (System.currentTimeMillis()-backKeyPressedTime));
 //        Log.w("back", " topTab " + topTab + " bible " + nowBible+" chap "+ nowChapter+" hymn "+ nowHymn);
-        if(System.currentTimeMillis()>backKeyPressedTime+2500){
+        if(System.currentTimeMillis()>backKeyPressedTime+500){
             backKeyPressedTime = System.currentTimeMillis();
-            goBackward();
+            if (stackP == 1) {
+                Toast.makeText(getApplicationContext(),"\n맨 처음 입니다.\n혹시 종료하려면 뒤로가기를 두번 눌러주세요\n", Toast.LENGTH_LONG).show();
+//                mMainDialog = new MainDialog();
+//                mMainDialog.show(getFragmentManager(), null);
+            }
+            else
+                goBackward();
         }
         else{
             mMainDialog = new MainDialog();
@@ -587,8 +593,9 @@ public class MainActivity extends Activity {
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
             mBuilder.setView(mLayoutInflater
                     .inflate(R.layout.dialog_quit, null));
-//            mBuilder.setTitle("by riopapa 2019/01/19");
-//            mBuilder.setMessage("Dialog Messageeeeeee");
+            mBuilder.setTitle("[Ver 2019.04.22] 이젠 그만 볼래요?");
+
+//            mBuilder.setMessage("by riopapa 2019/01/19");
             return mBuilder.create();
         }
 

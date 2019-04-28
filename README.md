@@ -17,7 +17,7 @@
 - By pressing any bible in bible list, it will lead to chapter selection list.
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./app/screenshots/newBible_list.jpg" width=240 height=480>
+<img src="./app/screenshots/newBible_list.jpg" width=400 height=800>
 
 <H3>Chapter List</H3>
 
@@ -25,7 +25,7 @@
 - Bible name is at the bottom
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./app/screenshots/chapter_list.jpg" width=240 height=480>
+<img src="./app/screenshots/chapter_list.jpg" width=400 height=800>
 
 <H3>Scripture Contents</H3>
  
@@ -36,8 +36,8 @@
 - By clicking \(bible crossing) (short bible name + chapter number + verse number within parentheses), it will jump to relevant bible scripture
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./app/screenshots/bible_content1.jpg" width=240 height=480>
-    <img src="./app/screenshots/bible_contents.jpg" width=240 height=480>
+<img src="./app/screenshots/bible_content1.jpg" width=400 height=800>
+    <img src="./app/screenshots/bible_contents.jpg" width=400 height=800>
 
 <H3>Keyword Reference</H3>
  
@@ -45,7 +45,7 @@
 - You may go back to scripture screen by clicking \<back> button on phone button menu or swiping left
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="./app/screenshots/keyword_reference.jpg" width=240 height=480>
+    <img src="./app/screenshots/keyword_reference.jpg" width=400 height=800>
 
 <H3>Hymn Selection</H3>
  
@@ -55,7 +55,7 @@
 - If mistyped, start again with pressing \<clear> button
 - If you know the Hymn title but not hymn number, you can choose by Hymn sorted list below Hymn Selection
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="./app/screenshots/hymn_select.jpg" width=240 height=480>
+    <img src="./app/screenshots/hymn_select.jpg" width=400 height=800>
 
 <H3>Hymn Contents</H3>
  
@@ -65,7 +65,7 @@
 - Hymn sheet musics is zoomable 
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="./app/screenshots/hymn_contents.jpg" width=240 height=480>
+    <img src="./app/screenshots/hymn_contents.jpg" width=400 height=800>
 
 <H3>Hymn Sorted List</H3>
  
@@ -73,7 +73,7 @@
 - Hymn title is listed in alphabetically, and you may select the hymn number
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="./app/screenshots/hymn_sorted_list.jpg" width=240 height=480>
+    <img src="./app/screenshots/hymn_sorted_list.jpg" width=400 height=800>
     
 <H3>Screen History Navigation</H3>
  

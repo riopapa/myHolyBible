@@ -7,10 +7,12 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -84,6 +86,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnKeypad;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
 import static com.urrecliner.andriod.myholybible.Vars.xPixels;
@@ -299,6 +302,10 @@ public class Utils {
     private int cevT[] = new int[VERSE_SIZE];
     private int iCev;
 
+    private int spaceF[] = new int[VERSE_SIZE];
+    private int spaceT[] = new int[VERSE_SIZE];
+    private int iSpace;
+
     private int versePtr;
 
     private int ptrBody;
@@ -318,6 +325,7 @@ public class Utils {
         iPara = 0;
         iAgp = 0;
         iCev = 0;
+        iSpace = 0;
         LinearLayout linearlayout = new LinearLayout(mContext);
         linearlayout.setOrientation(LinearLayout.VERTICAL);
         linearlayout.setGravity(Gravity.START);
@@ -381,6 +389,9 @@ public class Utils {
             ss.setSpan(new ForegroundColorSpan(agpColorF), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new BackgroundColorSpan(agpColorB), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        for (int i = 0; i < iSpace; i++) {
+            ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         return ss;
     }
 
@@ -415,6 +426,11 @@ public class Utils {
                 paraT[iPara] = ptrBody + str.length() + 1;
                 iPara++;
                 ptrBody += str.length() + 1;
+                spaceF[iSpace] = ptrBody;
+                bodyText.append(" "+newLine);
+                spaceT[iSpace] = ptrBody+2;
+                ptrBody += 2;
+                iSpace++;
             }
             str = " " + (line + 1) + " ";
             verseF[iVerse] = ptrBody;
@@ -459,6 +475,11 @@ public class Utils {
             }
             ptrBody++;
             bodyText.append(newLine);
+            spaceF[iSpace] = ptrBody;
+            bodyText.append(" "+newLine);
+            spaceT[iSpace] = ptrBody+2;
+            ptrBody += 2;
+            iSpace++;
         }
     }
 
@@ -914,6 +935,8 @@ public class Utils {
     final private int TEXT_SIZE_REFER_INCREASE = 1032;
     final private int TEXT_SIZE_HYMN_DECREASE = 1051;
     final private int TEXT_SIZE_HYMN_INCREASE = 1052;
+    final private int TEXT_SIZE_SPACE_DECREASE = 1061;
+    final private int TEXT_SIZE_SPACE_INCREASE = 1062;
     final private int HYMN_IMAGE_ON_OFF = 2005;
     final private int HYMN_TEXT_ON_OFF = 2006;
     final private int ALWAYS_ON_OFF = 3007;
@@ -959,6 +982,11 @@ public class Utils {
         appendSetting("  -   ", TEXT_SIZE_REFER_DECREASE);
         text = "  " + textSizeBibleRefer + "  ";  bodyText.append(text); ptrBody += text.length();
         appendSetting("   +   ", TEXT_SIZE_REFER_INCREASE);
+
+        text = new2Line + mainActivity.getString(R.string.verse_space_size); bodyText.append(text); ptrBody += text.length();
+        appendSetting("  -   ", TEXT_SIZE_SPACE_DECREASE);
+        text = "  " + textSizeSpace + "  ";  bodyText.append(text); ptrBody += text.length();
+        appendSetting("   +   ", TEXT_SIZE_SPACE_INCREASE);
 
         text = new2Line + mainActivity.getString(R.string.wanna_show_hymn_sheet); bodyText.append(text); ptrBody += text.length();
         appendSetting((hymnImageShow)? noShow:yesShow, HYMN_IMAGE_ON_OFF);
@@ -1050,6 +1078,14 @@ public class Utils {
                 case TEXT_SIZE_REFER_INCREASE:
                     textSizeBibleRefer++;
                     editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
+                    break;
+                case TEXT_SIZE_SPACE_DECREASE:
+                    textSizeSpace--;
+                    editor.putInt("textSizeSpace", textSizeBibleRefer).apply();
+                    break;
+                case TEXT_SIZE_SPACE_INCREASE:
+                    textSizeSpace++;
+                    editor.putInt("textSizeSpace", textSizeBibleRefer).apply();
                     break;
                 case TEXT_SIZE_HYMN_DECREASE:
                     textSizeHymnText--;
