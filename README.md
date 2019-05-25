@@ -75,6 +75,17 @@
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="./app/screenshots/hymn_sorted_list.jpg" width=400 height=800>
     
+
+<H3>Setting </H3>
+ 
+- Thru this screen following items can be adjusted
+- Bible: Bible Name Size, Scripture Size, Keyword Size, Cross-Ref Size, Verse space Size
+- Hymn: Hymn Sheet and/or Hymn Lylic display, Lylic Size
+- BookMarks : saved Bookmark list + keep save flag
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="./app/screenshots/setting.jpg" width=400 height=800>
+
 <H3>Screen History Navigation</H3>
  
 - Bible scripture and Hymn you selected will be remembered in history (not so many history)

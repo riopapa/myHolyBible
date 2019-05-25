@@ -13,14 +13,18 @@
     <string name="riopapa_face">riopapa face</string>
     <string name="sure_to_quit">그래요, 다음에 봅시다</string>
     <string name="blank" />
-    <string name="bible_name_size">성경종류 크기</string>
-    <string name="scripture_size">성경말씀 크기</string>
-    <string name="keyword_size">키워드 크기</string>
-    <string name="bible_crossing_size">성경관주 크기</string>
-    <string name="verse_space_size">절간 간격 크기</string>
-    <string name="wanna_show_hymn_sheet">찬송악보를 보렵니까?</string>
-    <string name="wanna_show_hymn_lyric">찬송가사를 보렵니까?</string>
-    <string name="hymn_lyric_size">찬송가사 크기</string>
+    <string name="minus">"\u25BC"</string>
+    <string name="plus">"\u25B2"</string>
+    <string name="number">12</string>
+    <string name="bibleName_size">이름</string>
+    <string name="scripture_size">본문</string>
+    <string name="keyword_size">키워드</string>
+    <string name="crossing_size">관주</string>
+    <string name="verse_space_size">절간격</string>
+    <string name="show_hymn_sheet">찬송악보</string>
+    <string name="show_hymn_lyric">찬송가사</string>
+    <string name="hymn_lyric_size">가사</string>
     <string name="keep_screen_on">화면을 계속 켜 둘까요?</string>
     <string name="bookmark_saved">"저장된 성경 목록"</string>
+
 </resources>

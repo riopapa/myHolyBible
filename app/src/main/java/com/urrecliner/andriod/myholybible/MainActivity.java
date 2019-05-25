@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -61,6 +62,7 @@ import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.markBibles;
 import static com.urrecliner.andriod.myholybible.Vars.markChapters;
+import static com.urrecliner.andriod.myholybible.Vars.markSaves;
 import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
 import static com.urrecliner.andriod.myholybible.Vars.newName;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
@@ -131,6 +133,10 @@ public class MainActivity extends Activity {
 
         markBibles = utils.getStringArrayPref("markBibles");
         markChapters = utils.getStringArrayPref("markChapters");
+        markSaves = utils.getStringArrayPref("markSaves");
+        while (markSaves.size() < markBibles.size()) {
+            markSaves.add("false");
+        }
 
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
@@ -319,14 +325,13 @@ public class MainActivity extends Activity {
         vRightAction.setText(blank);
     }
 
-    Setting setting = null;
     public void assignAllButtonListeners() {
-        if (setting == null)
-            setting = new Setting();
         vSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setting.generateSettingBody();
+//                setting.generateSettingBody();
+                Intent i = new Intent(MainActivity.this, SetActivity.class);
+                startActivity(i);
             }
         });
         vLeftAction.setOnClickListener(new View.OnClickListener() {
@@ -431,14 +436,28 @@ public class MainActivity extends Activity {
     }
 
     void bookMarkThis() {
-        if (markBibles.size()> 5) {
-            markBibles.remove(markBibles.size()-1);
-            markChapters.remove(markChapters.size()-1);
-        }
+        final int MaxSize = 6;
         markBibles.add(0, ""+nowBible);
         markChapters.add(0, ""+nowChapter);
+        markSaves.add(0,"false");
+        if (markBibles.size()> MaxSize) {
+            for (int i = markBibles.size()-1; i > 0; i--) {
+                if (markSaves.get(i).equals("false")) {
+                    markBibles.remove(i);
+                    markChapters.remove(i);
+                    markSaves.remove(i);
+                    break;
+                }
+            }
+            if (markBibles.size() > MaxSize) {
+                markBibles.remove(MaxSize);
+                markChapters.remove(MaxSize);
+                markSaves.remove(MaxSize);
+            }
+        }
         utils.setStringArrayPref("markBibles",markBibles);
         utils.setStringArrayPref("markChapters",markChapters);
+        utils.setStringArrayPref("markSaves",markSaves);
         Toast.makeText(mContext, fullBibleNames[nowBible]+" "+nowChapter+" 장이\n기억되었습니다",Toast.LENGTH_LONG).show();
     }
 
