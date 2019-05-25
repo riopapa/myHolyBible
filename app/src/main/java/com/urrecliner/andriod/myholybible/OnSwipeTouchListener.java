@@ -11,10 +11,10 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     private GestureDetector gestureDetector;
 
-    public OnSwipeTouchListener(Context c) {
+    OnSwipeTouchListener(Context c) {
         gestureDetector = new GestureDetector(c, new GestureListener());
     }
-    public GestureDetector getGestureDetector(){
+    GestureDetector getGestureDetector(){
         return  gestureDetector;
     }
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
@@ -36,17 +36,17 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
             return super.onSingleTapUp(e);
         }
 
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-//            onDoubleClick(e);
-            return super.onDoubleTap(e);
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            onLongClick();
-            super.onLongPress(e);
-        }
+//        @Override
+//        public boolean onDoubleTap(MotionEvent e) {
+////            onDoubleClick(e);
+//            return super.onDoubleTap(e);
+//        }
+//
+//        @Override
+//        public void onLongPress(MotionEvent e) {
+//            onLongClick();
+//            super.onLongPress(e);
+//        }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -77,7 +77,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public void onSwipeNext() { }
 
-    public void onClick() { }
+    private void onClick() { }
 
-    public void onLongClick() { }
 }
