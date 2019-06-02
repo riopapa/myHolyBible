@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">my HolyBible</string>
+    <string name="bible">성경</string>
     <string name="oldBible">구약</string>
     <string name="newBible">신약</string>
     <string name="hymn">찬송가</string>
@@ -11,6 +12,7 @@
     <string name="agpBible">AGP</string>
     <string name="setting">setting</string>
     <string name="riopapa_face">riopapa face</string>
+    <string name="wanna_quit">2019.05.26 이젠 그만 볼까요?</string>
     <string name="sure_to_quit">그래요, 다음에 봅시다</string>
     <string name="blank" />
     <string name="minus">"\u25BC"</string>
@@ -23,8 +25,9 @@
     <string name="verse_space_size">절간격</string>
     <string name="show_hymn_sheet">찬송악보</string>
     <string name="show_hymn_lyric">찬송가사</string>
-    <string name="hymn_lyric_size">가사</string>
-    <string name="keep_screen_on">화면을 계속 켜 둘까요?</string>
+    <string name="hymn_lyric_size">본문</string>
+    <string name="keep_screen_on">화면 켜두기</string>
     <string name="bookmark_saved">"저장된 성경 목록"</string>
+    <string name="bibleBookMark">성경 북마크</string>
 
 </resources>

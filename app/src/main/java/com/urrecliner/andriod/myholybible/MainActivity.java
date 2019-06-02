@@ -42,6 +42,9 @@ import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
+import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
+import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
+import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
@@ -60,9 +63,6 @@ import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
-import static com.urrecliner.andriod.myholybible.Vars.markBibles;
-import static com.urrecliner.andriod.myholybible.Vars.markChapters;
-import static com.urrecliner.andriod.myholybible.Vars.markSaves;
 import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
 import static com.urrecliner.andriod.myholybible.Vars.newName;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
@@ -77,12 +77,13 @@ import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
 import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
+import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.stackMax;
 import static com.urrecliner.andriod.myholybible.Vars.stackP;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnText;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
@@ -122,21 +123,18 @@ public class MainActivity extends Activity {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         editor = mSettings.edit();
         textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
-        textSizeBibleText = mSettings.getInt("textSizeBibleText", 20);
+        textSizeBibleBody = mSettings.getInt("textSizeBibleBody", 20);
         textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
-        textSizeHymnText = mSettings.getInt("textSizeHymnText", 20);
+        textSizeHymnBody = mSettings.getInt("textSizeHymnBody", 20);
         textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
         textSizeSpace = mSettings.getInt("textSizeSpace", 15);
         hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
         hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
 
-        markBibles = utils.getStringArrayPref("markBibles");
-        markChapters = utils.getStringArrayPref("markChapters");
-        markSaves = utils.getStringArrayPref("markSaves");
-        while (markSaves.size() < markBibles.size()) {
-            markSaves.add("false");
-        }
+        bookBibles = utils.getStringArrayPref("bookBibles");
+        bookChapters = utils.getStringArrayPref("bookChapters");
+        bookSaves = utils.getStringArrayPref("bookSaves");
 
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
@@ -198,7 +196,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSwipeGoFore() {
-                goForeward();
+                goForward();
             }
 
             @Override
@@ -350,7 +348,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (vCurrBible.getText().toString().equals(blank))
                     return;
-                if (topTab < TAB_MODE_HYMN)   // book mark this chapter
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)   // book mark this chapter
                     bookMarkThis();
             }
         });
@@ -390,7 +388,7 @@ public class MainActivity extends Activity {
                 topTab = TAB_MODE_HYMN;
                 nowBible = 0;
                 nowHymn = 0;
-                makeHymn.generateHymnKeypad();
+                makeHymn.makeHymnKeypad();
             }
         });
         vAgpBible.setOnClickListener(new View.OnClickListener() {
@@ -402,7 +400,7 @@ public class MainActivity extends Activity {
                 agpShow = !agpShow;
                 history.pop();
                 nowVerse = currVerse;
-                makeBible.generateBibleBody();
+                makeBible.MakeBibleBody();
             }
         });
         vCevBible.setOnClickListener(new View.OnClickListener() {
@@ -414,7 +412,7 @@ public class MainActivity extends Activity {
                 cevShow = !cevShow;
                 history.pop();
                 nowVerse = currVerse;
-                makeBible.generateBibleBody();
+                makeBible.MakeBibleBody();
             }
         });
     }
@@ -432,38 +430,38 @@ public class MainActivity extends Activity {
         } else
             nowChapter = prevChapter;
         nowVerse = 1;
-        makeBible.generateBibleBody();
+        makeBible.MakeBibleBody();
     }
 
     void bookMarkThis() {
         final int MaxSize = 6;
-        markBibles.add(0, ""+nowBible);
-        markChapters.add(0, ""+nowChapter);
-        markSaves.add(0,"false");
-        if (markBibles.size()> MaxSize) {
-            for (int i = markBibles.size()-1; i > 0; i--) {
-                if (markSaves.get(i).equals("false")) {
-                    markBibles.remove(i);
-                    markChapters.remove(i);
-                    markSaves.remove(i);
+        bookBibles.add(0, ""+nowBible);
+        bookChapters.add(0, ""+nowChapter);
+        bookSaves.add(0,"false");
+        if (bookBibles.size()> MaxSize) {
+            for (int i = bookBibles.size()-1; i > 0; i--) {
+                if (bookSaves.get(i).equals("false")) {
+                    bookBibles.remove(i);
+                    bookChapters.remove(i);
+                    bookSaves.remove(i);
                     break;
                 }
             }
-            if (markBibles.size() > MaxSize) {
-                markBibles.remove(MaxSize);
-                markChapters.remove(MaxSize);
-                markSaves.remove(MaxSize);
+            if (bookBibles.size() > MaxSize) {
+                bookBibles.remove(MaxSize);
+                bookChapters.remove(MaxSize);
+                bookSaves.remove(MaxSize);
             }
         }
-        utils.setStringArrayPref("markBibles",markBibles);
-        utils.setStringArrayPref("markChapters",markChapters);
-        utils.setStringArrayPref("markSaves",markSaves);
-        Toast.makeText(mContext, fullBibleNames[nowBible]+" "+nowChapter+" 장이\n기억되었습니다",Toast.LENGTH_LONG).show();
+        utils.setStringArrayPref("bookBibles", bookBibles);
+        utils.setStringArrayPref("bookChapters", bookChapters);
+        utils.setStringArrayPref("bookSaves", bookSaves);
+        Toast.makeText(mContext, fullBibleNames[nowBible]+" "+nowChapter+" 장이\n북마크 되었습니다",Toast.LENGTH_LONG).show();
     }
 
     public void goHymnLeft() {
         nowHymn--;
-        makeHymn.generateHymnBody();
+        makeHymn.makeHymnBody();
     }
 
     public void goBibleRight() {
@@ -480,20 +478,24 @@ public class MainActivity extends Activity {
             nowChapter = prevChapter;
         }
         nowVerse = 1;
-        makeBible.generateBibleBody();
+        makeBible.MakeBibleBody();
     }
 
     public void goHymnRight() {
         nowHymn++;
-        makeHymn.generateHymnBody();
+        makeHymn.makeHymnBody();
     }
 
     public void makeHymnMenu() {
-        String txt = blank;
         if (nowHymn == 0) {
-            vLeftAction.setText(txt);
-            vRightAction.setText(txt);
+            vLeftAction.setText(blank);
+            vRightAction.setText(blank);
             vCurrBible.setText(hymnName);
+        }
+        else if (nowHymn < 0) {
+            vLeftAction.setText(blank);
+            vRightAction.setText(blank);
+            vCurrBible.setText(hymnTitles[sortedNumbers[-nowHymn - 1]].substring(0,8));
         }
         else {
             vLeftAction.setText((nowHymn > 1) ? "" + (nowHymn - 1):blank);
@@ -515,27 +517,32 @@ public class MainActivity extends Activity {
             history.pop();
             history.pop();
             if (topTab < TAB_MODE_HYMN && nowBible > 0) {
-                makeBible.generateBibleBody();
-            } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
-                makeHymn.generateHymnBody();
+                makeBible.MakeBibleBody();
+            } else if (topTab == TAB_MODE_HYMN) {
+                if (nowHymn > 0)
+                    makeHymn.makeHymnBody();
+                else {
+                    nowHymn = 0;
+                    makeHymn.makeHymnKeypad();
+                }
             } else if (topTab == TAB_MODE_DIC) {
-                makeBible.generateKeyWord();
+                makeBible.makeKeyWord();
             } else
                 makeTopBottomMenu();
         }
     }
 
-    private void goForeward() {
+    private void goForward() {
         if (stackP == stackMax || !history.shift()) {
             Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
             return;
         }
         if (topTab < TAB_MODE_HYMN && nowBible > 0) {
-            makeBible.generateBibleBody();
+            makeBible.MakeBibleBody();
         } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
-            makeHymn.generateHymnBody();
+            makeHymn.makeHymnBody();
         } else if (topTab == TAB_MODE_DIC) {
-            makeBible.generateKeyWord();
+            makeBible.makeKeyWord();
         } else
             makeTopBottomMenu();
     }
@@ -647,9 +654,7 @@ public class MainActivity extends Activity {
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
             mBuilder.setView(mLayoutInflater
                     .inflate(R.layout.dialog_quit, null));
-            mBuilder.setTitle("[Ver 2019.05.17] 이젠 그만 볼래요?");
-
-//            mBuilder.setMessage("by riopapa 2019/01/19");
+            mBuilder.setTitle(mainActivity.getString(R.string.wanna_quit));
             return mBuilder.create();
         }
 

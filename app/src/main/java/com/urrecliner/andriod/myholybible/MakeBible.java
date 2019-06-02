@@ -65,7 +65,7 @@ import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleNumber;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleText;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
@@ -79,7 +79,6 @@ class MakeBible {
 
 
     private final String newLine = "\n";
-    private final String new2Line = "\n\n";
     private final String new3Line = "\n\n\n";
 
     void showBibleList() {
@@ -184,7 +183,7 @@ class MakeBible {
                     public void onClick(View v) {
                         nowChapter = v.getId();
                         nowVerse = 0;
-                        generateBibleBody();
+                        MakeBibleBody();
                     }
                 });
                 rowLayout.addView(columnLayout);
@@ -196,7 +195,8 @@ class MakeBible {
                 break;
         }
         tV = new TextView(mContext);
-        tV.setText(new2Line);
+        tV.setText(newLine);
+        tV.setText(newLine);
         tV.setTextSize(28);
         tV.setWidth(10);
         tV.setTextColor(0);
@@ -218,10 +218,10 @@ class MakeBible {
     private int []verseT = new int[VERSE_SIZE];
     private int iVerse;
 
-    private int [] referF = new int[TABLE_SIZE];
-    private int [] referT = new int[TABLE_SIZE];
-    private int [] referV = new int[TABLE_SIZE];
-    private String [] refers = new String[TABLE_SIZE];
+    private int [] crossF = new int[TABLE_SIZE];
+    private int [] crossT = new int[TABLE_SIZE];
+    private int [] crossV = new int[TABLE_SIZE];
+    private String [] crosss = new String[TABLE_SIZE];
     private int iRefer;
 
     private int [] paraF = new int[30];
@@ -245,7 +245,7 @@ class MakeBible {
     private int ptrBody;
     private StringBuilder bodyText;
 
-    void generateBibleBody() {
+    void MakeBibleBody() {
         final ScrollView scrollView = new ScrollView(mContext);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         final String [] bibleTexts = utils.readBibleFile(file2read);
@@ -265,7 +265,7 @@ class MakeBible {
         linearlayout.setGravity(Gravity.START);
         scrollView.addView(linearlayout);
         final TextView tV = new TextView(mContext);
-        tV.setTextSize(textSizeBibleText);
+        tV.setTextSize(textSizeBibleBody);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
         tV.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
@@ -277,7 +277,7 @@ class MakeBible {
         bodyText = new StringBuilder();
         bodyText.append(newLine);
         ptrBody = 1;
-        generateBibleAllVerses(bibleTexts);
+        makeBibleAllVerses(bibleTexts);
         bodyText.append(new3Line + new3Line);
         SpannableString ss = settleSpannableString();
 
@@ -313,7 +313,7 @@ class MakeBible {
             ss.setSpan(new StyleSpan(BOLD), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iRefer; i++) {
-            ss.setSpan(new referSpan(refers[i], referV[i]), referF[i], referT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new crossSpan(crosss[i], crossV[i]), crossF[i], crossT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < iCev; i++) {
             ss.setSpan(new ForegroundColorSpan(cevColorF), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -329,7 +329,7 @@ class MakeBible {
         return ss;
     }
 
-    private void generateBibleAllVerses(String [] bibleTexts) {
+    private void makeBibleAllVerses(String [] bibleTexts) {
         lastVerse  = bibleTexts.length;
         versePtr = 0;
         for (int line = 0; line < lastVerse; line++) {
@@ -386,7 +386,7 @@ class MakeBible {
                         workLine = workLine.substring(idx);
                     }
                     // string starts with [_ & keyword
-                    idx2nd = generateBibleKeyword(workLine, line + 1);
+                    idx2nd = makeBibleKeyword(workLine, line + 1);
                     workLine = workLine.substring(idx2nd + 2);
                     lenWorkLine = workLine.length();
                 }
@@ -417,7 +417,7 @@ class MakeBible {
         }
     }
 
-    int generateBibleKeyword(String workLine, int verse) {
+    private int makeBibleKeyword(String workLine, int verse) {
         int ptr;
         ptr = workLine.indexOf("_]");
         String keyword = workLine.substring(2, ptr);
@@ -425,10 +425,10 @@ class MakeBible {
             String bibShort = shortBibleNames[parseInt(keyword.substring(1, 3))];
             String showWord = " (" + bibShort + keyword.substring(4) + ") ";      // $01#12:34 -> (창12:34) 로 표시
             bodyText.append(showWord);
-            referF[iRefer] = ptrBody;
-            referT[iRefer] = ptrBody + showWord.length();
-            referV[iRefer] = verse;
-            refers[iRefer] = keyword.substring(1);  // save 01#12:34
+            crossF[iRefer] = ptrBody;
+            crossT[iRefer] = ptrBody + showWord.length();
+            crossV[iRefer] = verse;
+            crosss[iRefer] = keyword.substring(1);  // save 01#12:34
             iRefer++;
             ptrBody += showWord.length();
         } else {  // keyword case
@@ -471,7 +471,7 @@ class MakeBible {
         keywordSpan(String key, int verse) { this.key = key; this.verse = verse;}
 
         Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
-        Float dicTextSize = textSizeKeyWord * 2f;
+        Float dicTextSize = textSizeKeyWord * 3f;
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
             ds.setColor(dictColorF);
@@ -483,15 +483,15 @@ class MakeBible {
         public void onClick(@NonNull View widget) {
             dictWord = key;
             nowVerse = verse;
-            generateKeyWord();
+            makeKeyWord();
         }
     }
 
-    public class referSpan extends ClickableSpan {
+    public class crossSpan extends ClickableSpan {
 
         String key;
         int verse;
-        referSpan(String key, int verse) { this.key = key; this.verse = verse;}
+        crossSpan(String key, int verse) { this.key = key; this.verse = verse;}
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
             ds.setColor(referColorF);
@@ -503,10 +503,10 @@ class MakeBible {
         public void onClick(@NonNull View widget) {
             dictWord = key;
             nowVerse = verse;
-            generateRefer();
+            makeCrossing();
         }
     }
-    void generateKeyWord() {
+    void makeKeyWord() {
 
         int verse = nowVerse;
         String txt = "dict/" + dictWord + ".txt";
@@ -541,7 +541,7 @@ class MakeBible {
                         break;
                     case "~": { // contains subject name
                         TextView tVLine = new TextView(mContext);
-                        tVLine.setTextSize(textSizeBibleText + 3);
+                        tVLine.setTextSize(textSizeBibleBody + 3);
                         tVLine.setTextColor(Color.BLACK);
                         tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                         tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -552,7 +552,7 @@ class MakeBible {
                     }
                     default: {
                         TextView tVLine = new TextView(mContext);
-                        tVLine.setTextSize(textSizeBibleText);
+                        tVLine.setTextSize(textSizeBibleBody);
                         tVLine.setTextColor(Color.BLACK);
                         tVLine.setGravity(Gravity.START);
                         tVLine.setWidth(xPixels);
@@ -582,22 +582,22 @@ class MakeBible {
         mainActivity.makeTopBottomMenu();
     }
 
-    private void generateRefer() {
+    private void makeCrossing() {
 
-        String refer = dictWord; // 41#4:18
+        String cross = dictWord; // 41#4:18
         int verse = nowVerse;
         history.pop();
         nowVerse = verse;
         history.push();
-        nowBible = parseInt(refer.substring(0,2));
+        nowBible = parseInt(cross.substring(0,2));
         topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
-        refer = refer.substring(3) + "z";
-        char[] chars  = refer.toCharArray();
+        cross = cross.substring(3) + "z";
+        char[] chars  = cross.toCharArray();
         int ptr = getNumberPtr(chars,0);
-        nowChapter = parseInt(refer.substring(0,ptr));
+        nowChapter = parseInt(cross.substring(0,ptr));
         int ptr2 = getNumberPtr(chars,ptr+2);
-        nowVerse = parseInt(refer.substring(ptr+1,ptr2));
-        generateBibleBody();
+        nowVerse = parseInt(cross.substring(ptr+1,ptr2));
+        MakeBibleBody();
     }
 
     private int getNumberPtr(char[] chars, int ptr) {
