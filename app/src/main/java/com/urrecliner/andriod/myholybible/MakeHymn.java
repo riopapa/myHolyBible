@@ -241,7 +241,6 @@ class MakeHymn {
             tVBody.setText(ssBody);
             tVBody.setMovementMethod(LinkMovementMethod.getInstance());
         }
-        nowHymn = 0;
         history.push();
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
