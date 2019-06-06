@@ -15,7 +15,6 @@ import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
-import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
@@ -288,7 +287,10 @@ public class SetActivity extends Activity {
                         nowVerse = 0;
                         nowHymn = 0;
                         topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
+                        if (makeBible == null)
+                            makeBible = new MakeBible();
                         makeBible.MakeBibleBody();
+                        finish();
                     }
                 });
 

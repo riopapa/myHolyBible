@@ -471,7 +471,7 @@ class MakeBible {
         keywordSpan(String key, int verse) { this.key = key; this.verse = verse;}
 
         Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
-        Float dicTextSize = textSizeKeyWord * 3f;
+        Float dicTextSize = textSizeKeyWord * 2.6f;
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
             ds.setColor(dictColorF);
