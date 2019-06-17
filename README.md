@@ -81,7 +81,7 @@
 - Thru this screen following items can be adjusted
 - Bible: Bible Name Size, Scripture Size, Keyword Size, Cross-Ref Size, Verse space Size
 - Hymn: Hymn Sheet and/or Hymn Lylic display, Lylic Size
-- BookMarks : saved Bookmark list + keep save flag
+- BookMarks : saved Bookmark list + keep save flag (book mark is added to this table at the first place when you press current bible contents name located at bottom)
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="./app/screenshots/setting.jpg" width=400 height=800>
@@ -106,6 +106,7 @@
 <H3>Updates / Changes</H3>
 
 - 2019.02.07 : apply images zoomable ('com.commit451:PhotoView:1.2.4')
+- 2019.06.17 : reformat setting activity, add book mark function
 
 <H3>Issues not fixed yet</H3>
 
