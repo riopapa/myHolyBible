@@ -8,24 +8,30 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
+import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
+import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
+import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
-import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
-import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
-import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
+import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
@@ -180,6 +186,11 @@ public class SetActivity extends Activity {
                 editor.putInt("textSizeSpace", textSizeSpace).apply();
             }
         });
+
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.ENGLISH);
+        String build_time = "제작 : "+dateTimeFormat.format(BuildConfig.BUILD_TIME)+", 하원철";
+        tv = (TextView) findViewById(R.id.build_time);
+        tv.setText(build_time);
     }
 
     private void buildSetHymn() {
@@ -253,10 +264,11 @@ public class SetActivity extends Activity {
                 cb = (CheckBox) findViewById(R.id.keep_screen_check);
                 alwaysOn = cb.isChecked();
                 editor.putBoolean("alwaysOn", alwaysOn).apply();
+
                 if (alwaysOn)
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 else
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             }
         });
     }
@@ -309,5 +321,24 @@ public class SetActivity extends Activity {
                 });
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        if (topTab < TAB_MODE_HYMN) {
+            if (nowBible != 0)
+                makeBible.MakeBibleBody();
+            else
+                makeBible.showBibleList();
+        }
+        else if (topTab == TAB_MODE_HYMN) {
+            if (makeHymn == null)
+                makeHymn = new MakeHymn();
+            if (nowHymn == 0)
+                makeHymn.makeHymnKeypad();
+            else
+                makeHymn.makeHymnBody();
+        }
+        finish();
     }
 }

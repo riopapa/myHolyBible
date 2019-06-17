@@ -38,7 +38,7 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/oldBible"
-        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/agpBible"
         app:layout_constraintRight_toLeftOf="@+id/newBible"/>
@@ -49,7 +49,7 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/newBible"
-        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/oldBible"
         app:layout_constraintRight_toLeftOf="@id/hymn" />
@@ -60,7 +60,7 @@
         android:layout_width="0sp"
         android:layout_height="wrap_content"
         android:text="@string/hymn"
-        app:layout_constraintHorizontal_weight="6"
+        app:layout_constraintHorizontal_weight="5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/newBible"
         app:layout_constraintRight_toLeftOf="@id/cevBible" />
@@ -71,9 +71,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/cevBible"
-        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@id/hymn"
+        app:layout_constraintRight_toLeftOf="@id/rightBlank" />
+
+    <TextView
+        android:id="@+id/rightBlank"
+        style="@style/MenuStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/blank"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cevBible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="parent" />
 

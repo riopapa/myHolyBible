@@ -23,8 +23,9 @@ public class Vars {
     static ConstraintLayout constraintBody;
     static OnSwipeTouchListener onSwipeTouchListener;
     static float windowYUpper, windowXCenter;
+    static ScrollView nowScrollView;
 
-    static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, lastVerse = 0;
+    static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, maxVerse = 0;
     static int xPixels, yPixels;
 
     static String oldName = "구 약";
@@ -47,14 +48,14 @@ public class Vars {
     static int cevColorF, cevColorB, agpColorF, agpColorB, dictColorF;
 
     static ViewGroup mBody; // assigned to Fragment_Body
-    static ScrollView scrollView;
     static String dictWord;
+    static ScrollView scrollView;
 
     static int textSizeBibleNumber = 20;
     static int textSizeHymnTitle = 20;
     static int textSizeHymnKeypad = 24;
 
-    // followings are freom shared preference
+    // followings are from shared preference
     static SharedPreferences mSettings;
     static SharedPreferences.Editor editor;
     static int textSizeBible66 = 24;

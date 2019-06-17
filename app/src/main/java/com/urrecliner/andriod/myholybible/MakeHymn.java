@@ -30,7 +30,6 @@ import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
-import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
@@ -45,6 +44,7 @@ class MakeHymn {
 
     private TextView tVTitle;
     private String hymnTitle = "";
+    private ScrollView scrollView;
 
     void makeHymnKeypad() {
 

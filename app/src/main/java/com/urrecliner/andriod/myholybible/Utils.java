@@ -3,8 +3,6 @@ package com.urrecliner.andriod.myholybible;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +14,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 
@@ -103,17 +100,6 @@ class Utils {
             }
         }
         return urls;
-    }
-
-    public void clearBottomMenu() {
-        final ViewGroup fBtm = (ViewGroup) mActivity.findViewById(R.id.fragment_bottom);
-
-        TextView vLeftAction = (TextView) fBtm.findViewById(R.id.leftAction);
-        TextView vCurrBible = (TextView) fBtm.findViewById(R.id.currBible);
-        TextView vRightAction = (TextView) fBtm.findViewById(R.id.rightAction);
-        vLeftAction.setText(blank);
-        vCurrBible.setText(blank);
-        vRightAction.setText(blank);
     }
 
 }

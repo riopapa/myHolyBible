@@ -56,18 +56,19 @@ import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
-import static com.urrecliner.andriod.myholybible.Vars.lastVerse;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
+import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
 import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
 import static com.urrecliner.andriod.myholybible.Vars.newName;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
+import static com.urrecliner.andriod.myholybible.Vars.nowScrollView;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
 import static com.urrecliner.andriod.myholybible.Vars.numberColorF;
 import static com.urrecliner.andriod.myholybible.Vars.oldName;
@@ -75,7 +76,6 @@ import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
-import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.stackMax;
@@ -103,6 +103,8 @@ public class MainActivity extends Activity {
     private MakeHymn makeHymn;
     int highLiteMenuColor;
     int normalMenuColor;
+    final static String cevVersion = "cev";
+    final static String agpVersion = "agp";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +291,7 @@ public class MainActivity extends Activity {
             vCevBible.setText(blank);
         }
         else {
-            vAgpBible.setText("AGP");
+            vAgpBible.setText(agpVersion);
             vAgpBible.setBackgroundColor((agpShow)? highLiteMenuColor:normalMenuColor);
             int chapter = nowChapter - 1;
             if (chapter > 0)
@@ -312,7 +314,7 @@ public class MainActivity extends Activity {
                 txt = (next > 66) ? blank:shortBibleNames[next] + "1";
             }
             vRightAction.setText(txt);
-            vCevBible.setText("CEV");
+            vCevBible.setText(cevVersion);
             vCevBible.setBackgroundColor((cevShow)? highLiteMenuColor:normalMenuColor);
         }
     }
@@ -366,8 +368,8 @@ public class MainActivity extends Activity {
         vOldBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_OLD;
+//                nowVerse = getNowTopVerse();
                 nowBible = 0;
                 makeBibleList();
             }
@@ -375,8 +377,8 @@ public class MainActivity extends Activity {
         vNewBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_NEW;
+//                nowVerse = getNowTopVerse();
                 nowBible = 0;
                 makeBibleList();
             }
@@ -384,7 +386,6 @@ public class MainActivity extends Activity {
         vHymn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                nowVerse = getCurrentVerse();
                 topTab = TAB_MODE_HYMN;
                 nowBible = 0;
                 nowHymn = 0;
@@ -394,9 +395,9 @@ public class MainActivity extends Activity {
         vAgpBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currVerse = getCurrentVerse();
                 if (vAgpBible.getText().toString().equals(blank))
                     return;
+                int currVerse = getNowTopVerse();
                 agpShow = !agpShow;
                 history.pop();
                 nowVerse = currVerse;
@@ -406,9 +407,9 @@ public class MainActivity extends Activity {
         vCevBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currVerse = getCurrentVerse();
                 if (vCevBible.getText().toString().equals(blank))
                     return;
+                int currVerse = getNowTopVerse();
                 cevShow = !cevShow;
                 history.pop();
                 nowVerse = currVerse;
@@ -547,12 +548,13 @@ public class MainActivity extends Activity {
             makeTopBottomMenu();
     }
 
-    private int getCurrentVerse() {
-        if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD) {
-            return lastVerse *  scrollView.getScrollY() / scrollView.getChildAt(0).getHeight() + 2;
-        }
-        return 0;
+    private int getNowTopVerse() {
+        if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD)
+            return maxVerse *  nowScrollView.getScrollY() / nowScrollView.getChildAt(0).getHeight() + 2;
+        else
+            return 0;
     }
+
 // ↓ ↓ ↓ P E R M I S S I O N    RELATED /////// ↓ ↓ ↓ ↓
     ArrayList<String> permissions = new ArrayList<>();
     private final static int ALL_PERMISSIONS_RESULT = 101;
@@ -576,10 +578,7 @@ public class MainActivity extends Activity {
         return result;
     }
     private boolean hasPermission(@NonNull String permission) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            return (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
-        else
-           return false;
+        return (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
     }
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -592,10 +591,9 @@ public class MainActivity extends Activity {
                 }
             }
             if (permissionsRejected.size() > 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                    shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                        String msg = "These permissions are mandatory for the application. Please allow access.";
-                        showDialog(msg);
+                if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
+                    String msg = "These permissions are mandatory for the application. Please allow access.";
+                    showDialog(msg);
                 }
             }
             else
@@ -607,10 +605,8 @@ public class MainActivity extends Activity {
             new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(permissionsRejected.toArray(
-                                new String[0]), ALL_PERMISSIONS_RESULT);
-                    }
+                    requestPermissions(permissionsRejected.toArray(
+                            new String[0]), ALL_PERMISSIONS_RESULT);
                 }
             });
     }
@@ -649,12 +645,12 @@ public class MainActivity extends Activity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder mBuilder = new AlertDialog.Builder(
-                    getActivity());
+
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
-            mBuilder.setView(mLayoutInflater
-                    .inflate(R.layout.dialog_quit, null));
-            mBuilder.setTitle(mainActivity.getString(R.string.wanna_quit));
+            mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog_quit, null));
+            mBuilder.setTitle(mainActivity.getResources().getString(R.string.wanna_quit));
+//            mBuilder.setMessage();
             return mBuilder.create();
         }
 

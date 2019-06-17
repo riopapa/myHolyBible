@@ -45,27 +45,27 @@ import static com.urrecliner.andriod.myholybible.Vars.dictColorF;
 import static com.urrecliner.andriod.myholybible.Vars.dictWord;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.history;
-import static com.urrecliner.andriod.myholybible.Vars.lastVerse;
 import static com.urrecliner.andriod.myholybible.Vars.logFile;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
+import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
 import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
+import static com.urrecliner.andriod.myholybible.Vars.nowScrollView;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
 import static com.urrecliner.andriod.myholybible.Vars.numberColorF;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
-import static com.urrecliner.andriod.myholybible.Vars.scrollView;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
+import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleNumber;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
@@ -80,6 +80,7 @@ class MakeBible {
 
     private final String newLine = "\n";
     private final String new3Line = "\n\n\n";
+    private ScrollView scrollView;
 
     void showBibleList() {
         if (makeBible == null)
@@ -246,7 +247,7 @@ class MakeBible {
     private StringBuilder bodyText;
 
     void MakeBibleBody() {
-        final ScrollView scrollView = new ScrollView(mContext);
+        scrollView = new ScrollView(mContext);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         final String [] bibleTexts = utils.readBibleFile(file2read);
         if (bibleTexts == null) {
@@ -288,13 +289,13 @@ class MakeBible {
         mBody.addView(scrollView);
         nowHymn = 0;
         mainActivity.makeTopBottomMenu();
-        Vars.scrollView = scrollView;
         scrollView.post(new Runnable() {
             @Override
             public void run() {
                 scrollView.scrollTo(0, tV.getBottom() * versePtr / ptrBody);
             }
         });
+        nowScrollView = scrollView;
     }
 
     @NonNull
@@ -330,9 +331,9 @@ class MakeBible {
     }
 
     private void makeBibleAllVerses(String [] bibleTexts) {
-        lastVerse  = bibleTexts.length;
+        maxVerse  = bibleTexts.length;
         versePtr = 0;
-        for (int line = 0; line < lastVerse; line++) {
+        for (int line = 0; line < maxVerse; line++) {
             if (line == (nowVerse-2))
                 versePtr = ptrBody;
             String str;

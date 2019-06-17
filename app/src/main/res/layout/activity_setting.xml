@@ -4,6 +4,7 @@
     android:layout_height="wrap_content">
     <LinearLayout
         android:orientation="vertical"
+        android:background="@color/BackgroundColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -487,6 +488,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bookmark_check5"/>
         </LinearLayout>
+        <TextView
+            android:id="@+id/build_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@color/LawnGreen"
+            android:layout_gravity="center"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
