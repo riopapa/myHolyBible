@@ -20,6 +20,7 @@ import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
@@ -187,13 +188,24 @@ public class SetActivity extends Activity {
             }
         });
 
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.ENGLISH);
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
         String build_time = "제작 : "+dateTimeFormat.format(BuildConfig.BUILD_TIME)+", 하원철";
         tv = (TextView) findViewById(R.id.build_time);
         tv.setText(build_time);
     }
 
     private void buildSetHymn() {
+        cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
+        cb.setChecked(hymnImageFirst);
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
+                hymnImageFirst = cb.isChecked();
+                editor.putBoolean("hymnImageFirst", hymnImageFirst).apply();
+            }
+        });
+
         cb = (CheckBox) findViewById(R.id.hymn_sheet_check);
         cb.setChecked(hymnImageShow);
         cb.setOnClickListener(new View.OnClickListener() {

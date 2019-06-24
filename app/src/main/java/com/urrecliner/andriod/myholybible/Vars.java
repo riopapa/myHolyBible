@@ -37,7 +37,6 @@ public class Vars {
     static int TAB_MODE_DIC = 8;
 
     static int stackP = 0;
-    static int stackMax = 0;
     static int topTab = TAB_MODE_NEW;    // if topTab < TAB_MODE_HYMN then it means OLD or NEW
     static String logFile = "log.txt";
 
@@ -64,6 +63,7 @@ public class Vars {
     static int textSizeHymnBody = 20;
     static int textSizeBibleBody = 20;
     static int textSizeKeyWord = 20;
+    static boolean hymnImageFirst = true;
     static boolean hymnImageShow = true;
     static boolean hymnTextShow = true;
     static boolean alwaysOn = true;

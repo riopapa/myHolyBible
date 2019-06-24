@@ -20,6 +20,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,6 +53,7 @@ import static com.urrecliner.andriod.myholybible.Vars.dictColorF;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.history;
+import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
@@ -78,7 +80,6 @@ import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
 import static com.urrecliner.andriod.myholybible.Vars.referColorF;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
-import static com.urrecliner.andriod.myholybible.Vars.stackMax;
 import static com.urrecliner.andriod.myholybible.Vars.stackP;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
@@ -130,6 +131,7 @@ public class MainActivity extends Activity {
         textSizeHymnBody = mSettings.getInt("textSizeHymnBody", 20);
         textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
         textSizeSpace = mSettings.getInt("textSizeSpace", 15);
+        hymnImageFirst = mSettings.getBoolean("hymnImageFirst", true);
         hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
         hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
@@ -138,6 +140,7 @@ public class MainActivity extends Activity {
         bookChapters = utils.getStringArrayPref("bookChapters");
         bookSaves = utils.getStringArrayPref("bookSaves");
 
+        history.restore();
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
         final ViewGroup fTop = (ViewGroup) findViewById(R.id.fragment_top);
@@ -168,16 +171,10 @@ public class MainActivity extends Activity {
         else
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initializeVariables();
+        initializeColors();
 
-        topTab = TAB_MODE_NEW;
-        nowBible = 0;
-        nowChapter = 0;
-        nowVerse = 0;
-        nowHymn = 0;
-
-        makeTopBottomMenu();
-        makeBibleList();
+//        makeTopBottomMenu();
+//        makeBibleList();
         assignAllButtonListeners();
         vSetting.post(new Runnable() {
             @Override
@@ -198,7 +195,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onSwipeGoFore() {
-                goForward();
+//                goForward();
             }
 
             @Override
@@ -227,6 +224,18 @@ public class MainActivity extends Activity {
         display.getSize(size);
         windowYUpper = size.y * 6f / 10f;
         windowXCenter = size.x / 2f;
+
+        if (topTab < TAB_MODE_HYMN) {
+            if (nowBible > 0)
+                makeBible.MakeBibleBody();
+            else
+                makeBible.showBibleList();
+        } else {
+            if (nowHymn > 0)
+                makeHymn.makeHymnBody();
+            else
+                makeHymn.makeHymnKeypad();
+        }
     }
 
     @Override
@@ -234,7 +243,7 @@ public class MainActivity extends Activity {
         onSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
-    private void initializeVariables() {
+    private void initializeColors() {
 
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
@@ -517,8 +526,11 @@ public class MainActivity extends Activity {
         else {
             history.pop();
             history.pop();
-            if (topTab < TAB_MODE_HYMN && nowBible > 0) {
-                makeBible.MakeBibleBody();
+            if (topTab < TAB_MODE_HYMN) {
+                if (nowBible > 0)
+                    makeBible.MakeBibleBody();
+                else
+                    makeBible.showBibleList();
             } else if (topTab == TAB_MODE_HYMN) {
                 if (nowHymn > 0)
                     makeHymn.makeHymnBody();
@@ -534,7 +546,7 @@ public class MainActivity extends Activity {
     }
 
     private void goForward() {
-        if (stackP == stackMax || !history.shift()) {
+        if (!history.shift()) {
             Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
             return;
         }
@@ -620,28 +632,54 @@ public class MainActivity extends Activity {
     }
 // ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
 
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return super.onKeyUp(keyCode, event);
+    }
+
+    final long BACK_DELAY = 800;
     @Override
     public void onBackPressed() {
+//        utils.log("back1","stackp"+stackP+" topTab "+topTab+" nowBible "+nowBible+" nowChapter "+nowChapter+" nowVerse "+nowVerse+" nowHymn "+nowHymn);
 
         MainDialog mMainDialog;
-//        Log.w("timegap", " " + (System.currentTimeMillis()-backKeyPressedTime));
-//        Log.w("back", " topTab " + topTab + " bible " + nowBible+" chap "+ nowChapter+" hymn "+ nowHymn);
-        if(System.currentTimeMillis()>backKeyPressedTime+500){
+        if(System.currentTimeMillis()>backKeyPressedTime+BACK_DELAY){
             backKeyPressedTime = System.currentTimeMillis();
-            if (stackP == 1) {
+            if (stackP == 2) {
                 Toast.makeText(getApplicationContext(),"\n맨 처음 입니다.\n혹시 종료하려면 뒤로가기를 두번 눌러주세요\n", Toast.LENGTH_LONG).show();
-//                mMainDialog = new MainDialog();
-//                mMainDialog.show(getFragmentManager(), null);
             }
-            else
+            else {
+                saveNow();
                 goBackward();
+            }
         }
-        else{
+        else {
+            reloadNow();
+            history.push();
+            history.save();
             mMainDialog = new MainDialog();
             mMainDialog.show(getFragmentManager(), null);
         }
     }
-   public static class MainDialog extends DialogFragment {
+
+    int saveTab, saveBible, saveChapter, saveVerse, saveHymn;
+
+    private void saveNow() {
+        saveTab = topTab;
+        saveBible = nowBible;
+        saveChapter = nowChapter;
+        saveVerse = nowVerse;
+        saveHymn = nowHymn;
+    }
+    private void reloadNow() {
+        topTab = saveTab;
+        nowBible = saveBible;
+        nowChapter = saveChapter;
+        nowVerse = saveVerse;
+        nowHymn = saveHymn;
+    }
+    public static class MainDialog extends DialogFragment {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -650,6 +688,7 @@ public class MainActivity extends Activity {
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
             mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog_quit, null));
             mBuilder.setTitle(mainActivity.getResources().getString(R.string.wanna_quit));
+
 //            mBuilder.setMessage();
             return mBuilder.create();
         }
@@ -678,26 +717,3 @@ public class MainActivity extends Activity {
 //        UnderlineSpan(), 104, 116, 0);
 //        RelativeSizeSpan(1.5f), 116, 139, 0);
 //        StrikethroughSpan(), 153, 170, 0);
-
-//    private void quitApp()
-//    {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setIcon(R.mipmap.icon_riopapa_face);
-//        builder.setMessage("리오파파 성경찬송 이젠 그만 볼래요?");
-//        builder.setPositiveButton("그래요, 다음에 또 봅시다",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                        System.exit(0);
-//                        android.os.Process.killProcess(android.os.Process.myPid());
-//                    }
-//                });
-//        builder.setNegativeButton("앗, 잘못 눌렀군요",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-//                    }
-//                });
-//        builder.show();
-//    }
-

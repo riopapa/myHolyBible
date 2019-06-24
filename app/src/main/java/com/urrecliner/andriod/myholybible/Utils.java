@@ -102,4 +102,34 @@ class Utils {
         return urls;
     }
 
+    void setIntArrayPref(String key, ArrayList<Integer> values) {
+        SharedPreferences.Editor editor = mSettings.edit();
+        JSONArray a = new JSONArray();
+        for (int i = 0; i < values.size(); i++) {
+            a.put(values.get(i));
+        }
+        if (!values.isEmpty()) {
+            editor.putString(key, a.toString());
+        } else {
+            editor.putString(key, null);
+        }
+        editor.apply();
+    }
+
+    ArrayList<Integer> getIntArrayPref(String key) {
+        String json = mSettings.getString(key, null);
+        ArrayList<Integer> urls = new ArrayList<>();
+        if (json != null) {
+            try {
+                JSONArray a = new JSONArray(json);
+                for (int i = 0; i < a.length(); i++) {
+                    int url = a.optInt(i);
+                    urls.add(url);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return urls;
+    }
 }

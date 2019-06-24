@@ -21,6 +21,7 @@ import java.io.File;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static com.urrecliner.andriod.myholybible.Vars.history;
+import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
@@ -186,7 +187,7 @@ class MakeHymn {
         linearlayout.addView(tTail);
 
         nowHymn = 0;
-        history.push();
+//        history.push();   // haha
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
@@ -206,45 +207,73 @@ class MakeHymn {
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
 
-        if (hymnImageShow) {
-            File imgFile = new File(packageFolder, "hymn_png/" + nowHymn + ".pngz");
-            if (imgFile.exists()) {
-                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
-                ImageView imV = new ImageView(mContext);
-                linearlayout.addView(imV);
-                imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
-                imV.requestLayout();
-                PhotoViewAttacher pA;
-                pA = new PhotoViewAttacher(imV);
-                pA.update();
-            }
+        if (hymnImageFirst) {
+            if (hymnImageShow)
+                show_hymnImage(linearlayout);
+            if (hymnTextShow)
+                show_HymnText(hymnTexts, linearlayout);
         }
-        if (hymnTextShow) {
-            TextView tVBody = new TextView(mContext);
-            tVBody.setTextSize(textSizeHymnBody);
-            tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
-            tVBody.setWidth(xPixels);
-            tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
-            linearlayout.addView(tVBody);
-
-            StringBuilder bodyText = new StringBuilder();
-            for (String hymnText : hymnTexts) {
-                String newLine = "\n";
-                String workLine = newLine + hymnText;
-                bodyText.append(workLine);
-            }
-            String new2Line = "\n\n";
-            bodyText.append(new3Line);
-            bodyText.append(new2Line);
-            SpannableString ssBody = new SpannableString(bodyText);
-            tVBody.setText(ssBody);
-            tVBody.setMovementMethod(LinkMovementMethod.getInstance());
+        else {
+            if (hymnTextShow)
+                show_HymnText(hymnTexts, linearlayout);
+            if (hymnImageShow)
+                show_hymnImage(linearlayout);
         }
         history.push();
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
         mainActivity.makeTopBottomMenu();
+    }
+
+    private void show_HymnText(String[] hymnTexts, LinearLayout linearlayout) {
+        TextView tVBody = new TextView(mContext);
+        tVBody.setTextSize(textSizeHymnBody);
+        tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
+        tVBody.setWidth(xPixels);
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        linearlayout.addView(tVBody);
+
+        StringBuilder bodyText = new StringBuilder();
+        for (String hymnText : hymnTexts) {
+            String newLine = "\n";
+            String workLine = newLine + hymnText;
+            bodyText.append(workLine);
+        }
+        String new2Line = "\n\n";
+        bodyText.append(new2Line);
+        if (hymnImageFirst)
+            bodyText.append(new3Line);
+        SpannableString ssBody = new SpannableString(bodyText);
+        tVBody.setText(ssBody);
+        tVBody.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private void show_hymnImage(LinearLayout linearlayout) {
+        File imgFile = new File(packageFolder, "hymn_png/" + nowHymn + ".pngz");
+        if (imgFile.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+            int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
+            ImageView imV = new ImageView(mContext);
+            linearlayout.addView(imV);
+            imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
+            imV.requestLayout();
+            PhotoViewAttacher pA;
+            pA = new PhotoViewAttacher(imV);
+            pA.update();
+        }
+        TextView tVBody = new TextView(mContext);
+        tVBody.setTextSize(textSizeHymnBody);
+        tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
+        tVBody.setWidth(xPixels);
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        linearlayout.addView(tVBody);
+
+        StringBuilder bodyText = new StringBuilder();
+        if (!hymnImageFirst)
+            bodyText.append(new3Line);
+        SpannableString ssBody = new SpannableString(bodyText);
+        tVBody.setText(ssBody);
+        tVBody.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void makeSortedHymnList(int start) {
