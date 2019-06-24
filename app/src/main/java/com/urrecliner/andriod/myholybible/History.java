@@ -103,7 +103,7 @@ class History {
     }
 
     void save() {
-        utils.log("saving","stack "+stackP+" "+topTabStack.size());
+//        utils.log("saving","stack "+stackP+" "+topTabStack.size());
         dumpStack();
         editor.putInt("stackP", stackP).apply();
         utils.setIntArrayPref("topTabStack", topTabStack);

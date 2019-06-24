@@ -37,19 +37,19 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorB;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorF;
+import static com.urrecliner.andriod.myholybible.Vars.agpColorBack;
+import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
-import static com.urrecliner.andriod.myholybible.Vars.bibleColorF;
+import static com.urrecliner.andriod.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorB;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorF;
+import static com.urrecliner.andriod.myholybible.Vars.cevColorBack;
+import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
-import static com.urrecliner.andriod.myholybible.Vars.dictColorF;
+import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.history;
@@ -65,19 +65,19 @@ import static com.urrecliner.andriod.myholybible.Vars.mSettings;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
-import static com.urrecliner.andriod.myholybible.Vars.nbrofChapters;
+import static com.urrecliner.andriod.myholybible.Vars.nbrOfChapters;
 import static com.urrecliner.andriod.myholybible.Vars.newName;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowScrollView;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
-import static com.urrecliner.andriod.myholybible.Vars.numberColorF;
+import static com.urrecliner.andriod.myholybible.Vars.numberColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.oldName;
 import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
-import static com.urrecliner.andriod.myholybible.Vars.referColorF;
+import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
+import static com.urrecliner.andriod.myholybible.Vars.referColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.stackP;
@@ -89,7 +89,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static com.urrecliner.andriod.myholybible.Vars.verseColorF;
+import static com.urrecliner.andriod.myholybible.Vars.verseColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
 import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
 import static com.urrecliner.andriod.myholybible.Vars.xPixels;
@@ -249,17 +249,17 @@ public class MainActivity extends Activity {
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x444444;
 
-        bibleColorF = ContextCompat.getColor(mContext,R.color.Black);
-        verseColorF = ContextCompat.getColor(mContext,R.color.EarthBlue);
-        paraColorF = ContextCompat.getColor(mContext,R.color.Indigo);
-        referColorF = ContextCompat.getColor(mContext,R.color.RoyalBlue);
-        numberColorF = ContextCompat.getColor(mContext,R.color.MidnightBlue);
+        bibleColorFore = ContextCompat.getColor(mContext,R.color.Black);
+        verseColorFore = ContextCompat.getColor(mContext,R.color.EarthBlue);
+        paraColorFore = ContextCompat.getColor(mContext,R.color.Indigo);
+        referColorFore = ContextCompat.getColor(mContext,R.color.RoyalBlue);
+        numberColorFore = ContextCompat.getColor(mContext,R.color.MidnightBlue);
 
-        cevColorF = ContextCompat.getColor(mContext,R.color.Navy);
-        cevColorB = ContextCompat.getColor(mContext,R.color.PowderBlue);
-        agpColorF = ContextCompat.getColor(mContext,R.color.DarkOrchid);
-        agpColorB = ContextCompat.getColor(mContext,R.color.Lavender);
-        dictColorF = ContextCompat.getColor(mContext,R.color.Blue);
+        cevColorFore = ContextCompat.getColor(mContext,R.color.Navy);
+        cevColorBack = ContextCompat.getColor(mContext,R.color.PowderBlue);
+        agpColorFore = ContextCompat.getColor(mContext,R.color.DarkOrchid);
+        agpColorBack = ContextCompat.getColor(mContext,R.color.Lavender);
+        dictColorFore = ContextCompat.getColor(mContext,R.color.Blue);
     }
 
     public void makeTopBottomMenu() {
@@ -308,7 +308,7 @@ public class MainActivity extends Activity {
             else {
                 int prev = nowBible - 1;
                 if (prev > 0)
-                    txt = shortBibleNames[prev] + nbrofChapters[prev];
+                    txt = shortBibleNames[prev] + nbrOfChapters[prev];
                 else
                     txt = blank;
             }
@@ -316,7 +316,7 @@ public class MainActivity extends Activity {
             txt = fullBibleNames[nowBible] + nowChapter;
             vCurrBible.setText(txt);
             chapter = nowChapter + 1;
-            if (chapter <= nbrofChapters[nowBible])
+            if (chapter <= nbrOfChapters[nowBible])
                 txt = shortBibleNames[nowBible] + chapter;
             else {
                 int next = nowBible + 1;
@@ -435,7 +435,7 @@ public class MainActivity extends Activity {
                 return;
             else {
                 nowBible = prevBible;
-                nowChapter = nbrofChapters[prevBible];
+                nowChapter = nbrOfChapters[prevBible];
             }
         } else
             nowChapter = prevChapter;
@@ -476,7 +476,7 @@ public class MainActivity extends Activity {
 
     public void goBibleRight() {
         int prevChapter = nowChapter + 1;
-        if (prevChapter > nbrofChapters[nowBible]) {   // next bible required
+        if (prevChapter > nbrOfChapters[nowBible]) {   // next bible required
             int prevBible = nowBible + 1;
             if (prevBible > 66) {
                 return;
@@ -544,21 +544,21 @@ public class MainActivity extends Activity {
                 makeTopBottomMenu();
         }
     }
-
-    private void goForward() {
-        if (!history.shift()) {
-            Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
-            return;
-        }
-        if (topTab < TAB_MODE_HYMN && nowBible > 0) {
-            makeBible.MakeBibleBody();
-        } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
-            makeHymn.makeHymnBody();
-        } else if (topTab == TAB_MODE_DIC) {
-            makeBible.makeKeyWord();
-        } else
-            makeTopBottomMenu();
-    }
+//
+//    private void goForward() {
+//        if (!history.shift()) {
+//            Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        if (topTab < TAB_MODE_HYMN && nowBible > 0) {
+//            makeBible.MakeBibleBody();
+//        } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
+//            makeHymn.makeHymnBody();
+//        } else if (topTab == TAB_MODE_DIC) {
+//            makeBible.makeKeyWord();
+//        } else
+//            makeTopBottomMenu();
+//    }
 
     private int getNowTopVerse() {
         if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD)

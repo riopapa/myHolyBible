@@ -30,7 +30,7 @@ import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.paraColorF;
+import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
@@ -311,7 +311,7 @@ class MakeHymn {
             text = "  " + sortedNumbers[start] + " ";
             numberTV.setText(text);
             numberTV.setId(sortedNumbers[start]);
-            numberTV.setTextColor(paraColorF);
+            numberTV.setTextColor(paraColorFore);
             numberTV.setTextSize(textSizeHymnBody);
             numberTV.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             columnLayout.addView(numberTV);
