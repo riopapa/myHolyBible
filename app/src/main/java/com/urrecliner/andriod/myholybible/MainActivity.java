@@ -14,6 +14,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -32,6 +34,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
@@ -54,10 +58,10 @@ import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.history;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
-import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
+import static com.urrecliner.andriod.myholybible.Vars.isSaying;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
@@ -81,6 +85,7 @@ import static com.urrecliner.andriod.myholybible.Vars.referColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.andriod.myholybible.Vars.stackP;
+import static com.urrecliner.andriod.myholybible.Vars.text2Speech;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -102,10 +107,10 @@ public class MainActivity extends Activity {
     TextView vAgpBible, vLeftAction, vCurrBible, vRightAction, vCevBible;
     long backKeyPressedTime;
     private MakeHymn makeHymn;
-    int highLiteMenuColor;
-    int normalMenuColor;
+    int highLiteMenuColor, normalMenuColor, readMenuColor;
     final static String cevVersion = "cev";
     final static String agpVersion = "agp";
+    private boolean bookMarkNow = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,20 +130,8 @@ public class MainActivity extends Activity {
         mBody = (ViewGroup) findViewById(R.id.fragment_body);
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
         editor = mSettings.edit();
-        textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
-        textSizeBibleBody = mSettings.getInt("textSizeBibleBody", 20);
-        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
-        textSizeHymnBody = mSettings.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
-        textSizeSpace = mSettings.getInt("textSizeSpace", 15);
-        hymnImageFirst = mSettings.getBoolean("hymnImageFirst", true);
-        hymnImageShow = mSettings.getBoolean("hymnImageShow", true);
-        hymnTextShow = mSettings.getBoolean("hymnTextShow", true);
-        alwaysOn = mSettings.getBoolean("alwaysOn",true);
 
-        bookBibles = utils.getStringArrayPref("bookBibles");
-        bookChapters = utils.getStringArrayPref("bookChapters");
-        bookSaves = utils.getStringArrayPref("bookSaves");
+        getSharedValues();
 
         history.restore();
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
@@ -236,6 +229,30 @@ public class MainActivity extends Activity {
             else
                 makeHymn.makeHymnKeypad();
         }
+        text2Speech = new Text2Speech();
+        text2Speech.setReady(getApplicationContext());
+
+//        if (text2Speech == null) {
+//            text2Speech = new Text2Speech();
+//            text2Speech.initiateTTS(getApplicationContext());
+//        }
+
+    }
+
+    private void getSharedValues() {
+        textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
+        textSizeBibleBody = mSettings.getInt("textSizeBibleBody", 20);
+        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
+        textSizeHymnBody = mSettings.getInt("textSizeHymnBody", 20);
+        textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
+        textSizeSpace = mSettings.getInt("textSizeSpace", 15);
+        hymnImageFirst = mSettings.getBoolean("hymnImageFirst", true);
+        hymnShowWhat = mSettings.getInt("hymnShowWhat", 0);
+        alwaysOn = mSettings.getBoolean("alwaysOn",true);
+
+        bookBibles = utils.getStringArrayPref("bookBibles");
+        bookChapters = utils.getStringArrayPref("bookChapters");
+        bookSaves = utils.getStringArrayPref("bookSaves");
     }
 
     @Override
@@ -248,6 +265,7 @@ public class MainActivity extends Activity {
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x444444;
+        readMenuColor = normalMenuColor ^ 0x777777;
 
         bibleColorFore = ContextCompat.getColor(mContext,R.color.Black);
         verseColorFore = ContextCompat.getColor(mContext,R.color.EarthBlue);
@@ -363,6 +381,16 @@ public class MainActivity extends Activity {
                     bookMarkThis();
             }
         });
+        vCurrBible.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (vCurrBible.getText().toString().equals(blank))
+                    return false;
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)   // book mark this chapter
+                    readBible();
+                return false;
+            }
+        });
         vRightAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -427,6 +455,33 @@ public class MainActivity extends Activity {
         });
     }
 
+    private final Handler aHandler = new Handler() {
+        public void handleMessage(Message msg) { vCurrBible.setEnabled(true); }};
+
+    void readBible() {
+        if (isSaying) {
+            isSaying = false;
+            bookMarkNow = true;
+            Toast.makeText(mContext,"성경읽기를 끝냅니다",Toast.LENGTH_SHORT).show();
+            history.push();
+            text2Speech.stopRead();
+        }
+        else {
+            isSaying = true;
+            bookMarkNow = false;
+            Toast.makeText(mContext,"성경읽기를 시작합니다",Toast.LENGTH_SHORT).show();
+            text2Speech.readVerse(0);
+        }
+        vCurrBible.setEnabled(false);
+        vCurrBible.setBackgroundColor((isSaying)? readMenuColor:normalMenuColor);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                aHandler.sendEmptyMessage(0);
+            }
+        }, 800);
+    }
+
     public void goBibleLeft() {
         int prevChapter = nowChapter - 1;
         if (prevChapter == 0) {   // prev bible required
@@ -444,6 +499,8 @@ public class MainActivity extends Activity {
     }
 
     void bookMarkThis() {
+        if (!bookMarkNow)
+            return;
         final int MaxSize = 6;
         bookBibles.add(0, ""+nowBible);
         bookChapters.add(0, ""+nowChapter);
@@ -474,9 +531,15 @@ public class MainActivity extends Activity {
         makeHymn.makeHymnBody();
     }
 
+    final Handler nextHandler = new Handler() {
+        public void handleMessage(Message msg) { goBibleRight(); }};
+    public void handleBibleRight() {
+        nextHandler.sendEmptyMessage(0);
+    }
+
     public void goBibleRight() {
-        int prevChapter = nowChapter + 1;
-        if (prevChapter > nbrOfChapters[nowBible]) {   // next bible required
+        int nextChapter = nowChapter + 1;
+        if (nextChapter > nbrOfChapters[nowBible]) {   // next bible required
             int prevBible = nowBible + 1;
             if (prevBible > 66) {
                 return;
@@ -485,7 +548,7 @@ public class MainActivity extends Activity {
                 nowChapter = 1;
             }
         } else {
-            nowChapter = prevChapter;
+            nowChapter = nextChapter;
         }
         nowVerse = 1;
         makeBible.MakeBibleBody();

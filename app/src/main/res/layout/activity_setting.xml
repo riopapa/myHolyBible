@@ -30,7 +30,7 @@
                     android:textSize="28sp" />
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="6dp"
+                    android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -74,7 +74,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="6dp"
+                    android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -118,7 +118,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="6dp"
+                    android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -162,7 +162,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="6dp"
+                    android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -206,7 +206,7 @@
                 </LinearLayout>
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="6dp"
+                    android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -264,69 +264,45 @@
                     android:text="@string/hymn"
                     android:layout_gravity="center"
                     android:textSize="28sp" />
-                <LinearLayout
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:layout_margin="4dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:gravity="end|center_vertical"
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <RadioButton
+                        android:id="@+id/sheet_lyric"
+                        android:layout_margin="1dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/show_hymn_sheetFirst"
-                        android:layout_gravity="center"
-                        android:textSize="24sp" />
-                    <CheckBox
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
+                        android:textSize="24sp"
+                        android:text="@string/sheet_lyric" />
+
+                    <RadioButton
+                        android:id="@+id/lyric_sheet"
+                        android:layout_margin="1dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/hymn_sheet_first"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:layout_margin="4dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:gravity="end|center_vertical"
+                        android:textSize="24sp"
+                        android:text="@string/lyric_sheet" />
+
+                    <RadioButton
+                        android:id="@+id/sheet_only"
+                        android:layout_margin="1dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/show_hymn_sheet"
-                        android:layout_gravity="center"
-                        android:textSize="24sp" />
-                    <CheckBox
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
+                        android:textSize="24sp"
+                        android:text="@string/sheet_only" />
+
+                    <RadioButton
+                        android:id="@+id/lyric_only"
+                        android:layout_margin="1dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/hymn_sheet_check"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:layout_margin="4dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:gravity="end|center_vertical"
-                        android:layout_height="wrap_content"
-                        android:text="@string/show_hymn_lyric"
-                        android:layout_gravity="center"
-                        android:textSize="24sp" />
-                    <CheckBox
-                        android:layout_weight="2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/hymn_lyric_check"/>
-                </LinearLayout>
+                        android:textSize="24sp"
+                        android:text="@string/lyric_only" />
+
+                </RadioGroup>
+
                 <LinearLayout
                     android:id="@+id/hymn_lyric_set"
                     android:gravity="center"
@@ -336,43 +312,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="5"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hymn_lyric_size"
-                        android:layout_gravity="center"
-                        android:textSize="24sp" />
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/hymn_lyric_size"
+                    android:layout_gravity="center"
+                    android:textSize="24sp" />
                     <TextView
-                        android:id="@+id/hymn_lyric_size_down"
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:text="@string/minus"
-                        android:textColor="#012345"
-                        android:textStyle="bold"
-                        android:textSize="24sp" />
+                    android:id="@+id/hymn_lyric_size_down"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/minus"
+                    android:textColor="#012345"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
                     <TextView
-                        android:id="@+id/hymn_lyric_size"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:text="@string/number"
-                        android:textStyle="bold"
-                        android:textSize="24sp" />
+                    android:id="@+id/hymn_lyric_size"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/number"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
                     <TextView
-                        android:id="@+id/hymn_lyric_size_up"
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:gravity="center"
-                        android:layout_height="wrap_content"
-                        android:text="@string/plus"
-                        android:textColor="#012345"
-                        android:textStyle="bold"
-                        android:textSize="24sp" />
+                    android:id="@+id/hymn_lyric_size_up"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plus"
+                    android:textColor="#012345"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:gravity="center"
                     android:padding="4dp"
@@ -521,3 +498,117 @@
     </LinearLayout>
 
 </ScrollView>
+
+
+<!--<LinearLayout-->
+<!--android:gravity="center"-->
+<!--android:padding="4dp"-->
+<!--android:layout_margin="4dp"-->
+<!--android:orientation="horizontal"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content">-->
+<!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="4"-->
+    <!--android:gravity="end|center_vertical"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/show_hymn_sheetFirst"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:textSize="24sp" />-->
+<!--<CheckBox-->
+    <!--android:layout_weight="2"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/hymn_sheet_first"/>-->
+<!--</LinearLayout>-->
+<!--<LinearLayout-->
+<!--android:gravity="center"-->
+<!--android:padding="4dp"-->
+<!--android:layout_margin="4dp"-->
+<!--android:orientation="horizontal"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content">-->
+<!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="4"-->
+    <!--android:gravity="end|center_vertical"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/show_hymn_sheet"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:textSize="24sp" />-->
+<!--<CheckBox-->
+    <!--android:layout_weight="2"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/hymn_sheet_check"/>-->
+<!--</LinearLayout>-->
+
+
+
+<!--<LinearLayout-->
+<!--android:gravity="center"-->
+<!--android:padding="4dp"-->
+<!--android:layout_margin="4dp"-->
+<!--android:orientation="horizontal"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content">-->
+<!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="4"-->
+    <!--android:gravity="end|center_vertical"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/show_hymn_lyric"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:textSize="24sp" />-->
+<!--<CheckBox-->
+    <!--android:layout_weight="2"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:id="@+id/hymn_lyric_check"/>-->
+<!--</LinearLayout>-->
+<!--<LinearLayout-->
+<!--android:id="@+id/hymn_lyric_set"-->
+<!--android:gravity="center"-->
+<!--android:padding="4dp"-->
+<!--android:layout_margin="4dp"-->
+<!--android:orientation="horizontal"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content">-->
+<!--<TextView-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="5"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/hymn_lyric_size"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:textSize="24sp" />-->
+<!--<TextView-->
+    <!--android:id="@+id/hymn_lyric_size_down"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="2"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/minus"-->
+    <!--android:textColor="#012345"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textSize="24sp" />-->
+<!--<TextView-->
+    <!--android:id="@+id/hymn_lyric_size"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="3"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/number"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textSize="24sp" />-->
+<!--<TextView-->
+    <!--android:id="@+id/hymn_lyric_size_up"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_weight="2"-->
+    <!--android:gravity="center"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/plus"-->
+    <!--android:textColor="#012345"-->
+    <!--android:textStyle="bold"-->
+    <!--android:textSize="24sp" />-->
+<!--</LinearLayout>-->

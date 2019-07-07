@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -20,9 +22,7 @@ import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
-import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
@@ -54,7 +54,6 @@ public class SetActivity extends Activity {
         buildSetHymn();
         buildSetBookMark();
     }
-
 
     private void buildSetBible() {
         tv = (TextView) findViewById(R.id.bibleName_size);
@@ -195,52 +194,36 @@ public class SetActivity extends Activity {
     }
 
     private void buildSetHymn() {
-        cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
-        cb.setChecked(hymnImageFirst);
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
-                hymnImageFirst = cb.isChecked();
-                editor.putBoolean("hymnImageFirst", hymnImageFirst).apply();
-            }
-        });
-
-        cb = (CheckBox) findViewById(R.id.hymn_sheet_check);
-        cb.setChecked(hymnImageShow);
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cb = (CheckBox) findViewById(R.id.hymn_sheet_check);
-                hymnImageShow = cb.isChecked();
-                editor.putBoolean("hymnImageShow", hymnImageShow).apply();
-            }
-        });
-
-        cb = (CheckBox) findViewById(R.id.hymn_lyric_check);
-        cb.setChecked(hymnTextShow);
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cb = (CheckBox) findViewById(R.id.hymn_lyric_check);
-                hymnTextShow = cb.isChecked();
-                editor.putBoolean("hymnTextShow", hymnTextShow).apply();
-                if (hymnTextShow) {
-                    View lyric = findViewById(R.id.hymn_lyric_set);
-                    lyric.setVisibility(View.VISIBLE);
-                } else {
-                    View lyric = findViewById(R.id.hymn_lyric_set);
-                    lyric.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-        if (hymnTextShow) {
-            View lyric = findViewById(R.id.hymn_lyric_set);
-            lyric.setVisibility(View.VISIBLE);
-        } else {
-            View lyric = findViewById(R.id.hymn_lyric_set);
-            lyric.setVisibility(View.INVISIBLE);
+        RadioGroup rg = (RadioGroup)findViewById(R.id.radioGroup1);
+        RadioButton rb;
+        switch(hymnShowWhat) {
+            case 0:
+                rb = (RadioButton) findViewById(R.id.sheet_lyric); rb.setChecked(true); break;
+            case 1:
+                rb = (RadioButton) findViewById(R.id.lyric_sheet); rb.setChecked(true); break;
+            case 2:
+                rb = (RadioButton) findViewById(R.id.sheet_only); rb.setChecked(true); break;
+            case 3:
+                rb = (RadioButton) findViewById(R.id.lyric_only); rb.setChecked(true); break;
         }
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.sheet_lyric:
+                        hymnShowWhat = 0; break;
+                    case R.id.lyric_sheet:
+                        hymnShowWhat = 1; break;
+                    case R.id.sheet_only:
+                        hymnShowWhat = 2; break;
+                    case R.id.lyric_only:
+                        hymnShowWhat = 3; break;
+                }
+                editor.putInt("hymnShowWhat", hymnShowWhat).apply();
+            }
+        });
 
         tv = (TextView) findViewById(R.id.hymn_lyric_size);
         txt = "" + textSizeHymnBody;
@@ -354,3 +337,15 @@ public class SetActivity extends Activity {
         finish();
     }
 }
+
+//        cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
+//        cb.setChecked(hymnImageFirst);
+//        cb.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
+//                hymnImageFirst = cb.isChecked();
+//                editor.putBoolean("hymnImageFirst", hymnImageFirst).apply();
+//            }
+//        });
+

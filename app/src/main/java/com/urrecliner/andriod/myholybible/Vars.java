@@ -62,12 +62,17 @@ public class Vars {
     static int textSizeHymnBody = 20;
     static int textSizeBibleBody = 20;
     static int textSizeKeyWord = 20;
+
     static boolean hymnImageFirst = true;
     static boolean hymnImageShow = true;
     static boolean hymnTextShow = true;
+    static int hymnShowWhat = 0;
     static boolean alwaysOn = true;
     static int textSizeSpace = 10;
 
+    static Text2Speech text2Speech = null;
+    static boolean isSaying = false;
+    static String [] bibleTexts;
     static ArrayList<String> bookBibles;
     static ArrayList<String> bookChapters;
     static ArrayList<String> bookSaves;

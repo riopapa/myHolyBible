@@ -38,6 +38,7 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorBack;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
+import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorBack;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
@@ -249,7 +250,7 @@ class MakeBible {
     void MakeBibleBody() {
         scrollView = new ScrollView(mContext);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
-        final String [] bibleTexts = utils.readBibleFile(file2read);
+        bibleTexts = utils.readBibleFile(file2read);
         if (bibleTexts == null) {
             Toast.makeText(mContext, "Bible source not found " + fullBibleNames[nowBible] + " " + nowChapter,Toast.LENGTH_LONG).show();
             return;
@@ -278,7 +279,7 @@ class MakeBible {
         bodyText = new StringBuilder();
         bodyText.append(newLine);
         ptrBody = 1;
-        makeBibleAllVerses(bibleTexts);
+        makeBibleAllVerses();
         bodyText.append(new3Line + new3Line);
         SpannableString ss = settleSpannableString();
 
@@ -330,7 +331,7 @@ class MakeBible {
         return ss;
     }
 
-    private void makeBibleAllVerses(String [] bibleTexts) {
+    private void makeBibleAllVerses() {
         maxVerse  = bibleTexts.length;
         versePtr = 0;
         for (int line = 0; line < maxVerse; line++) {
@@ -342,9 +343,16 @@ class MakeBible {
             int idx = workLine.indexOf("`a");
             int idx2nd = workLine.indexOf("`c");
             String agpText = workLine.substring(idx + 2, idx2nd);
+            if (agpText.length() == 0)
+                agpText = " ";
             String cevText = workLine.substring(idx2nd + 2, lenWorkLine);
+            if (cevText.length() == 0)
+                cevText = " ";
             workLine = workLine.substring(0, idx);
+            if (workLine.length() == 0)
+                workLine = " ";
             lenWorkLine = workLine.length();
+
 // bible script sample
 // {천지 창조}[_태초_]에 [_하나님_]이 [_천지_]를 [_창조_]하시니라[_#v43#1:3_][_$58#1:10_]
 // `a태초에 하나님께서 하늘과 땅을 창조하셨습니다.
@@ -510,6 +518,7 @@ class MakeBible {
             makeCrossing();
         }
     }
+
     void makeKeyWord() {
 
         int verse = nowVerse;

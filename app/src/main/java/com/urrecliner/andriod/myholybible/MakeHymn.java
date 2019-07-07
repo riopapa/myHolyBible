@@ -22,8 +22,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static com.urrecliner.andriod.myholybible.Vars.history;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageShow;
-import static com.urrecliner.andriod.myholybible.Vars.hymnTextShow;
+import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
@@ -207,17 +206,21 @@ class MakeHymn {
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
 
-        if (hymnImageFirst) {
-            if (hymnImageShow)
+        switch (hymnShowWhat) {
+            case 0:
                 show_hymnImage(linearlayout);
-            if (hymnTextShow)
                 show_HymnText(hymnTexts, linearlayout);
-        }
-        else {
-            if (hymnTextShow)
+                break;
+            case 1:
                 show_HymnText(hymnTexts, linearlayout);
-            if (hymnImageShow)
                 show_hymnImage(linearlayout);
+                break;
+            case 2:
+                show_hymnImage(linearlayout);
+                break;
+            case 3:
+                show_HymnText(hymnTexts, linearlayout);
+                break;
         }
         history.push();
         mBody.removeAllViewsInLayout();
