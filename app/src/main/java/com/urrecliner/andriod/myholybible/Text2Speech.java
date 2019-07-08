@@ -5,6 +5,7 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -19,6 +20,7 @@ import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
+import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
 import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
@@ -185,10 +187,10 @@ class Text2Speech {
             });
             mediaPlayer.start();
         } else {
-            readVerseByTTS(0);
+            Toast.makeText(mContext, "찬송가 "+nowHymn+"장 음악 파일이 없습니다.", Toast.LENGTH_LONG).show();
+            isReadingNow = false;
         }
     }
-
 
     void stopRead() {
         if (mediaPlayer != null) {

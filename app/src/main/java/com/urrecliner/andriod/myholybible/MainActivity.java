@@ -372,6 +372,8 @@ public class MainActivity extends Activity {
         vLeftAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 if (vLeftAction.getText().toString().equals(blank))
                     return;
                 if (topTab < TAB_MODE_HYMN)
@@ -404,6 +406,8 @@ public class MainActivity extends Activity {
         vRightAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 if (vRightAction.getText().toString().equals(blank))
                     return;
                 if (topTab < TAB_MODE_HYMN)
