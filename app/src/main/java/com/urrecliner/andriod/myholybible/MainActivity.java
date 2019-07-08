@@ -690,7 +690,7 @@ public class MainActivity extends Activity {
     }
 
     private ArrayList findUnAskedPermissions(@NonNull ArrayList<String> wanted) {
-        ArrayList result = new ArrayList();
+        ArrayList <String> result = new ArrayList<String>();
         for (String perm : wanted) if (hasPermission(perm)) result.add(perm);
         return result;
     }

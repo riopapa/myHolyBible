@@ -34,7 +34,6 @@ import static com.urrecliner.andriod.myholybible.Vars.vCurrBible;
 class Text2Speech {
 
     private TextToSpeech mTTS = null;
-    private String logId = "tts";
     private int ttsVerseNow = 0;
 
     void setReady(Context context) {
@@ -76,14 +75,6 @@ class Text2Speech {
         }
     };
 
-    void setPitch(float p) {
-        biblePitch = p;
-    }
-
-    void setSpeed(float s) {
-        bibleSpeed = s;
-    }
-
     private MediaPlayer mediaPlayer = null;
 
     void readVerse() {
@@ -93,12 +84,11 @@ class Text2Speech {
         String fileName = packageFolder.getAbsolutePath()+"/bible_mp3/"+nowBible+"_"+nowChapter+".mp3z";
         utils.log("mp3file",fileName);
         File file = new File(fileName);
-        FileInputStream fs = null;
-        FileDescriptor fd = null;
+        FileDescriptor fd;
         if (file.exists()) {
             try {
                 utils.log("file","exist");
-                fs = new FileInputStream(file);
+                FileInputStream fs = new FileInputStream(file);
                 fd = fs.getFD();
                 mediaPlayer.setDataSource(fd);
                 fs.close();
@@ -153,6 +143,7 @@ class Text2Speech {
             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
             mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, map);
         } catch (Exception e) {
+            String logId = "tts";
             utils.log(logId, "ttsSpeak\n" + e.toString());
         }
     }
@@ -164,11 +155,10 @@ class Text2Speech {
         String fileName = packageFolder.getAbsolutePath()+"/hymn_mp3/"+nowHymn+".mp3z";
         utils.log("mp3file",fileName);
         File file = new File(fileName);
-        FileInputStream fs = null;
-        FileDescriptor fd = null;
+        FileDescriptor fd;
         if (file.exists()) {
             try {
-                fs = new FileInputStream(file);
+                FileInputStream fs = new FileInputStream(file);
                 fd = fs.getFD();
                 mediaPlayer.setDataSource(fd);
                 fs.close();

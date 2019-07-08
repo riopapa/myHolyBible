@@ -60,19 +60,19 @@ class History {
             keyStack.remove(stackP);
         }
     }
-    boolean shift() {
-        if (topTabStack.get(stackP+1) > 0) {
-            stackP++;
-            topTab = topTabStack.get(stackP);
-            nowBible = bibleStack.get(stackP);
-            nowChapter = chapterStack.get(stackP);
-            nowVerse = verseStack.get(stackP);
-            nowHymn = hymnStack.get(stackP);
-            dictWord = keyStack.get(stackP);
-            return true;
-        }
-        return false;
-    }
+//    boolean shift() {
+//        if (topTabStack.get(stackP+1) > 0) {
+//            stackP++;
+//            topTab = topTabStack.get(stackP);
+//            nowBible = bibleStack.get(stackP);
+//            nowChapter = chapterStack.get(stackP);
+//            nowVerse = verseStack.get(stackP);
+//            nowHymn = hymnStack.get(stackP);
+//            dictWord = keyStack.get(stackP);
+//            return true;
+//        }
+//        return false;
+//    }
 
     void restore() {
         topTabStack = utils.getIntArrayPref("topTabStack");
