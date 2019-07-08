@@ -47,6 +47,12 @@
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="./app/screenshots/keyword_reference.jpg" width=400 height=800>
 
+<H3>Bible Reading</H3>
+
+- By pressing current active bible long at the center of bottom menu, it starts to read bible
+- Pressing long again will stop reading
+- At the last verse, next chapter will be displayed and continue to read.
+
 <H3>Hymn Selection</H3>
  
 - If you click \<Hymn>, you will have keypad to input Hymn number
@@ -74,13 +80,15 @@
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="./app/screenshots/hymn_sorted_list.jpg" width=400 height=800>
-    
 
 <H3>Setting </H3>
  
 - Thru this screen following items can be adjusted
-- Bible: Bible Name Size, Scripture Size, Keyword Size, Cross-Ref Size, Verse space Size
-- Hymn: Hymn Sheet and/or Hymn Lylic display, Lylic Size
+- Bible: Bible Name Size, Scripture Size, Keyword Size, Cross-Ref Size, Verse space Size. 
+- Bible reading speed and pitch can be also adjusted.
+
+- Hymn: Hymn Sheet and/or Hymn Lylic display, Lylic Size and Hymn play speed adjust
+
 - BookMarks : saved Bookmark list + keep save flag (book mark is added to this table at the first place when you press current bible contents name located at bottom)
 
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -107,6 +115,7 @@
 
 - 2019.02.07 : apply images zoomable ('com.commit451:PhotoView:1.2.4')
 - 2019.06.17 : reformat setting activity, add book mark function
+- 2019.07.08 : reading bible, playing hymn function added
 
 <H3>Issues not fixed yet</H3>
 

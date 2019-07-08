@@ -2,35 +2,38 @@ package com.urrecliner.andriod.myholybible;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
-import android.util.Log;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
+import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.isSaying;
+import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
+import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
+import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
+import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
+import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
+import static com.urrecliner.andriod.myholybible.Vars.vCurrBible;
 
 class Text2Speech {
 
     private TextToSpeech mTTS = null;
     private String logId = "tts";
-    private float ttsPitch = 1.0f;
-    private float ttsSpeed = 1.0f;
     private int ttsVerseNow = 0;
-
-//    @Override
-//    public void onInit(int status) {
-//        Log.w("onInit","Status = "+status);
-//    }
 
     void setReady(Context context) {
         mTTS = new TextToSpeech(context, ttsInitListener);
@@ -44,8 +47,8 @@ class Text2Speech {
         {
             if (status != TextToSpeech.SUCCESS)
                 return;
-            mTTS.setPitch(ttsPitch);
-            mTTS.setSpeechRate(ttsSpeed);
+            mTTS.setPitch(biblePitch);
+            mTTS.setSpeechRate(bibleSpeed);
             mTTS.setOnUtteranceCompletedListener(completedListener);
         }
     };
@@ -57,14 +60,14 @@ class Text2Speech {
         public void onUtteranceCompleted(String utteranceId)
         {
             ttsVerseNow++;
-            if (isSaying && ttsVerseNow < maxVerse)
-                readVerse(ttsVerseNow);
-            else if (isSaying) {
+            if (isReadingNow && ttsVerseNow < maxVerse)
+                readVerseByTTS(ttsVerseNow);
+            else if (isReadingNow) {
                 mainActivity.handleBibleRight();
                 new Timer().schedule(new TimerTask() {
                     public void run() {
                         ttsVerseNow =0;
-                        readVerse(ttsVerseNow);
+                        readVerseByTTS(ttsVerseNow);
                     }
                 }, 2000);
             }
@@ -72,28 +75,77 @@ class Text2Speech {
     };
 
     void setPitch(float p) {
-        ttsPitch = p;
+        biblePitch = p;
     }
 
     void setSpeed(float s) {
-        ttsSpeed = s;
+        bibleSpeed = s;
     }
 
-    void setTtsVerseNow(int v) {
-        ttsVerseNow = v;
+    private MediaPlayer mediaPlayer = null;
+
+    void readVerse() {
+
+        if (mediaPlayer == null)
+            mediaPlayer = new MediaPlayer();
+        String fileName = packageFolder.getAbsolutePath()+"/bible_mp3/"+nowBible+"_"+nowChapter+".mp3z";
+        utils.log("mp3file",fileName);
+        File file = new File(fileName);
+        FileInputStream fs = null;
+        FileDescriptor fd = null;
+        if (file.exists()) {
+            try {
+                utils.log("file","exist");
+                fs = new FileInputStream(file);
+                fd = fs.getFD();
+                mediaPlayer.setDataSource(fd);
+                fs.close();
+                mediaPlayer.setLooping(false);
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(bibleSpeed));
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setPitch(biblePitch));
+                mediaPlayer.prepare();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                    if (isReadingNow) {
+                        mainActivity.handleBibleRight();
+                        new Timer().schedule(new TimerTask() {
+                            public void run() {
+                                readVerse();
+                            }
+                        }, 2000);
+                    }
+                }
+            });
+            mediaPlayer.start();
+        } else {
+            readVerseByTTS(0);
+        }
     }
 
-    @SuppressWarnings("deprecation")
-    void readVerse(int v) {
+    private void readVerseByTTS(int v) {
         String text;
+        String para = null;
         ttsVerseNow = v;
         text = bibleTexts[v].substring(0, bibleTexts[v].indexOf("`a"));
-        String match = "[^\uAC00-\uD7A3xfe./,\\s]"; // 한글, 영문, 숫자만 OK
-        text = (v + 1) + "절.. " + text.replaceAll(match, "");
+        if (text.substring(0,0).equals("{")) {
+            para = text.substring(1,(text.indexOf("}")-1));
+            text = text.substring(text.indexOf("}"+1));
+        }
+        String match = "[^\uAC00-\uD7A3xfe./,\\s]"; // 한글만 OK
+        text = text.replaceAll(match, "");
+        text = (v + 1) + "절.. " + text;
+        if (para != null)
+            text = para + ". . "+ text;
         if (v == 0) {
             text = fullBibleNames[nowBible] + ". " + nowChapter + " " + ((nowBible == 19) ? "편" : "장") + " 말씀입니다.." + text;
-            Log.w("text",text);
         }
+        utils.log("text", text);
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
@@ -103,7 +155,49 @@ class Text2Speech {
         }
     }
 
+    void playHymn() {
+
+        if (mediaPlayer == null)
+            mediaPlayer = new MediaPlayer();
+        String fileName = packageFolder.getAbsolutePath()+"/hymn_mp3/"+nowHymn+".mp3z";
+        utils.log("mp3file",fileName);
+        File file = new File(fileName);
+        FileInputStream fs = null;
+        FileDescriptor fd = null;
+        if (file.exists()) {
+            try {
+                fs = new FileInputStream(file);
+                fd = fs.getFD();
+                mediaPlayer.setDataSource(fd);
+                fs.close();
+                mediaPlayer.setLooping(false);
+                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(hymnSpeed));
+                mediaPlayer.prepare();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                }
+            });
+            mediaPlayer.start();
+        } else {
+            readVerseByTTS(0);
+        }
+    }
+
+
     void stopRead() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         mTTS.stop();
+        isReadingNow = false;
+        vCurrBible.setBackgroundColor(normalMenuColor);
     }
 }

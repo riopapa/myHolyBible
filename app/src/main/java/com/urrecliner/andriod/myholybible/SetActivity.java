@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -17,12 +18,15 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
+import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
+import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
+import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
@@ -51,8 +55,11 @@ public class SetActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         buildSetBible();
+        buildSetBibleRead();
         buildSetHymn();
+        buildSetPlayHymn();
         buildSetBookMark();
+        buildShowAuthor();
     }
 
     private void buildSetBible() {
@@ -186,11 +193,45 @@ public class SetActivity extends Activity {
                 editor.putInt("textSizeSpace", textSizeSpace).apply();
             }
         });
+    }
 
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        String build_time = "제작 : "+dateTimeFormat.format(BuildConfig.BUILD_TIME)+", 하원철";
-        tv = (TextView) findViewById(R.id.build_time);
-        tv.setText(build_time);
+    // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6
+    private void buildSetBibleRead() {
+        int progress;
+        final SeekBar speedBar = (SeekBar) findViewById(R.id.bibleSpeed);
+        progress = (int) (bibleSpeed * 10) - 7;
+        speedBar.setProgress(progress);
+        speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = seekBar.getProgress();
+                bibleSpeed =  (float) (progress+7) / 10f;
+                editor.putFloat("bibleSpeed", bibleSpeed).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        final SeekBar pitchBar = (SeekBar) findViewById(R.id.biblePitch);
+        progress = (int) (biblePitch * 10) - 7;
+        pitchBar.setProgress(progress);
+        pitchBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = seekBar.getProgress();
+                biblePitch =  (float) (progress+7) / 10f;
+                editor.putFloat("biblePitch", biblePitch).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
     private void buildSetHymn() {
@@ -268,6 +309,30 @@ public class SetActivity extends Activity {
         });
     }
 
+
+    // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6
+    private void buildSetPlayHymn() {
+        int progress;
+        final SeekBar speedBar = (SeekBar) findViewById(R.id.hymnSpeed);
+        progress = (int) (hymnSpeed * 10) - 7;
+        speedBar.setProgress(progress);
+        speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progress = seekBar.getProgress();
+                hymnSpeed =  (float) (progress+7) / 10f;
+                editor.putFloat("hymnSpeed", hymnSpeed).apply();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+    }
+
+
     private void buildSetBookMark() {
         final int[] books = new int[]{R.id.bookmark_bible0, R.id.bookmark_bible1, R.id.bookmark_bible2,
                 R.id.bookmark_bible3, R.id.bookmark_bible4, R.id.bookmark_bible5};
@@ -317,6 +382,14 @@ public class SetActivity extends Activity {
             }
         }
     }
+
+    private void buildShowAuthor() {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        String build_time = "제작 : "+dateTimeFormat.format(BuildConfig.BUILD_TIME)+", 하원철";
+        tv = (TextView) findViewById(R.id.build_time);
+        tv.setText(build_time);
+    }
+
     @Override
     public void onBackPressed() {
 

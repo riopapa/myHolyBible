@@ -46,6 +46,8 @@ import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.bibleColorFore;
+import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
+import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
@@ -60,8 +62,9 @@ import static com.urrecliner.andriod.myholybible.Vars.history;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
 import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
+import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
-import static com.urrecliner.andriod.myholybible.Vars.isSaying;
+import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
@@ -71,6 +74,7 @@ import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
 import static com.urrecliner.andriod.myholybible.Vars.nbrOfChapters;
 import static com.urrecliner.andriod.myholybible.Vars.newName;
+import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
@@ -94,6 +98,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
+import static com.urrecliner.andriod.myholybible.Vars.vCurrBible;
 import static com.urrecliner.andriod.myholybible.Vars.verseColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
 import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
@@ -104,10 +109,10 @@ public class MainActivity extends Activity {
 
     ImageView vSetting;
     TextView vOldBible, vNewBible, vHymn;
-    TextView vAgpBible, vLeftAction, vCurrBible, vRightAction, vCevBible;
+    TextView vAgpBible, vLeftAction, vRightAction, vCevBible;
     long backKeyPressedTime;
     private MakeHymn makeHymn;
-    int highLiteMenuColor, normalMenuColor, readMenuColor;
+    int highLiteMenuColor, readMenuColor;
     final static String cevVersion = "cev";
     final static String agpVersion = "agp";
     private boolean bookMarkNow = true;
@@ -249,7 +254,9 @@ public class MainActivity extends Activity {
         hymnImageFirst = mSettings.getBoolean("hymnImageFirst", true);
         hymnShowWhat = mSettings.getInt("hymnShowWhat", 0);
         alwaysOn = mSettings.getBoolean("alwaysOn",true);
-
+        bibleSpeed = mSettings.getFloat("bibleSpeed", 0.8f);
+        biblePitch = mSettings.getFloat("biblePitch",1.0f);
+        hymnSpeed = mSettings.getFloat("hymnSpeed", 0.8f);
         bookBibles = utils.getStringArrayPref("bookBibles");
         bookChapters = utils.getStringArrayPref("bookChapters");
         bookSaves = utils.getStringArrayPref("bookSaves");
@@ -356,7 +363,8 @@ public class MainActivity extends Activity {
         vSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                setting.generateSettingBody();
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 Intent i = new Intent(MainActivity.this, SetActivity.class);
                 startActivity(i);
             }
@@ -377,7 +385,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (vCurrBible.getText().toString().equals(blank))
                     return;
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)   // book mark this chapter
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
                     bookMarkThis();
             }
         });
@@ -386,8 +394,10 @@ public class MainActivity extends Activity {
             public boolean onLongClick(View v) {
                 if (vCurrBible.getText().toString().equals(blank))
                     return false;
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)   // book mark this chapter
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
                     readBible();
+                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
+                    playStopHymn();
                 return false;
             }
         });
@@ -405,6 +415,8 @@ public class MainActivity extends Activity {
         vOldBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 topTab = TAB_MODE_OLD;
 //                nowVerse = getNowTopVerse();
                 nowBible = 0;
@@ -414,6 +426,8 @@ public class MainActivity extends Activity {
         vNewBible.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 topTab = TAB_MODE_NEW;
 //                nowVerse = getNowTopVerse();
                 nowBible = 0;
@@ -423,6 +437,8 @@ public class MainActivity extends Activity {
         vHymn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isReadingNow)
+                    text2Speech.stopRead();
                 topTab = TAB_MODE_HYMN;
                 nowBible = 0;
                 nowHymn = 0;
@@ -459,21 +475,43 @@ public class MainActivity extends Activity {
         public void handleMessage(Message msg) { vCurrBible.setEnabled(true); }};
 
     void readBible() {
-        if (isSaying) {
-            isSaying = false;
+        if (isReadingNow) {
+            isReadingNow = false;
             bookMarkNow = true;
             Toast.makeText(mContext,"성경읽기를 끝냅니다",Toast.LENGTH_SHORT).show();
             history.push();
             text2Speech.stopRead();
         }
         else {
-            isSaying = true;
+            isReadingNow = true;
             bookMarkNow = false;
             Toast.makeText(mContext,"성경읽기를 시작합니다",Toast.LENGTH_SHORT).show();
-            text2Speech.readVerse(0);
+            text2Speech.readVerse();
         }
         vCurrBible.setEnabled(false);
-        vCurrBible.setBackgroundColor((isSaying)? readMenuColor:normalMenuColor);
+        vCurrBible.setBackgroundColor((isReadingNow)? readMenuColor:normalMenuColor);
+
+        new Timer().schedule(new TimerTask() {
+            public void run() {
+                aHandler.sendEmptyMessage(0);
+            }
+        }, 800);
+    }
+
+    void playStopHymn() {
+        if (isReadingNow) {
+            isReadingNow = false;
+            Toast.makeText(mContext,"찬송부르기를 끝냅니다",Toast.LENGTH_SHORT).show();
+            history.push();
+            text2Speech.stopRead();
+        }
+        else {
+            isReadingNow = true;
+            Toast.makeText(mContext,"찬송 부르기를 시작합니다",Toast.LENGTH_SHORT).show();
+            text2Speech.playHymn();
+        }
+        vCurrBible.setEnabled(false);
+        vCurrBible.setBackgroundColor((isReadingNow)? readMenuColor:normalMenuColor);
 
         new Timer().schedule(new TimerTask() {
             public void run() {

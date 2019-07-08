@@ -34,5 +34,9 @@
     <string name="lyric_sheet">가사+악보</string>
     <string name="sheet_only">악보만</string>
     <string name="lyric_only">가사만</string>
+    <string name="speed_slowly">천천히</string>
+    <string name="speed_quickly">빨리</string>
+    <string name="pitch_down">낮게</string>
+    <string name="pitch_up">높게</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -64,14 +65,18 @@ public class Vars {
     static int textSizeKeyWord = 20;
 
     static boolean hymnImageFirst = true;
-    static boolean hymnImageShow = true;
-    static boolean hymnTextShow = true;
     static int hymnShowWhat = 0;
     static boolean alwaysOn = true;
     static int textSizeSpace = 10;
+    static TextView vCurrBible = null;
+    static int normalMenuColor = 0;
 
     static Text2Speech text2Speech = null;
-    static boolean isSaying = false;
+    static boolean isReadingNow = false;
+    static float bibleSpeed = 0.8f;
+    static float biblePitch = 1.0f;
+    static float hymnSpeed = 0.9f;
+
     static String [] bibleTexts;
     static ArrayList<String> bookBibles;
     static ArrayList<String> bookChapters;
