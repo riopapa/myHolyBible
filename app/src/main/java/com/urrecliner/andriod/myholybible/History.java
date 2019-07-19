@@ -60,19 +60,6 @@ class History {
             keyStack.remove(stackP);
         }
     }
-//    boolean shift() {
-//        if (topTabStack.get(stackP+1) > 0) {
-//            stackP++;
-//            topTab = topTabStack.get(stackP);
-//            nowBible = bibleStack.get(stackP);
-//            nowChapter = chapterStack.get(stackP);
-//            nowVerse = verseStack.get(stackP);
-//            nowHymn = hymnStack.get(stackP);
-//            dictWord = keyStack.get(stackP);
-//            return true;
-//        }
-//        return false;
-//    }
 
     void restore() {
         topTabStack = utils.getIntArrayPref("topTabStack");
@@ -114,7 +101,7 @@ class History {
         utils.setStringArrayPref("keyStack", keyStack);
     }
 
-    void dumpStack() {
+    private void dumpStack() {
 //        utils.log("stackP",stackP+"==");
 //        for (int i = 0; i < topTabStack.size(); i++) {
 //            utils.log("i="+i, topTabStack.get(i) +" "+bibleStack.get(i) +" "+chapterStack.get(i) +" "+verseStack.get(i) +" "+hymnStack.get(i)+" "+keyStack.get(i));

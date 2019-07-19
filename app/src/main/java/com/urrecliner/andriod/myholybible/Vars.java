@@ -1,5 +1,6 @@
 package com.urrecliner.andriod.myholybible;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,16 +15,23 @@ import java.util.ArrayList;
 public class Vars {
     static File packageFolder = null;
 
+    @SuppressLint("StaticFieldLeak")
     static Context mContext = null;
+    @SuppressLint("StaticFieldLeak")
     static Activity mActivity = null;
+    @SuppressLint("StaticFieldLeak")
     static MainActivity mainActivity = null;
+    @SuppressLint("StaticFieldLeak")
     static MakeBible makeBible = null;
+    @SuppressLint("StaticFieldLeak")
     static MakeHymn makeHymn = null;
     static History history = null;
     static Utils utils = null;
+    @SuppressLint("StaticFieldLeak")
     static ConstraintLayout constraintBody;
     static OnSwipeTouchListener onSwipeTouchListener;
     static float windowYUpper, windowXCenter;
+    @SuppressLint("StaticFieldLeak")
     static ScrollView nowScrollView;
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, maxVerse = 0;
@@ -47,6 +55,7 @@ public class Vars {
     static int bibleColorFore, verseColorFore, paraColorFore, referColorFore, numberColorFore;
     static int cevColorFore, cevColorBack, agpColorFore, agpColorBack, dictColorFore;
 
+    @SuppressLint("StaticFieldLeak")
     static ViewGroup mBody; // assigned to Fragment_Body
     static String dictWord;
 
@@ -68,6 +77,7 @@ public class Vars {
     static int hymnShowWhat = 0;
     static boolean alwaysOn = true;
     static int textSizeSpace = 10;
+    @SuppressLint("StaticFieldLeak")
     static TextView vCurrBible = null;
     static int normalMenuColor = 0;
 

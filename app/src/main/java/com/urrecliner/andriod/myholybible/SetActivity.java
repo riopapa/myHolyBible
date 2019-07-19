@@ -410,15 +410,3 @@ public class SetActivity extends Activity {
         finish();
     }
 }
-
-//        cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
-//        cb.setChecked(hymnImageFirst);
-//        cb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                cb = (CheckBox) findViewById(R.id.hymn_sheet_first);
-//                hymnImageFirst = cb.isChecked();
-//                editor.putBoolean("hymnImageFirst", hymnImageFirst).apply();
-//            }
-//        });
-

@@ -238,12 +238,10 @@ class MakeHymn {
 
         StringBuilder bodyText = new StringBuilder();
         for (String hymnText : hymnTexts) {
-            String newLine = "\n";
-            String workLine = newLine + hymnText;
+            String workLine = "\n" + hymnText;
             bodyText.append(workLine);
         }
-        String new2Line = "\n\n";
-        bodyText.append(new2Line);
+        bodyText.append("\n\n");
         if (hymnImageFirst)
             bodyText.append(new3Line);
         SpannableString ssBody = new SpannableString(bodyText);

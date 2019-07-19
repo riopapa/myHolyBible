@@ -64,13 +64,6 @@ class Utils {
         Log.w(tag , where + " " + text);
     }
 
-//    void logE(String tag, String text) {
-//        StackTraceElement[] traces;
-//        traces = Thread.currentThread().getStackTrace();
-//        String where = " " + traces[5].getMethodName() + " > " + traces[4].getMethodName() + " > " + traces[3].getMethodName() + " #" + traces[3].getLineNumber();
-//        Log.e("<" + tag + ">" , where + " " + text);
-//    }
-
     void setStringArrayPref(String key, ArrayList<String> values) {
         SharedPreferences.Editor editor = mSettings.edit();
         JSONArray a = new JSONArray();

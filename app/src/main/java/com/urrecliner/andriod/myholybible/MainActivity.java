@@ -112,7 +112,7 @@ public class MainActivity extends Activity {
     TextView vAgpBible, vLeftAction, vRightAction, vCevBible;
     long backKeyPressedTime;
     private MakeHymn makeHymn;
-    int highLiteMenuColor, readMenuColor;
+    int highLiteMenuColor, readNowColor;
     final static String cevVersion = "cev";
     final static String agpVersion = "agp";
     private boolean bookMarkNow = true;
@@ -171,8 +171,6 @@ public class MainActivity extends Activity {
 
         initializeColors();
 
-//        makeTopBottomMenu();
-//        makeBibleList();
         assignAllButtonListeners();
         vSetting.post(new Runnable() {
             @Override
@@ -236,12 +234,6 @@ public class MainActivity extends Activity {
         }
         text2Speech = new Text2Speech();
         text2Speech.setReady(getApplicationContext());
-
-//        if (text2Speech == null) {
-//            text2Speech = new Text2Speech();
-//            text2Speech.initiateTTS(getApplicationContext());
-//        }
-
     }
 
     private void getSharedValues() {
@@ -272,7 +264,7 @@ public class MainActivity extends Activity {
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x444444;
-        readMenuColor = normalMenuColor ^ 0x777777;
+        readNowColor = normalMenuColor ^ 0x777777;
 
         bibleColorFore = ContextCompat.getColor(mContext,R.color.Black);
         verseColorFore = ContextCompat.getColor(mContext,R.color.EarthBlue);
@@ -493,13 +485,13 @@ public class MainActivity extends Activity {
             text2Speech.readVerse();
         }
         vCurrBible.setEnabled(false);
-        vCurrBible.setBackgroundColor((isReadingNow)? readMenuColor:normalMenuColor);
+        vCurrBible.setBackgroundColor((isReadingNow)? readNowColor :normalMenuColor);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
                 aHandler.sendEmptyMessage(0);
             }
-        }, 800);
+        }, 500);
     }
 
     void playStopHymn() {
@@ -515,7 +507,7 @@ public class MainActivity extends Activity {
             text2Speech.playHymn();
         }
         vCurrBible.setEnabled(false);
-        vCurrBible.setBackgroundColor((isReadingNow)? readMenuColor:normalMenuColor);
+        vCurrBible.setBackgroundColor((isReadingNow)? readNowColor :normalMenuColor);
 
         new Timer().schedule(new TimerTask() {
             public void run() {
@@ -649,21 +641,6 @@ public class MainActivity extends Activity {
                 makeTopBottomMenu();
         }
     }
-//
-//    private void goForward() {
-//        if (!history.shift()) {
-//            Toast.makeText(mContext,"맨 마지막 입니다" , Toast.LENGTH_LONG).show();
-//            return;
-//        }
-//        if (topTab < TAB_MODE_HYMN && nowBible > 0) {
-//            makeBible.MakeBibleBody();
-//        } else if (topTab == TAB_MODE_HYMN && nowHymn > 0) {
-//            makeHymn.makeHymnBody();
-//        } else if (topTab == TAB_MODE_DIC) {
-//            makeBible.makeKeyWord();
-//        } else
-//            makeTopBottomMenu();
-//    }
 
     private int getNowTopVerse() {
         if (topTab == TAB_MODE_NEW || topTab == TAB_MODE_OLD)
@@ -746,7 +723,9 @@ public class MainActivity extends Activity {
     final long BACK_DELAY = 800;
     @Override
     public void onBackPressed() {
-//        utils.log("back1","stackp"+stackP+" topTab "+topTab+" nowBible "+nowBible+" nowChapter "+nowChapter+" nowVerse "+nowVerse+" nowHymn "+nowHymn);
+
+        if (isReadingNow)
+            text2Speech.stopRead();
 
         MainDialog mMainDialog;
         if(System.currentTimeMillis()>backKeyPressedTime+BACK_DELAY){
@@ -812,13 +791,3 @@ public class MainActivity extends Activity {
     }
 
 }
-
-//
-//        //add Url Span
-//        URLSpan urlSpan = new URLSpan("https://www.google.com") {
-//        spannableString.setSpan(urlSpan, 55, 78, 0);
-//        SubscriptSpan(), 79, 89, 0);
-//        SuperscriptSpan(), 92, 104, 0);
-//        UnderlineSpan(), 104, 116, 0);
-//        RelativeSizeSpan(1.5f), 116, 139, 0);
-//        StrikethroughSpan(), 153, 170, 0);

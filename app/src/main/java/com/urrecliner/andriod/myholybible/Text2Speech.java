@@ -82,12 +82,11 @@ class Text2Speech {
         if (mediaPlayer == null)
             mediaPlayer = new MediaPlayer();
         String fileName = packageFolder.getAbsolutePath()+"/bible_mp3/"+nowBible+"_"+nowChapter+".mp3z";
-        utils.log("mp3file",fileName);
+//        utils.log("mp3file",fileName);
         File file = new File(fileName);
         FileDescriptor fd;
         if (file.exists()) {
             try {
-                utils.log("file","exist");
                 FileInputStream fs = new FileInputStream(file);
                 fd = fs.getFD();
                 mediaPlayer.setDataSource(fd);
@@ -137,7 +136,7 @@ class Text2Speech {
         if (v == 0) {
             text = fullBibleNames[nowBible] + ". " + nowChapter + " " + ((nowBible == 19) ? "편" : "장") + " 말씀입니다.." + text;
         }
-        utils.log("text", text);
+//        utils.log("text", text);
         try {
             HashMap<String, String> map = new HashMap<>();
             map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
@@ -153,7 +152,7 @@ class Text2Speech {
         if (mediaPlayer == null)
             mediaPlayer = new MediaPlayer();
         String fileName = packageFolder.getAbsolutePath()+"/hymn_mp3/"+nowHymn+".mp3z";
-        utils.log("mp3file",fileName);
+//        utils.log("mp3file",fileName);
         File file = new File(fileName);
         FileDescriptor fd;
         if (file.exists()) {

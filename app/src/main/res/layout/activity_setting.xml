@@ -10,6 +10,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/setting_border"
             android:textColor="#dddddd"
             android:orientation="horizontal"
             android:baselineAligned="false">
@@ -29,9 +30,10 @@
                     android:text="@string/bible"
                     android:layout_gravity="center"
                     android:textSize="28sp" />
+                <!--bible name-->
                 <LinearLayout
                     android:gravity="center"
-                    android:layout_margin="4dp"
+                    android:layout_margin="2dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -74,6 +76,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--bible body-->
                 <LinearLayout
                     android:gravity="center"
                     android:layout_margin="4dp"
@@ -119,6 +122,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--bible keyword-->
                 <LinearLayout
                     android:gravity="center"
                     android:layout_margin="4dp"
@@ -164,6 +168,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--bible refer-->
                 <LinearLayout
                     android:gravity="center"
                     android:layout_margin="4dp"
@@ -209,6 +214,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--bible line space-->
                 <LinearLayout
                     android:gravity="center"
                     android:layout_margin="4dp"
@@ -254,6 +260,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--bible read speed-->
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -292,6 +299,7 @@
                         android:layout_gravity="center"
                         android:textSize="18sp" />
                 </LinearLayout>
+                <!--bible read pitch-->
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -331,14 +339,16 @@
                         android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
+            <!--top right hymn-->
             <LinearLayout
                 android:orientation="vertical"
+                android:background="@drawable/setting_border"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content">
                 <TextView
                     android:padding="2dp"
-                    android:layout_margin="1dp"
+                    android:layout_margin="2dp"
                     android:background="@drawable/setting_border"
                     android:layout_width="match_parent"
                     android:gravity="center"
@@ -346,6 +356,7 @@
                     android:text="@string/hymn"
                     android:layout_gravity="center"
                     android:textSize="28sp" />
+                <!--radio group-->
                 <RadioGroup
                     android:id="@+id/radioGroup1"
                     android:layout_width="wrap_content"
@@ -354,7 +365,7 @@
                         android:id="@+id/sheet_lyric"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="2dp"
                         android:textColor="@color/_Purple"
                         android:text="@string/sheet_lyric"
                         android:textSize="20sp" />
@@ -362,7 +373,7 @@
                         android:id="@+id/lyric_sheet"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="2dp"
                         android:textColor="@color/_Purple"
                         android:text="@string/lyric_sheet"
                         android:textSize="20sp" />
@@ -370,7 +381,7 @@
                         android:id="@+id/sheet_only"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="2dp"
                         android:textColor="@color/_Purple"
                         android:text="@string/sheet_only"
                         android:textSize="20sp" />
@@ -378,12 +389,12 @@
                         android:id="@+id/lyric_only"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
+                        android:layout_margin="2dp"
                         android:textSize="20sp"
                         android:textColor="@color/_Purple"
                         android:text="@string/lyric_only" />
                 </RadioGroup>
-
+                <!--hymn text size-->
                 <LinearLayout
                     android:id="@+id/hymn_lyric_set"
                     android:gravity="center"
@@ -440,6 +451,7 @@
                         android:textStyle="bold"
                         android:textSize="24sp" />
                 </LinearLayout>
+                <!--hymn song speed-->
                 <LinearLayout
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -478,10 +490,11 @@
                         android:layout_gravity="center"
                         android:textSize="18sp" />
                 </LinearLayout>
-
+                <!--screen always on-->
                 <LinearLayout
                     android:gravity="center"
                     android:padding="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_margin="4dp"
                     android:orientation="horizontal"
                     android:background="@drawable/setting_border"
@@ -503,6 +516,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <!--bible bookmark-->
         <TextView
             android:padding="4dp"
             android:layout_margin="4dp"
@@ -513,7 +527,6 @@
             android:text="@string/bibleBookMark"
             android:layout_gravity="center"
             android:textSize="28sp" />
-
         <LinearLayout
             android:gravity="center"
             android:layout_margin="2dp"
@@ -547,7 +560,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bookmark_check1"/>
         </LinearLayout>
-
         <LinearLayout
             android:gravity="center"
             android:layout_margin="2dp"
@@ -581,7 +593,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bookmark_check3"/>
         </LinearLayout>
-
         <LinearLayout
             android:gravity="center"
             android:layout_margin="2dp"
@@ -615,6 +626,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/bookmark_check5"/>
         </LinearLayout>
+        <!--app info-->
         <TextView
             android:id="@+id/build_time"
             android:layout_width="match_parent"
