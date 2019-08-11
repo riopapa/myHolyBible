@@ -363,6 +363,7 @@ public class SetActivity extends Activity {
                             makeBible = new MakeBible();
                         makeBible.MakeBibleBody();
                         finish();
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                     }
                 });
 
@@ -408,5 +409,6 @@ public class SetActivity extends Activity {
                 makeHymn.makeHymnBody();
         }
         finish();
+        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
     }
 }

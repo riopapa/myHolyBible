@@ -249,6 +249,8 @@ public class MainActivity extends Activity {
         bibleSpeed = mSettings.getFloat("bibleSpeed", 0.8f);
         biblePitch = mSettings.getFloat("biblePitch",1.0f);
         hymnSpeed = mSettings.getFloat("hymnSpeed", 0.8f);
+        agpShow = mSettings.getBoolean("agpShow", false);
+        cevShow = mSettings.getBoolean("cevShow", false);
         bookBibles = utils.getStringArrayPref("bookBibles");
         bookChapters = utils.getStringArrayPref("bookChapters");
         bookSaves = utils.getStringArrayPref("bookSaves");
@@ -359,6 +361,7 @@ public class MainActivity extends Activity {
                     text2Speech.stopRead();
                 Intent i = new Intent(MainActivity.this, SetActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
             }
         });
         vLeftAction.setOnClickListener(new View.OnClickListener() {
@@ -448,6 +451,7 @@ public class MainActivity extends Activity {
                     return;
                 int currVerse = getNowTopVerse();
                 agpShow = !agpShow;
+                editor.putBoolean("agpShow", agpShow).apply();
                 history.pop();
                 nowVerse = currVerse;
                 makeBible.MakeBibleBody();
@@ -460,6 +464,7 @@ public class MainActivity extends Activity {
                     return;
                 int currVerse = getNowTopVerse();
                 cevShow = !cevShow;
+                editor.putBoolean("cevShow", cevShow).apply();
                 history.pop();
                 nowVerse = currVerse;
                 makeBible.MakeBibleBody();

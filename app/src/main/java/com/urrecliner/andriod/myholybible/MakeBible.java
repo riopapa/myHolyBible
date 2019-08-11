@@ -12,7 +12,6 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -35,11 +34,9 @@ import static android.graphics.Typeface.BOLD;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorBack;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorBack;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
 import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
@@ -319,11 +316,11 @@ class MakeBible {
         }
         for (int i = 0; i < idxCev; i++) {
             ss.setSpan(new ForegroundColorSpan(cevColorFore), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new BackgroundColorSpan(cevColorBack), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            ss.setSpan(new BackgroundColorSpan(cevColorBack), cevF[i], cevT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < idxAgp; i++) {
             ss.setSpan(new ForegroundColorSpan(agpColorFore), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new BackgroundColorSpan(agpColorBack), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            ss.setSpan(new BackgroundColorSpan(agpColorBack), agpF[i], agpT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < idxSpace; i++) {
             ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -349,80 +346,86 @@ class MakeBible {
             if (cevText.length() == 0)
                 cevText = " ";
             workLine = workLine.substring(0, idx);
-            if (workLine.length() == 0)
-                workLine = " ";
+            String verseString = "" + (line+1);
+            if (line < maxVerse-1) {
+                String nextLine = bibleTexts[line+1].substring(0, bibleTexts[line+1].indexOf("`a")).trim();
+                if (nextLine.length() == 0)
+                    verseString += "-" +(line+2);
+            }
             lenWorkLine = workLine.length();
+            if (lenWorkLine > 0) {
 
 // bible script sample
 // {천지 창조}[_태초_]에 [_하나님_]이 [_천지_]를 [_창조_]하시니라[_#v43#1:3_][_$58#1:10_]
 // `a태초에 하나님께서 하늘과 땅을 창조하셨습니다.
 // `cIn the beginning God created the heavens and the earth.
-            String c = workLine.substring(0, 1);
-            if (c.equals("{")) {    // first column might have paragraph name
-                int endIdx = workLine.indexOf("}");
-                str = workLine.substring(1, endIdx);
-                workLine = workLine.substring(endIdx + 1);
-                lenWorkLine = workLine.length();
+                String c = workLine.substring(0, 1);
+                if (c.equals("{")) {    // first column might have paragraph name
+                    int endIdx = workLine.indexOf("}");
+                    str = workLine.substring(1, endIdx);
+                    workLine = workLine.substring(endIdx + 1);
+                    lenWorkLine = workLine.length();
+                    bodyText.append(str);
+                    bodyText.append(newLine);
+                    paraF[idxPara] = ptrBody;
+                    paraT[idxPara] = ptrBody + str.length() + 1;
+                    idxPara++;
+                    ptrBody += str.length() + 1;
+                    spaceF[idxSpace] = ptrBody;
+                    bodyText.append(" " + newLine);
+                    spaceT[idxSpace] = ptrBody + 2;
+                    ptrBody += 2;
+                    idxSpace++;
+                }
+                str = " " + verseString + " ";
+                verseF[idxVerse] = ptrBody;
+                verseT[idxVerse] = ptrBody + str.length();
+                idxVerse++;
+                ptrBody += str.length();
                 bodyText.append(str);
+
+                while (lenWorkLine > 0) {
+                    idx = workLine.indexOf("[_");
+                    if (idx == -1) { // no more keyword
+                        bodyText.append(workLine);
+                        ptrBody += lenWorkLine;
+                        break;
+                    } else {  // contains keyword
+                        if (idx != 0) {   // has string before keyword
+                            bodyText.append(workLine, 0, idx);
+                            ptrBody += idx;
+                            workLine = workLine.substring(idx);
+                        }
+                        // string starts with [_ & keyword
+                        idx2nd = makeBibleKeyword(workLine, line + 1);
+                        workLine = workLine.substring(idx2nd + 2);
+                        lenWorkLine = workLine.length();
+                    }
+                }
+                if (agpShow) {
+                    agpText = newLine + agpText;
+                    bodyText.append(agpText);
+                    agpF[idxAgp] = ptrBody;
+                    agpT[idxAgp] = ptrBody + agpText.length();
+                    idxAgp++;
+                    ptrBody += agpText.length();
+                }
+                if (cevShow) {
+                    cevText = newLine + cevText;
+                    bodyText.append(cevText);
+                    cevF[idxCev] = ptrBody;
+                    cevT[idxCev] = ptrBody + cevText.length();
+                    idxCev++;
+                    ptrBody += cevText.length();
+                }
+                ptrBody++;
                 bodyText.append(newLine);
-                paraF[idxPara] = ptrBody;
-                paraT[idxPara] = ptrBody + str.length() + 1;
-                idxPara++;
-                ptrBody += str.length() + 1;
                 spaceF[idxSpace] = ptrBody;
-                bodyText.append(" "+newLine);
-                spaceT[idxSpace] = ptrBody+2;
+                bodyText.append(" " + newLine);
+                spaceT[idxSpace] = ptrBody + 2;
                 ptrBody += 2;
                 idxSpace++;
             }
-            str = " " + (line + 1) + " ";
-            verseF[idxVerse] = ptrBody;
-            verseT[idxVerse] = ptrBody + str.length();
-            idxVerse++;
-            ptrBody += str.length();
-            bodyText.append(str);
-
-            while (lenWorkLine > 0) {
-                idx = workLine.indexOf("[_");
-                if (idx == -1) { // no more keyword
-                    bodyText.append(workLine);
-                    ptrBody += lenWorkLine;
-                    break;
-                } else {  // contains keyword
-                    if (idx != 0) {   // has string before keyword
-                        bodyText.append(workLine, 0, idx);
-                        ptrBody += idx;
-                        workLine = workLine.substring(idx);
-                    }
-                    // string starts with [_ & keyword
-                    idx2nd = makeBibleKeyword(workLine, line + 1);
-                    workLine = workLine.substring(idx2nd + 2);
-                    lenWorkLine = workLine.length();
-                }
-            }
-            if (agpShow) {
-                agpText = " " + agpText;
-                bodyText.append(agpText);
-                agpF[idxAgp] = ptrBody;
-                agpT[idxAgp] = ptrBody + agpText.length();
-                idxAgp++;
-                ptrBody += agpText.length();
-            }
-            if (cevShow) {
-                cevText = " " + cevText;
-                bodyText.append(cevText);
-                cevF[idxCev] = ptrBody;
-                cevT[idxCev] = ptrBody + cevText.length();
-                idxCev++;
-                ptrBody += cevText.length();
-            }
-            ptrBody++;
-            bodyText.append(newLine);
-            spaceF[idxSpace] = ptrBody;
-            bodyText.append(" "+newLine);
-            spaceT[idxSpace] = ptrBody+2;
-            ptrBody += 2;
-            idxSpace++;
         }
     }
 
