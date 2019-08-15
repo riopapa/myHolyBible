@@ -68,7 +68,7 @@ import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.mSettings;
+import static com.urrecliner.andriod.myholybible.Vars.sharePrefer;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
@@ -133,8 +133,8 @@ public class MainActivity extends Activity {
 
         askPermission();
         mBody = (ViewGroup) findViewById(R.id.fragment_body);
-        mSettings = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = mSettings.edit();
+        sharePrefer = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharePrefer.edit();
 
         getSharedValues();
 
@@ -237,20 +237,20 @@ public class MainActivity extends Activity {
     }
 
     private void getSharedValues() {
-        textSizeBible66 = mSettings.getInt("textSizeBible66", 24);
-        textSizeBibleBody = mSettings.getInt("textSizeBibleBody", 20);
-        textSizeBibleRefer = mSettings.getInt("textSizeBibleRefer", 10);
-        textSizeHymnBody = mSettings.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = mSettings.getInt("textSizeKeyWord", 22);
-        textSizeSpace = mSettings.getInt("textSizeSpace", 15);
-        hymnImageFirst = mSettings.getBoolean("hymnImageFirst", true);
-        hymnShowWhat = mSettings.getInt("hymnShowWhat", 0);
-        alwaysOn = mSettings.getBoolean("alwaysOn",true);
-        bibleSpeed = mSettings.getFloat("bibleSpeed", 0.8f);
-        biblePitch = mSettings.getFloat("biblePitch",1.0f);
-        hymnSpeed = mSettings.getFloat("hymnSpeed", 0.8f);
-        agpShow = mSettings.getBoolean("agpShow", false);
-        cevShow = mSettings.getBoolean("cevShow", false);
+        textSizeBible66 = sharePrefer.getInt("textSizeBible66", 24);
+        textSizeBibleBody = sharePrefer.getInt("textSizeBibleBody", 20);
+        textSizeBibleRefer = sharePrefer.getInt("textSizeBibleRefer", 10);
+        textSizeHymnBody = sharePrefer.getInt("textSizeHymnBody", 20);
+        textSizeKeyWord = sharePrefer.getInt("textSizeKeyWord", 22);
+        textSizeSpace = sharePrefer.getInt("textSizeSpace", 15);
+        hymnImageFirst = sharePrefer.getBoolean("hymnImageFirst", true);
+        hymnShowWhat = sharePrefer.getInt("hymnShowWhat", 0);
+        alwaysOn = sharePrefer.getBoolean("alwaysOn",true);
+        bibleSpeed = sharePrefer.getFloat("bibleSpeed", 0.8f);
+        biblePitch = sharePrefer.getFloat("biblePitch",1.0f);
+        hymnSpeed = sharePrefer.getFloat("hymnSpeed", 0.8f);
+        agpShow = sharePrefer.getBoolean("agpShow", false);
+        cevShow = sharePrefer.getBoolean("cevShow", false);
         bookBibles = utils.getStringArrayPref("bookBibles");
         bookChapters = utils.getStringArrayPref("bookChapters");
         bookSaves = utils.getStringArrayPref("bookSaves");

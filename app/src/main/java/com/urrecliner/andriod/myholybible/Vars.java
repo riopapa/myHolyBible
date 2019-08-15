@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -64,7 +65,7 @@ public class Vars {
     static int textSizeHymnKeypad = 24;
 
     // followings are from shared preference
-    static SharedPreferences mSettings;
+    static SharedPreferences sharePrefer;
     static SharedPreferences.Editor editor;
     static int textSizeBible66 = 24;
     static int textSizeBibleTitle = 24;
@@ -80,6 +81,8 @@ public class Vars {
     @SuppressLint("StaticFieldLeak")
     static TextView vCurrBible = null;
     static int normalMenuColor = 0;
+    static WebView webView;
+
 
     static Text2Speech text2Speech = null;
     static boolean isReadingNow = false;

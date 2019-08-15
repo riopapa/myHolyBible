@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -34,6 +36,7 @@ import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -42,6 +45,7 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
+import static com.urrecliner.andriod.myholybible.Vars.webView;
 import static java.lang.Integer.parseInt;
 
 public class SetActivity extends Activity {
@@ -193,6 +197,19 @@ public class SetActivity extends Activity {
                 editor.putInt("textSizeSpace", textSizeSpace).apply();
             }
         });
+
+        tv = (TextView) findViewById(R.id.about);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.web_view);
+                webView = (WebView) findViewById(R.id.webView);
+                WebSettings settings = webView.getSettings();
+//                settings.setJavaScriptEnabled(true);
+                webView.loadUrl("file:///" + packageFolder.toString() + "/about.html");
+            }
+        });
+
     }
 
     // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6

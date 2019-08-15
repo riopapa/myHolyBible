@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.myholybible.Vars.mSettings;
+import static com.urrecliner.andriod.myholybible.Vars.sharePrefer;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 
 class Utils {
@@ -65,7 +65,7 @@ class Utils {
     }
 
     void setStringArrayPref(String key, ArrayList<String> values) {
-        SharedPreferences.Editor editor = mSettings.edit();
+        SharedPreferences.Editor editor = sharePrefer.edit();
         JSONArray a = new JSONArray();
         for (int i = 0; i < values.size(); i++) {
             a.put(values.get(i));
@@ -79,7 +79,7 @@ class Utils {
     }
 
     ArrayList<String> getStringArrayPref(String key) {
-        String json = mSettings.getString(key, null);
+        String json = sharePrefer.getString(key, null);
         ArrayList<String> urls = new ArrayList<>();
         if (json != null) {
             try {
@@ -96,7 +96,7 @@ class Utils {
     }
 
     void setIntArrayPref(String key, ArrayList<Integer> values) {
-        SharedPreferences.Editor editor = mSettings.edit();
+        SharedPreferences.Editor editor = sharePrefer.edit();
         JSONArray a = new JSONArray();
         for (int i = 0; i < values.size(); i++) {
             a.put(values.get(i));
@@ -110,7 +110,7 @@ class Utils {
     }
 
     ArrayList<Integer> getIntArrayPref(String key) {
-        String json = mSettings.getString(key, null);
+        String json = sharePrefer.getString(key, null);
         ArrayList<Integer> urls = new ArrayList<>();
         if (json != null) {
             try {
