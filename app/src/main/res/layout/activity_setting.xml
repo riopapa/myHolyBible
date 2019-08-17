@@ -636,17 +636,21 @@
             android:layout_gravity="center"
             android:textSize="18sp" />
         <!--app info-->
-        <TextView
-            android:id="@+id/about"
+        <TableLayout
+            android:id="@+id/table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/about"
-            android:background="@color/LimeGreen"
-            android:layout_gravity="center"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content">
+        </TableLayout>
 
     </LinearLayout>
 
 </ScrollView>
 
+<!--<ScrollView android:layout_width="fill_parent"-->
+<!--android:layout_height="fill_parent">-->
+
+<!--<TextView  android:id="@+id/history"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:padding="3dip"/>-->
+<!--</ScrollView>-->
