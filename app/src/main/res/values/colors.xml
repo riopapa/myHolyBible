@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="BackgroundColor">SlateBlue</color>
-    <color name="SlateBlue">#6A5ACD</color>
+
+    <color name="BackgroundColor">@color/SlateBlue</color>
 
     // Red Colors
     <color name="LightSalmon">#FFA07A</color>
