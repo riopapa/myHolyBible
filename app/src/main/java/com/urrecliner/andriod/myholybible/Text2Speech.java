@@ -175,6 +175,7 @@ class Text2Speech {
                 }
             });
             mediaPlayer.start();
+            isReadingNow = true;
         } else {
             Toast.makeText(mContext, "찬송가 "+nowHymn+"장 음악 파일이 없습니다.", Toast.LENGTH_LONG).show();
             isReadingNow = false;

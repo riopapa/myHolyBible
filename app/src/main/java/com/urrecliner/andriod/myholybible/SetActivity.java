@@ -2,18 +2,23 @@ package com.urrecliner.andriod.myholybible;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
@@ -29,6 +34,7 @@ import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
+import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
@@ -36,7 +42,6 @@ import static com.urrecliner.andriod.myholybible.Vars.nowBible;
 import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
-import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -45,7 +50,6 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static com.urrecliner.andriod.myholybible.Vars.webView;
 import static java.lang.Integer.parseInt;
 
 public class SetActivity extends Activity {
@@ -198,15 +202,37 @@ public class SetActivity extends Activity {
             }
         });
 
-        tv = (TextView) findViewById(R.id.about);
+        tv = (TextView) findViewById(R.id.build_time);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.web_view);
-                webView = (WebView) findViewById(R.id.webView);
-                WebSettings settings = webView.getSettings();
-//                settings.setJavaScriptEnabled(true);
-                webView.loadUrl("file:///" + packageFolder.toString() + "/about.html");
+                TableLayout tableLayout = (TableLayout) findViewById(R.id.table);
+                TableRow tr;
+                TableRow.LayoutParams params;
+                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                ArrayList<String> histories = utils.readRawTextFile(mContext, R.raw.history);
+                for (String s: histories) {
+                    String [] oneLines = s.split(";");
+                    tr = new TableRow(mContext);
+                    LinearLayout oneLine = (LinearLayout) inflater.inflate(
+                            R.layout.history_table, null);
+                    TextView tv = (TextView) oneLine.findViewById(R.id.date);
+                    if (oneLines[1].equals("b"))
+                        tv.setTypeface(null, Typeface.BOLD);
+                    tv.setText(oneLines[0]);
+                    tv = (TextView) oneLine.findViewById(R.id.updates);
+                    if (oneLines[1].equals("b"))
+                        tv.setTypeface(null, Typeface.BOLD);
+                    tv.setText(oneLines[2].replace("||", "\n"));
+                    params = new TableRow.LayoutParams(
+                            TableRow.LayoutParams.MATCH_PARENT,
+                            TableRow.LayoutParams.MATCH_PARENT, 1f);
+                    tr.addView(oneLine, params);
+//                    tr.addView(oneLine);
+                    tableLayout.addView(tr);
+                }
+
             }
         });
 
