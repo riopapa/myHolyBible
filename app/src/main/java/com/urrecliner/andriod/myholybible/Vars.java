@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -81,7 +80,11 @@ public class Vars {
     @SuppressLint("StaticFieldLeak")
     static TextView vCurrBible = null;
     static int normalMenuColor = 0;
-    static WebView webView;
+
+    static final int SHEET_THEN_LYRIC = 0;
+    static final int LYRIC_THEN_SHEET = 1;
+    static final int SHEET_ONLY = 2;
+    static final int LYRIC_ONLY = 3;
 
 
     static Text2Speech text2Speech = null;

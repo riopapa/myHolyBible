@@ -20,13 +20,17 @@ import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
+import static com.urrecliner.andriod.myholybible.Vars.LYRIC_ONLY;
+import static com.urrecliner.andriod.myholybible.Vars.LYRIC_THEN_SHEET;
+import static com.urrecliner.andriod.myholybible.Vars.SHEET_ONLY;
+import static com.urrecliner.andriod.myholybible.Vars.SHEET_THEN_LYRIC;
 import static com.urrecliner.andriod.myholybible.Vars.history;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
+import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
@@ -40,7 +44,7 @@ import static com.urrecliner.andriod.myholybible.Vars.xPixels;
 
 class MakeHymn {
 
-    private String new3Line = "\n\n\n";
+    private String new2Line = "\n\n";
 
     private TextView tVTitle;
     private String hymnTitle = "";
@@ -182,7 +186,7 @@ class MakeHymn {
 //        tVSort.setText(newLine);
         tTail.setTextSize(textSizeHymnKeypad);
         tTail.setWidth(2000);
-        tTail.setText(new3Line);
+        tTail.setText(new2Line);
         linearlayout.addView(tTail);
 
         nowHymn = 0;
@@ -206,19 +210,29 @@ class MakeHymn {
         linearlayout.setGravity(Gravity.CENTER_HORIZONTAL);
         scrollView.addView(linearlayout);
 
+        TextView tVBody = new TextView(mContext);
+        txt = nowHymn+" : "+hymnTitles[nowHymn];
+        tVBody.setText(txt);
+        tVBody.setTextSize(textSizeHymnBody+textSizeHymnBody/4);
+        tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
+        tVBody.setWidth(xPixels);
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tVBody.setBackgroundColor(normalMenuColor | 0x777777);
+        linearlayout.addView(tVBody);
+
         switch (hymnShowWhat) {
-            case 0:
+            case SHEET_THEN_LYRIC:
                 show_hymnImage(linearlayout);
                 show_HymnText(hymnTexts, linearlayout);
                 break;
-            case 1:
+            case LYRIC_THEN_SHEET:
                 show_HymnText(hymnTexts, linearlayout);
                 show_hymnImage(linearlayout);
                 break;
-            case 2:
+            case SHEET_ONLY:
                 show_hymnImage(linearlayout);
                 break;
-            case 3:
+            case LYRIC_ONLY:
                 show_HymnText(hymnTexts, linearlayout);
                 break;
         }
@@ -238,12 +252,12 @@ class MakeHymn {
 
         StringBuilder bodyText = new StringBuilder();
         for (String hymnText : hymnTexts) {
-            String workLine = "\n" + hymnText;
+            String workLine = "\n"+hymnText;
             bodyText.append(workLine);
         }
         bodyText.append("\n\n");
-        if (hymnImageFirst)
-            bodyText.append(new3Line);
+//        if (hymnShowWhat == SHEET_THEN_LYRIC || hymnShowWhat == LYRIC_ONLY)
+//            bodyText.append(new2Line);
         SpannableString ssBody = new SpannableString(bodyText);
         tVBody.setText(ssBody);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
@@ -255,6 +269,7 @@ class MakeHymn {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
             ImageView imV = new ImageView(mContext);
+            imV.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ImageBackColor));
             linearlayout.addView(imV);
             imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
             imV.requestLayout();
@@ -270,8 +285,9 @@ class MakeHymn {
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
-        if (!hymnImageFirst)
-            bodyText.append(new3Line);
+//        bodyText.append("\n");
+        if (hymnShowWhat == SHEET_ONLY || hymnShowWhat == LYRIC_THEN_SHEET)
+            bodyText.append(new2Line);
         SpannableString ssBody = new SpannableString(bodyText);
         tVBody.setText(ssBody);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
@@ -329,7 +345,7 @@ class MakeHymn {
                 break;
         }
         TextView tVb = new TextView(mContext);
-        tVb.setText(new3Line);
+        tVb.setText(new2Line);
         tVb.setTextSize(textSizeBibleTitle);
         tVb.setWidth(xPixels);
 //        tVb.setGravity(Gravity.CENTER);

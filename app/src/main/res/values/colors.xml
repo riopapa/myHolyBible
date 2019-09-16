@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="BackgroundColor">@color/SlateBlue</color>
+    <color name="TextBackColor">@color/DarkGray</color>
+    <color name="ImageBackColor">@color/Pearl</color>
 
     // Red Colors
     <color name="LightSalmon">#FFA07A</color>

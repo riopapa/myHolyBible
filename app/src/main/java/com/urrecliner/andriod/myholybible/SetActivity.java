@@ -21,6 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static com.urrecliner.andriod.myholybible.Vars.LYRIC_ONLY;
+import static com.urrecliner.andriod.myholybible.Vars.LYRIC_THEN_SHEET;
+import static com.urrecliner.andriod.myholybible.Vars.SHEET_ONLY;
+import static com.urrecliner.andriod.myholybible.Vars.SHEET_THEN_LYRIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
@@ -281,13 +285,13 @@ public class SetActivity extends Activity {
         RadioGroup rg = (RadioGroup)findViewById(R.id.radioGroup1);
         RadioButton rb;
         switch(hymnShowWhat) {
-            case 0:
+            case SHEET_THEN_LYRIC:
                 rb = (RadioButton) findViewById(R.id.sheet_lyric); rb.setChecked(true); break;
-            case 1:
+            case LYRIC_THEN_SHEET:
                 rb = (RadioButton) findViewById(R.id.lyric_sheet); rb.setChecked(true); break;
-            case 2:
+            case SHEET_ONLY:
                 rb = (RadioButton) findViewById(R.id.sheet_only); rb.setChecked(true); break;
-            case 3:
+            case LYRIC_ONLY:
                 rb = (RadioButton) findViewById(R.id.lyric_only); rb.setChecked(true); break;
         }
 
@@ -297,13 +301,13 @@ public class SetActivity extends Activity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.sheet_lyric:
-                        hymnShowWhat = 0; break;
+                        hymnShowWhat = SHEET_THEN_LYRIC; break;
                     case R.id.lyric_sheet:
-                        hymnShowWhat = 1; break;
+                        hymnShowWhat = LYRIC_THEN_SHEET; break;
                     case R.id.sheet_only:
-                        hymnShowWhat = 2; break;
+                        hymnShowWhat = SHEET_ONLY; break;
                     case R.id.lyric_only:
-                        hymnShowWhat = 3; break;
+                        hymnShowWhat = LYRIC_ONLY; break;
                 }
                 editor.putInt("hymnShowWhat", hymnShowWhat).apply();
             }
@@ -374,7 +378,6 @@ public class SetActivity extends Activity {
             }
         });
     }
-
 
     private void buildSetBookMark() {
         final int[] books = new int[]{R.id.bookmark_bible0, R.id.bookmark_bible1, R.id.bookmark_bible2,
