@@ -268,17 +268,17 @@ public class MainActivity extends Activity {
         highLiteMenuColor = normalMenuColor ^ 0x444444;
         readNowColor = normalMenuColor ^ 0x777777;
 
-        bibleColorFore = ContextCompat.getColor(mContext,R.color.Black);
-        verseColorFore = ContextCompat.getColor(mContext,R.color.EarthBlue);
-        paraColorFore = ContextCompat.getColor(mContext,R.color.Indigo);
-        referColorFore = ContextCompat.getColor(mContext,R.color.RoyalBlue);
+        bibleColorFore = ContextCompat.getColor(mContext,R.color.bibleColorFore);
+        verseColorFore = ContextCompat.getColor(mContext,R.color.verseColorFore);
+        paraColorFore = ContextCompat.getColor(mContext,R.color.paraColorFore);
+        referColorFore = ContextCompat.getColor(mContext,R.color.referColorFore);
         numberColorFore = ContextCompat.getColor(mContext,R.color.MidnightBlue);
 
-        cevColorFore = ContextCompat.getColor(mContext,R.color.Navy);
-        cevColorBack = ContextCompat.getColor(mContext,R.color.PowderBlue);
-        agpColorFore = ContextCompat.getColor(mContext,R.color.DarkOrchid);
-        agpColorBack = ContextCompat.getColor(mContext,R.color.Lavender);
-        dictColorFore = ContextCompat.getColor(mContext,R.color.Blue);
+        cevColorFore = ContextCompat.getColor(mContext,R.color.cevColorFore);
+        cevColorBack = ContextCompat.getColor(mContext,R.color.cevColorBack);
+        agpColorFore = ContextCompat.getColor(mContext,R.color.agpColorFore);
+        agpColorBack = ContextCompat.getColor(mContext,R.color.agpColorBack);
+        dictColorFore = ContextCompat.getColor(mContext,R.color.dictColorFore);
     }
 
     public void makeTopBottomMenu() {

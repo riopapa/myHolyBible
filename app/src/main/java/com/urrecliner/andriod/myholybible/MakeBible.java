@@ -267,7 +267,7 @@ class MakeBible {
         tV.setTextSize(textSizeBibleBody);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
-        tV.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tV.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
         lp.setMargins(20,16,20,16);
         linearlayout.setLayoutParams(lp);

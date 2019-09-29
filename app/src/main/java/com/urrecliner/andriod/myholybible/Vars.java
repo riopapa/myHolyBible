@@ -86,7 +86,6 @@ public class Vars {
     static final int SHEET_ONLY = 2;
     static final int LYRIC_ONLY = 3;
 
-
     static Text2Speech text2Speech = null;
     static boolean isReadingNow = false;
     static float bibleSpeed = 0.8f;

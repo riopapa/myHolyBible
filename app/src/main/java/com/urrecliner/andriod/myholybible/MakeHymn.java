@@ -64,7 +64,7 @@ class MakeHymn {
 
 //        tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
-        tV0.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tV0.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
@@ -75,7 +75,7 @@ class MakeHymn {
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
         tVTitle.setTextSize(textSizeHymnKeypad);
-        tVTitle.setTextColor(ContextCompat.getColor(mContext,R.color.Charcoal));
+        tVTitle.setTextColor(ContextCompat.getColor(mContext,R.color.hymnTitle));
         tVTitle.setGravity(Gravity.CENTER);
         tVTitle.setWidth(2000);
         linearlayout.addView(tVTitle);
@@ -150,7 +150,7 @@ class MakeHymn {
         TextView tVSort = new TextView(mContext);
 //        tVSort.setText(newLine);
         tVSort.setTextSize(textSizeHymnKeypad);
-        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         tVSort.setGravity(Gravity.CENTER);
         tVSort.setWidth(2000);
         linearlayout.addView(tVSort);
@@ -216,7 +216,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody+textSizeHymnBody/4);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         tVBody.setBackgroundColor(normalMenuColor | 0x777777);
         linearlayout.addView(tVBody);
 
@@ -247,7 +247,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
@@ -269,7 +269,7 @@ class MakeHymn {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
             ImageView imV = new ImageView(mContext);
-            imV.setBackgroundColor(ContextCompat.getColor(mContext,R.color.ImageBackColor));
+            imV.setBackgroundColor(ContextCompat.getColor(mContext,R.color.hymnImageBack));
             linearlayout.addView(imV);
             imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
             imV.requestLayout();
@@ -281,7 +281,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color._Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
