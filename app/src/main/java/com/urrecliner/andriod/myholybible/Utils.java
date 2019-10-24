@@ -56,7 +56,6 @@ class Utils {
             lines.add(line);
         }
         bufferedReader.close();
-//        return lines.toArray(new String[lines.size()]);
         return lines.toArray(new String[0]);
     }
 

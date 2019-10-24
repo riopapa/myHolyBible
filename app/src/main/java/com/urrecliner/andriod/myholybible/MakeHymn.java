@@ -80,28 +80,29 @@ class MakeHymn {
         tVTitle.setWidth(2000);
         linearlayout.addView(tVTitle);
 
-        for(int i = 0; i<5;i++) {
+        for(int row = 0; row<5;row++) {
             LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             linearlayout.addView(rowLayout);
-            for(int j = 0; j < 3; j++) {
-                int id = ids[i*3+j];
+            for(int col = 0; col < 3; col++) {
+                int id = ids[row*3+col];
                 if (id == -1)
                     break;
                 String buttonText;
                 int buttonWidth;
-                if (id == 100) {
-                    buttonWidth = 300;
-                    buttonText = "Clear";
-                }
-                else if (id == 200) {
-                    buttonWidth = 400;
-                    buttonText = "Go";
-                }
-                else {
-                    buttonText = "" + id;
-                    buttonWidth = 100;
+                switch (id) {
+                    case 100:
+                        buttonWidth = 300;
+                        buttonText = "Clear";
+                        break;
+                    case 200:
+                        buttonWidth = 400;
+                        buttonText = "Go";
+                        break;
+                    default:
+                        buttonText = "" + id;
+                        buttonWidth = 100;
                 }
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -126,7 +127,7 @@ class MakeHymn {
                         }
                     });
                 }
-                else if (id==100) { // clear
+                else if (id==100) { // code is clear
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -136,7 +137,7 @@ class MakeHymn {
                         }
                     });
                 }
-                else {    // go
+                else {    // code is go
                     b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -148,20 +149,19 @@ class MakeHymn {
             }
         }
         TextView tVSort = new TextView(mContext);
-//        tVSort.setText(newLine);
         tVSort.setTextSize(textSizeHymnKeypad);
         tVSort.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
         tVSort.setGravity(Gravity.CENTER);
         tVSort.setWidth(2000);
         linearlayout.addView(tVSort);
 
-        for(int i = 0; i<8;i++) {   // 4
+        for(int row = 0; row<8;row++) {   // 4
             LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             linearlayout.addView(rowLayout);
-            for(int j = 0; j < 2; j++) {
-                String text = hymnTitles[sortedNumbers[(i+i+j)*41]].substring(0,6);     // 81
+            for(int col = 0; col < 2; col++) {
+                String text = hymnTitles[sortedNumbers[(row+row+col)*41]].substring(0,6)+".~";     // 81
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
@@ -170,7 +170,7 @@ class MakeHymn {
                 b.setWidth(440);
                 b.setText(text);
                 columnLayout.addView(b);
-                b.setId((i+i+j)*41);    // 81
+                b.setId((row+row+col)*41);    // 81
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -202,7 +202,7 @@ class MakeHymn {
         String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = utils.readBibleFile(txt);
         if (hymnTexts == null) {
-            Toast.makeText(mContext, "찬송가 " + nowHymn + " 파일 없음",Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "찬송가 " + nowHymn + " 가사 파일 없음",Toast.LENGTH_LONG).show();
             return;
         }
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -213,7 +213,8 @@ class MakeHymn {
         TextView tVBody = new TextView(mContext);
         txt = nowHymn+" : "+hymnTitles[nowHymn];
         tVBody.setText(txt);
-        tVBody.setTextSize(textSizeHymnBody+textSizeHymnBody/4);
+        tVBody.setTextSize(textSizeHymnBody+textSizeHymnBody/5);
+        tVBody.setPadding(0,20,0,20);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
         tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
@@ -256,8 +257,6 @@ class MakeHymn {
             bodyText.append(workLine);
         }
         bodyText.append("\n\n");
-//        if (hymnShowWhat == SHEET_THEN_LYRIC || hymnShowWhat == LYRIC_ONLY)
-//            bodyText.append(new2Line);
         SpannableString ssBody = new SpannableString(bodyText);
         tVBody.setText(ssBody);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
@@ -285,7 +284,6 @@ class MakeHymn {
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
-//        bodyText.append("\n");
         if (hymnShowWhat == SHEET_ONLY || hymnShowWhat == LYRIC_THEN_SHEET)
             bodyText.append(new2Line);
         SpannableString ssBody = new SpannableString(bodyText);
@@ -310,7 +308,7 @@ class MakeHymn {
         tV.setWidth(xPixels);
         linearlayout.addView(tV);
 
-        for(int i = 0; i<41;i++) {  // 81
+        for(int row = 0; row<41;row++) {  // 81
             LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -318,7 +316,6 @@ class MakeHymn {
 
             LinearLayout columnLayout = new LinearLayout(mContext);
             columnLayout.setOrientation(LinearLayout.HORIZONTAL);
-//            columnLayout.setGravity(Gravity.CENTER);
             titleTV = new TextView(mContext);
             titleTV.setText(hymnTitles[sortedNumbers[start]]);
             titleTV.setTextColor(Color.BLACK);
