@@ -257,6 +257,8 @@ class MakeHymn {
             bodyText.append(workLine);
         }
         bodyText.append("\n\n");
+        if (hymnShowWhat == SHEET_THEN_LYRIC || hymnShowWhat == LYRIC_ONLY)
+                    bodyText.append("\n\n\n");
         SpannableString ssBody = new SpannableString(bodyText);
         tVBody.setText(ssBody);
         tVBody.setMovementMethod(LinkMovementMethod.getInstance());
