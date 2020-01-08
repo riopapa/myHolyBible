@@ -27,6 +27,7 @@ class Utils {
     Utils(MainActivity activity) { mActivity = activity; }
 
     String[] readBibleFile(String filename) {
+
         String file2read = packageFolder + "/" + filename;
         String[] lines;
         try {

@@ -31,6 +31,7 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
 import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
+import static com.urrecliner.andriod.myholybible.Vars.blackMode;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
@@ -59,7 +60,7 @@ import static java.lang.Integer.parseInt;
 public class SetActivity extends Activity {
 
     TextView tv;
-    CheckBox cb;
+    CheckBox cbKeep, cbBlack;
     String txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -339,19 +340,37 @@ public class SetActivity extends Activity {
             }
         });
 
-        cb = (CheckBox) findViewById(R.id.keep_screen_check);
-        cb.setChecked(alwaysOn);
-        cb.setOnClickListener(new View.OnClickListener() {
+        cbKeep = (CheckBox) findViewById(R.id.keep_screen_check);
+        cbKeep.setChecked(alwaysOn);
+        cbKeep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cb = (CheckBox) findViewById(R.id.keep_screen_check);
-                alwaysOn = cb.isChecked();
+                cbKeep = (CheckBox) findViewById(R.id.keep_screen_check);
+                alwaysOn = cbKeep.isChecked();
                 editor.putBoolean("alwaysOn", alwaysOn).apply();
 
                 if (alwaysOn)
                     mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 else
                     mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            }
+        });
+
+        cbBlack = (CheckBox) findViewById(R.id.black_back);
+        cbBlack.setChecked(blackMode);
+        cbBlack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cbBlack = (CheckBox) findViewById(R.id.black_back);
+                blackMode = cbKeep.isChecked();
+                editor.putBoolean("blackMode", blackMode).apply();
+
+                if (blackMode) {
+                    mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+                else {
+                    mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
             }
         });
     }
@@ -387,7 +406,7 @@ public class SetActivity extends Activity {
 
         for (int i = 0; i < 6; i++) {
             tv = (TextView) findViewById(books[i]); tv.setVisibility(View.INVISIBLE);
-            cb = (CheckBox) findViewById(saves[i]); cb.setVisibility(View.INVISIBLE);
+            cbKeep = (CheckBox) findViewById(saves[i]); cbKeep.setVisibility(View.INVISIBLE);
         }
         if (bookBibles.size() > 0) {
             for (int i = 0; i < bookBibles.size(); i++) {
@@ -413,16 +432,16 @@ public class SetActivity extends Activity {
                     }
                 });
 
-                cb = (CheckBox) findViewById(saves[i]);
-                cb.setChecked(Boolean.parseBoolean(bookSaves.get(i)));
-                cb.setTag(i);
-                cb.setVisibility(View.VISIBLE);
-                cb.setOnClickListener(new View.OnClickListener() {
+                cbKeep = (CheckBox) findViewById(saves[i]);
+                cbKeep.setChecked(Boolean.parseBoolean(bookSaves.get(i)));
+                cbKeep.setTag(i);
+                cbKeep.setVisibility(View.VISIBLE);
+                cbKeep.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int iTag = (int) v.getTag();
-                        cb = (CheckBox) findViewById(saves[iTag]);
-                        bookSaves.set(iTag, cb.isChecked() ? "true" : "false");
+                        cbKeep = (CheckBox) findViewById(saves[iTag]);
+                        bookSaves.set(iTag, cbKeep.isChecked() ? "true" : "false");
                         utils.setStringArrayPref("bookSaves", bookSaves);
                     }
                 });

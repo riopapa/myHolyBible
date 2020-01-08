@@ -41,18 +41,19 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorBack;
+import static com.urrecliner.andriod.myholybible.Vars.agpColorBlack;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
 import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
+import static com.urrecliner.andriod.myholybible.Vars.blackMode;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
 import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
 import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
 import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorBack;
+import static com.urrecliner.andriod.myholybible.Vars.cevColorBlack;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
 import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
@@ -244,6 +245,7 @@ public class MainActivity extends Activity {
         textSizeKeyWord = sharePrefer.getInt("textSizeKeyWord", 22);
         textSizeSpace = sharePrefer.getInt("textSizeSpace", 15);
         hymnImageFirst = sharePrefer.getBoolean("hymnImageFirst", true);
+        blackMode = sharePrefer.getBoolean("blackMode", false);
         hymnShowWhat = sharePrefer.getInt("hymnShowWhat", 0);
         alwaysOn = sharePrefer.getBoolean("alwaysOn",true);
         bibleSpeed = sharePrefer.getFloat("bibleSpeed", 0.8f);
@@ -275,9 +277,9 @@ public class MainActivity extends Activity {
         numberColorFore = ContextCompat.getColor(mContext,R.color.MidnightBlue);
 
         cevColorFore = ContextCompat.getColor(mContext,R.color.cevColorFore);
-        cevColorBack = ContextCompat.getColor(mContext,R.color.cevColorBack);
+        cevColorBlack = ContextCompat.getColor(mContext,R.color.cevColorBlack);
         agpColorFore = ContextCompat.getColor(mContext,R.color.agpColorFore);
-        agpColorBack = ContextCompat.getColor(mContext,R.color.agpColorBack);
+        agpColorBlack = ContextCompat.getColor(mContext,R.color.agpColorBlack);
         dictColorFore = ContextCompat.getColor(mContext,R.color.dictColorFore);
     }
 

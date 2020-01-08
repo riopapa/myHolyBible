@@ -3,6 +3,7 @@
 
     <color name="TextBackColor">@color/AlmostWhite</color>
     <color name="AlmostWhite">#EDEFEF</color>
+    <color name="TextBlackColor">@color/AlmostWhite</color>
 
     <color name="hymnImageBack">@color/LighterBack</color>
     <color name="LighterBack">#E3EFE8</color>
@@ -31,13 +32,13 @@
     <color name="cevColorFore">@color/Navy</color>
     <color name="Navy">#000080</color>
 
-    <color name="cevColorBack">@color/PowderBlue</color>
+    <color name="cevColorBlack">@color/PowderBlue</color>
     <color name="PowderBlue">#B0E0E6</color>
 
     <color name="agpColorFore">@color/DarkOrchid</color>
     <color name="DarkOrchid">#9932CC</color>
 
-    <color name="agpColorBack">@color/Lavender</color>
+    <color name="agpColorBlack">@color/Lavender</color>
     <color name="Lavender">#E6E6FA</color>
 
     <color name="dictColorFore">@color/Blue</color>

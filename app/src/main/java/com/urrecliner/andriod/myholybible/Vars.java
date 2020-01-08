@@ -46,6 +46,7 @@ public class Vars {
     static int TAB_MODE_HYMN = 4;
     static int TAB_MODE_DIC = 8;
 
+    static int mainColor, gaeColor, agpColor, cevColor;
     static int stackP = 0;
     static int topTab = TAB_MODE_NEW;    // if topTab < TAB_MODE_HYMN then it means OLD or NEW
     static String logFile = "log.txt";
@@ -53,7 +54,7 @@ public class Vars {
     static boolean agpShow = false;
     static boolean cevShow = false;
 
-    static int bibleColorFore, verseColorFore, paraColorFore, referColorFore, numberColorFore, cevColorFore, cevColorBack, agpColorFore, agpColorBack, dictColorFore;
+    static int bibleColorFore, verseColorFore, paraColorFore, referColorFore, numberColorFore, cevColorFore, cevColorBlack, agpColorFore, agpColorBlack, dictColorFore;
 
     @SuppressLint("StaticFieldLeak")
     static ViewGroup mBody; // assigned to Fragment_Body
