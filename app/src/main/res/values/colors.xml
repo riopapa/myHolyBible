@@ -1,63 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="TextBackColor">@color/AlmostWhite</color>
-    <color name="AlmostWhite">#EDEFEF</color>
-    <color name="TextBlackColor">@color/AlmostWhite</color>
-
-    <color name="hymnImageBack">@color/LighterBack</color>
-    <color name="LighterBack">#E3EFE8</color>
-
-    <color name="MenuBackColor">@color/SlateBlue</color>
-    <color name="SlateBlue">#6A5ACD</color>
-
-    <color name="MenuForeColor">@color/LimeGreen</color>
-    <color name="LimeGreen">#32CD32</color>
-
-    <color name="bibleColorFore">@color/Black</color>
-    <color name="Black">#000000</color>
-
-    <color name="verseColorFore">@color/EarthBlue</color>
-    <color name="EarthBlue">#0000A0</color>
-
-    <color name="paraColorFore">@color/Indigo</color>
-    <color name="Indigo">#4B0082</color>
-
-    <color name="referColorFore">@color/RoyalBlue</color>
-    <color name="RoyalBlue">#4169E1</color>
-
-    <color name="numberColorFore">@color/MidnightBlue</color>
-    <color name="MidnightBlue">#191970</color>
-
-    <color name="cevColorFore">@color/Navy</color>
-    <color name="Navy">#000080</color>
-
-    <color name="cevColorBlack">@color/PowderBlue</color>
-    <color name="PowderBlue">#B0E0E6</color>
-
-    <color name="agpColorFore">@color/DarkOrchid</color>
-    <color name="DarkOrchid">#9932CC</color>
-
-    <color name="agpColorBlack">@color/Lavender</color>
-    <color name="Lavender">#E6E6FA</color>
-
-    <color name="dictColorFore">@color/Blue</color>
-    <color name="Blue">#0000FF</color>
-
-    <color name="hymnTitle">@color/Charcoal</color>
-    <color name="Charcoal">#34282C</color>
-
-    <color name="setSolid">@color/Charcoal</color>
-
-    <color name="setStroke">@color/Purple</color>
-    <color name="Purple">#8E35EF</color>
-
-    <color name="setText">@color/Purple</color>
-
-    <color name="appInfo">@color/SeaBlue</color>
-    <color name="SeaBlue">#C2DFFF</color>
-
-    <color name="quitBack">@color/MistyRose</color>
-    <color name="MistyRose">#FBBBB9</color>
+    <color name="TextBackColor">#EDEFEF</color>
+    <color name="hymnImageBack">#E3EFE8</color>
+    <color name="MenuBackColor">#6A5ACD</color>
+    <color name="MenuForeColor">#32CD32</color>
+    <color name="bibleColorFore">#000000</color>
+    <color name="hymnColorFore">#000000</color>
+    <color name="verseColorFore">#0000A0</color>
+    <color name="paraColorFore">#4B0082</color>
+    <color name="referColorFore">#4169E1</color>
+    <color name="numberColorFore">#191970</color>
+    <color name="cevColorFore">#113388</color>
+    <color name="agpColorFore">#9932CC</color>
+    <color name="dictColorFore">#0000FF</color>
+    <color name="hymnTitle">#34282C</color>
+    <color name="setSolid">#34282C</color>
+    <color name="setStroke">#8E35EF</color>
+    <color name="setText">#8E35EF</color>
+    <color name="appInfo">#C2DFFF</color>
+    <color name="quitBack">#FBBBB9</color>
+    <color name="quitFore">#113388</color>
 
 </resources>

@@ -64,7 +64,7 @@ class MakeHymn {
 
 //        tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
-        tV0.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tV0.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
@@ -150,7 +150,7 @@ class MakeHymn {
         }
         TextView tVSort = new TextView(mContext);
         tVSort.setTextSize(textSizeHymnKeypad);
-        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
         tVSort.setGravity(Gravity.CENTER);
         tVSort.setWidth(2000);
         linearlayout.addView(tVSort);
@@ -161,13 +161,13 @@ class MakeHymn {
             rowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
             linearlayout.addView(rowLayout);
             for(int col = 0; col < 2; col++) {
-                String text = hymnTitles[sortedNumbers[(row+row+col)*41]].substring(0,6)+".~";     // 81
+                String text = hymnTitles[sortedNumbers[(row+row+col)*41]].substring(0,8)+" ~";     // 81
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
                 b.setTextSize(textSizeHymnBody);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-                b.setWidth(440);
+                b.setWidth(xPixels/2 - 16);
                 b.setText(text);
                 columnLayout.addView(b);
                 b.setId((row+row+col)*41);    // 81
@@ -183,7 +183,6 @@ class MakeHymn {
         }
 
         TextView tTail = new TextView(mContext);
-//        tVSort.setText(newLine);
         tTail.setTextSize(textSizeHymnKeypad);
         tTail.setWidth(2000);
         tTail.setText(new2Line);
@@ -217,7 +216,7 @@ class MakeHymn {
         tVBody.setPadding(0,20,0,20);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
         tVBody.setBackgroundColor(normalMenuColor | 0x777777);
         linearlayout.addView(tVBody);
 
@@ -248,7 +247,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
@@ -282,7 +281,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();

@@ -1,0 +1,155 @@
+package com.urrecliner.andriod.myholybible;
+
+import android.content.DialogInterface;
+import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
+import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarkAdapter;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
+import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.andriod.myholybible.Vars.mContext;
+import static com.urrecliner.andriod.myholybible.Vars.makeBible;
+import static com.urrecliner.andriod.myholybible.Vars.nowBible;
+import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
+import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
+import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.setActivity;
+import static com.urrecliner.andriod.myholybible.Vars.topTab;
+import static com.urrecliner.andriod.myholybible.Vars.utils;
+
+public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder>  {
+
+    @Override
+    public int getItemCount() {
+        return bookMarks.size();
+    }
+
+    @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_mark, parent, false);
+        return new ViewHolder(view);
+    }
+
+    private static TextView nowTVBibleChapter, nowTVDateTime;
+    private static int pos;
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvBibleChapter, tvDateTime;
+        View lo = itemView.findViewById(R.id.bookMark);
+
+        ViewHolder(final View itemView) {
+            super(itemView);
+
+            tvBibleChapter = (TextView) itemView.findViewById(R.id.bibleChapter);
+            tvDateTime = (TextView) itemView.findViewById(R.id.dateTime);
+
+            tvBibleChapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pos = getAdapterPosition();
+                    jump2BookMark();
+                }
+            });
+            tvBibleChapter.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    pos = getAdapterPosition();
+                    saveOrNot();
+                    return true;
+                }
+            });
+
+            tvDateTime.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    pos = getAdapterPosition();
+                    jump2BookMark();
+                }
+            });
+            tvDateTime.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    pos = getAdapterPosition();
+                    saveOrNot();
+                    return true;
+                }
+            });
+        }
+    }
+
+    private static void saveOrNot() {
+        BookMark bookMark = bookMarks.get(pos);
+        bookMark.setSave(!bookMark.isSave());
+        bookMarks.set(pos, bookMark);
+        utils.savePrefers("bookMark", bookMarks);
+        bookMarkAdapter.notifyItemChanged(pos);
+    }
+
+    private static void jump2BookMark() {
+        final BookMark bookMark = bookMarks.get(pos);
+        AlertDialog.Builder builder = new AlertDialog.Builder(setActivity);
+        builder.setTitle("Book Mark 처리");
+        String s = fullBibleNames[bookMark.getBible()] + " " + bookMark.getChapter();
+        builder.setMessage(s);
+        builder.setPositiveButton(s+"로 이동",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        nowBible = bookMark.getBible();
+                        nowChapter = bookMark.getChapter();
+                        nowVerse = 0;
+                        nowHymn = 0;
+                        topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
+                        if (makeBible == null)
+                            makeBible = new MakeBible();
+                        makeBible.MakeBibleBody();
+                        setActivity.finish();
+                        setActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                    }
+                });
+        builder.setNegativeButton("삭제",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        bookMarks.remove(pos);
+                        bookMarkAdapter.notifyItemRemoved(pos);
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int pos) {
+
+        final SimpleDateFormat sdfDate = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.US);
+        String s;
+        BookMark bookMark = bookMarks.get(pos);
+        s = fullBibleNames[bookMark.getBible()] + " " + bookMark.getChapter();
+        holder.tvBibleChapter.setText(s);
+        s = sdfDate.format(bookMark.getWhen());
+        holder.tvDateTime.setText(s);
+        if (bookMark.isSave()) {
+            holder.tvBibleChapter.setTypeface(null, Typeface.BOLD_ITALIC);
+            holder.tvBibleChapter.setTextColor(ContextCompat.getColor(mContext, R.color.paraColorFore));
+            holder.tvDateTime.setTypeface(null, Typeface.BOLD_ITALIC);
+        }
+        else {
+            holder.tvBibleChapter.setTypeface(null, Typeface.NORMAL);
+            holder.tvBibleChapter.setTextColor(ContextCompat.getColor(mContext, R.color.bibleColorFore));
+            holder.tvDateTime.setTypeface(null, Typeface.NORMAL);
+        }
+        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 8 - pos * 8 * 256 - pos * 8 * 256 * 256);
+    }
+}

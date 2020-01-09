@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ public class Vars {
     @SuppressLint("StaticFieldLeak")
     static MainActivity mainActivity = null;
     @SuppressLint("StaticFieldLeak")
+    static SetActivity setActivity = null;
+    @SuppressLint("StaticFieldLeak")
     static MakeBible makeBible = null;
     @SuppressLint("StaticFieldLeak")
     static MakeHymn makeHymn = null;
@@ -33,6 +36,9 @@ public class Vars {
     static float windowYUpper, windowXCenter;
     @SuppressLint("StaticFieldLeak")
     static ScrollView nowScrollView;
+
+    static BookMarkAdapter bookMarkAdapter;
+    static RecyclerView bookMarkView;
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, maxVerse = 0;
     static int xPixels, yPixels;
@@ -58,14 +64,14 @@ public class Vars {
 
     @SuppressLint("StaticFieldLeak")
     static ViewGroup mBody; // assigned to Fragment_Body
-    static String dictWord;
+    static String nowDic;
 
     static int textSizeBibleNumber = 20;
     static int textSizeHymnTitle = 20;
     static int textSizeHymnKeypad = 24;
 
     // followings are from shared preference
-    static SharedPreferences sharePrefer;
+    static SharedPreferences sharedPreferences;
     static SharedPreferences.Editor editor;
     static int textSizeBible66 = 24;
     static int textSizeBibleTitle = 24;
@@ -94,9 +100,9 @@ public class Vars {
     static float hymnSpeed = 0.9f;
 
     static String [] bibleTexts;
-    static ArrayList<String> bookBibles;
-    static ArrayList<String> bookChapters;
-    static ArrayList<String> bookSaves;
+
+    static ArrayList<GoBack> goBacks;
+    static ArrayList<BookMark> bookMarks;
 
     static int [] nbrOfChapters = {0,50,40,27,36,34,24,21,4,31,24,22,25,29,36,10,13,10,42,150,31,12,8,66,52,5,48,12,14,3,9,1,4,7,3,3,3,2,14,4,28,16,24,21,28,16,16,13,6,6,4,4,5,3,6,4,3,1,13,5,5,3,5,1,1,1,22, 0 };
 

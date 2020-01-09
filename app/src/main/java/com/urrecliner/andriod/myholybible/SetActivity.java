@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,17 +27,14 @@ import static com.urrecliner.andriod.myholybible.Vars.LYRIC_THEN_SHEET;
 import static com.urrecliner.andriod.myholybible.Vars.SHEET_ONLY;
 import static com.urrecliner.andriod.myholybible.Vars.SHEET_THEN_LYRIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
 import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
 import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.blackMode;
-import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
-import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
-import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarkAdapter;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarkView;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
-import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
@@ -44,9 +42,9 @@ import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
 import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
 import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
+import static com.urrecliner.andriod.myholybible.Vars.setActivity;
+import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
@@ -55,7 +53,6 @@ import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
 import static com.urrecliner.andriod.myholybible.Vars.topTab;
 import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static java.lang.Integer.parseInt;
 
 public class SetActivity extends Activity {
 
@@ -67,12 +64,21 @@ public class SetActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        setActivity = this;
+        editor = sharedPreferences.edit();
         buildSetBible();
         buildSetBibleRead();
         buildSetHymn();
         buildSetPlayHymn();
         buildSetBookMark();
         buildShowAuthor();
+        utils.log("s","bookmark "+bookMarks.size());
+    }
+
+    void buildSetBookMark() {
+        bookMarkView = (RecyclerView) findViewById(R.id.book_marks);
+        bookMarkAdapter = new BookMarkAdapter();
+        bookMarkView.setAdapter(bookMarkAdapter);
     }
 
     private void buildSetBible() {
@@ -396,57 +402,6 @@ public class SetActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-    }
-
-    private void buildSetBookMark() {
-        final int[] books = new int[]{R.id.bookmark_bible0, R.id.bookmark_bible1, R.id.bookmark_bible2,
-                R.id.bookmark_bible3, R.id.bookmark_bible4, R.id.bookmark_bible5};
-        final int[] saves = new int[]{R.id.bookmark_check0, R.id.bookmark_check1, R.id.bookmark_check2,
-                R.id.bookmark_check3, R.id.bookmark_check4, R.id.bookmark_check5};
-
-        for (int i = 0; i < 6; i++) {
-            tv = (TextView) findViewById(books[i]); tv.setVisibility(View.INVISIBLE);
-            cbKeep = (CheckBox) findViewById(saves[i]); cbKeep.setVisibility(View.INVISIBLE);
-        }
-        if (bookBibles.size() > 0) {
-            for (int i = 0; i < bookBibles.size(); i++) {
-                tv = (TextView) findViewById(books[i]);
-                txt = fullBibleNames[parseInt(bookBibles.get(i))] + " " + bookChapters.get(i);
-                tv.setText(txt);
-                tv.setTag(i);
-                tv.setVisibility(View.VISIBLE);
-                tv.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int iTag = (int) v.getTag();
-                        nowBible = Integer.parseInt(bookBibles.get(iTag));
-                        nowChapter = Integer.parseInt(bookChapters.get(iTag));
-                        nowVerse = 0;
-                        nowHymn = 0;
-                        topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
-                        if (makeBible == null)
-                            makeBible = new MakeBible();
-                        makeBible.MakeBibleBody();
-                        finish();
-                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                    }
-                });
-
-                cbKeep = (CheckBox) findViewById(saves[i]);
-                cbKeep.setChecked(Boolean.parseBoolean(bookSaves.get(i)));
-                cbKeep.setTag(i);
-                cbKeep.setVisibility(View.VISIBLE);
-                cbKeep.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int iTag = (int) v.getTag();
-                        cbKeep = (CheckBox) findViewById(saves[iTag]);
-                        bookSaves.set(iTag, cbKeep.isChecked() ? "true" : "false");
-                        utils.setStringArrayPref("bookSaves", bookSaves);
-                    }
-                });
-            }
-        }
     }
 
     private void buildShowAuthor() {

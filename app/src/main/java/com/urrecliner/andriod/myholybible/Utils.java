@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -14,11 +17,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.sharePrefer;
+import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
 
 class Utils {
 
@@ -68,7 +72,7 @@ class Utils {
     }
 
     void setStringArrayPref(String key, ArrayList<String> values) {
-        SharedPreferences.Editor editor = sharePrefer.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         JSONArray a = new JSONArray();
         for (int i = 0; i < values.size(); i++) {
             a.put(values.get(i));
@@ -82,7 +86,7 @@ class Utils {
     }
 
     ArrayList<String> getStringArrayPref(String key) {
-        String json = sharePrefer.getString(key, null);
+        String json = sharedPreferences.getString(key, null);
         ArrayList<String> urls = new ArrayList<>();
         if (json != null) {
             try {
@@ -99,7 +103,7 @@ class Utils {
     }
 
     void setIntArrayPref(String key, ArrayList<Integer> values) {
-        SharedPreferences.Editor editor = sharePrefer.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         JSONArray a = new JSONArray();
         for (int i = 0; i < values.size(); i++) {
             a.put(values.get(i));
@@ -113,7 +117,7 @@ class Utils {
     }
 
     ArrayList<Integer> getIntArrayPref(String key) {
-        String json = sharePrefer.getString(key, null);
+        String json = sharedPreferences.getString(key, null);
         ArrayList<Integer> urls = new ArrayList<>();
         if (json != null) {
             try {
@@ -127,6 +131,45 @@ class Utils {
             }
         }
         return urls;
+    }
+
+    void savePrefers(String key, ArrayList arrayList) {
+
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(arrayList);
+        prefsEditor.putString(key, json);
+        prefsEditor.apply();
+    }
+
+    ArrayList<GoBack> readGoBacks() {
+
+        ArrayList<GoBack> list;
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("goBack", "");
+        if (json.isEmpty()) {
+            list = new ArrayList<>();
+        } else {
+            Type type = new TypeToken<List<GoBack>>() {
+            }.getType();
+            list = gson.fromJson(json, type);
+        }
+        return list;
+    }
+
+    ArrayList<BookMark> readBookMarks() {
+
+        ArrayList<BookMark> list;
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("bookMark", "");
+        if (json.isEmpty()) {
+            list = new ArrayList<>();
+        } else {
+            Type type = new TypeToken<List<BookMark>>() {
+            }.getType();
+            list = gson.fromJson(json, type);
+        }
+        return list;
     }
 
     ArrayList<String> readRawTextFile(Context ctx, int resId)

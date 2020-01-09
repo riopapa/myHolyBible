@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
@@ -41,7 +40,6 @@ import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorBlack;
 import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.agpShow;
 import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
@@ -50,15 +48,13 @@ import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
 import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.andriod.myholybible.Vars.blackMode;
 import static com.urrecliner.andriod.myholybible.Vars.blank;
-import static com.urrecliner.andriod.myholybible.Vars.bookBibles;
-import static com.urrecliner.andriod.myholybible.Vars.bookChapters;
-import static com.urrecliner.andriod.myholybible.Vars.bookSaves;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorBlack;
+import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
 import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.editor;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.andriod.myholybible.Vars.goBacks;
 import static com.urrecliner.andriod.myholybible.Vars.history;
 import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.andriod.myholybible.Vars.hymnName;
@@ -69,7 +65,6 @@ import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
 import static com.urrecliner.andriod.myholybible.Vars.mActivity;
 import static com.urrecliner.andriod.myholybible.Vars.mBody;
 import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.sharePrefer;
 import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
 import static com.urrecliner.andriod.myholybible.Vars.makeBible;
 import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
@@ -87,9 +82,9 @@ import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
 import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.referColorFore;
+import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
 import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
-import static com.urrecliner.andriod.myholybible.Vars.stackP;
 import static com.urrecliner.andriod.myholybible.Vars.text2Speech;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
@@ -134,12 +129,12 @@ public class MainActivity extends Activity {
 
         askPermission();
         mBody = (ViewGroup) findViewById(R.id.fragment_body);
-        sharePrefer = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharePrefer.edit();
-
+        sharedPreferences = getApplicationContext().getSharedPreferences("bible", MODE_PRIVATE);
         getSharedValues();
+        goBacks = utils.readGoBacks();
+        bookMarks = utils.readBookMarks();
 
-        history.restore();
+        history.init();
         packageFolder = new File(Environment.getExternalStorageDirectory(), "myHolyBible");
 
         final ViewGroup fTop = (ViewGroup) findViewById(R.id.fragment_top);
@@ -170,7 +165,7 @@ public class MainActivity extends Activity {
         else
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        initializeColors();
+        setColors();
 
         assignAllButtonListeners();
         vSetting.post(new Runnable() {
@@ -238,24 +233,21 @@ public class MainActivity extends Activity {
     }
 
     private void getSharedValues() {
-        textSizeBible66 = sharePrefer.getInt("textSizeBible66", 24);
-        textSizeBibleBody = sharePrefer.getInt("textSizeBibleBody", 20);
-        textSizeBibleRefer = sharePrefer.getInt("textSizeBibleRefer", 10);
-        textSizeHymnBody = sharePrefer.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = sharePrefer.getInt("textSizeKeyWord", 22);
-        textSizeSpace = sharePrefer.getInt("textSizeSpace", 15);
-        hymnImageFirst = sharePrefer.getBoolean("hymnImageFirst", true);
-        blackMode = sharePrefer.getBoolean("blackMode", false);
-        hymnShowWhat = sharePrefer.getInt("hymnShowWhat", 0);
-        alwaysOn = sharePrefer.getBoolean("alwaysOn",true);
-        bibleSpeed = sharePrefer.getFloat("bibleSpeed", 0.8f);
-        biblePitch = sharePrefer.getFloat("biblePitch",1.0f);
-        hymnSpeed = sharePrefer.getFloat("hymnSpeed", 0.8f);
-        agpShow = sharePrefer.getBoolean("agpShow", false);
-        cevShow = sharePrefer.getBoolean("cevShow", false);
-        bookBibles = utils.getStringArrayPref("bookBibles");
-        bookChapters = utils.getStringArrayPref("bookChapters");
-        bookSaves = utils.getStringArrayPref("bookSaves");
+        textSizeBible66 = sharedPreferences.getInt("textSizeBible66", 24);
+        textSizeBibleBody = sharedPreferences.getInt("textSizeBibleBody", 20);
+        textSizeBibleRefer = sharedPreferences.getInt("textSizeBibleRefer", 10);
+        textSizeHymnBody = sharedPreferences.getInt("textSizeHymnBody", 20);
+        textSizeKeyWord = sharedPreferences.getInt("textSizeKeyWord", 22);
+        textSizeSpace = sharedPreferences.getInt("textSizeSpace", 15);
+        hymnImageFirst = sharedPreferences.getBoolean("hymnImageFirst", true);
+        blackMode = sharedPreferences.getBoolean("blackMode", false);
+        hymnShowWhat = sharedPreferences.getInt("hymnShowWhat", 0);
+        alwaysOn = sharedPreferences.getBoolean("alwaysOn",true);
+        bibleSpeed = sharedPreferences.getFloat("bibleSpeed", 0.8f);
+        biblePitch = sharedPreferences.getFloat("biblePitch",1.0f);
+        hymnSpeed = sharedPreferences.getFloat("hymnSpeed", 0.8f);
+        agpShow = sharedPreferences.getBoolean("agpShow", false);
+        cevShow = sharedPreferences.getBoolean("cevShow", false);
     }
 
     @Override
@@ -263,7 +255,7 @@ public class MainActivity extends Activity {
         onSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
-    private void initializeColors() {
+    private void setColors() {
 
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
@@ -274,12 +266,10 @@ public class MainActivity extends Activity {
         verseColorFore = ContextCompat.getColor(mContext,R.color.verseColorFore);
         paraColorFore = ContextCompat.getColor(mContext,R.color.paraColorFore);
         referColorFore = ContextCompat.getColor(mContext,R.color.referColorFore);
-        numberColorFore = ContextCompat.getColor(mContext,R.color.MidnightBlue);
+        numberColorFore = ContextCompat.getColor(mContext,R.color.numberColorFore);
 
         cevColorFore = ContextCompat.getColor(mContext,R.color.cevColorFore);
-        cevColorBlack = ContextCompat.getColor(mContext,R.color.cevColorBlack);
         agpColorFore = ContextCompat.getColor(mContext,R.color.agpColorFore);
-        agpColorBlack = ContextCompat.getColor(mContext,R.color.agpColorBlack);
         dictColorFore = ContextCompat.getColor(mContext,R.color.dictColorFore);
     }
 
@@ -542,28 +532,9 @@ public class MainActivity extends Activity {
     void bookMarkThis() {
         if (!bookMarkNow)
             return;
-        final int MaxSize = 6;
-        bookBibles.add(0, ""+nowBible);
-        bookChapters.add(0, ""+nowChapter);
-        bookSaves.add(0,"false");
-        if (bookBibles.size()> MaxSize) {
-            for (int i = bookBibles.size()-1; i > 0; i--) {
-                if (bookSaves.get(i).equals("false")) {
-                    bookBibles.remove(i);
-                    bookChapters.remove(i);
-                    bookSaves.remove(i);
-                    break;
-                }
-            }
-            if (bookBibles.size() > MaxSize) {
-                bookBibles.remove(MaxSize);
-                bookChapters.remove(MaxSize);
-                bookSaves.remove(MaxSize);
-            }
-        }
-        utils.setStringArrayPref("bookBibles", bookBibles);
-        utils.setStringArrayPref("bookChapters", bookChapters);
-        utils.setStringArrayPref("bookSaves", bookSaves);
+        BookMark bookMark = new BookMark(nowBible, nowChapter, System.currentTimeMillis(), false);
+        bookMarks.add(0, bookMark);
+        utils.savePrefers("bookMark", bookMarks);
         Toast.makeText(mContext, fullBibleNames[nowBible]+" "+nowChapter+" 장이\n북마크 되었습니다",Toast.LENGTH_LONG).show();
     }
 
@@ -624,7 +595,7 @@ public class MainActivity extends Activity {
     }
 
     private void goBackward() {
-        if (stackP == 1) {
+        if (goBacks.size() == 1) {
             Toast.makeText(mContext,"맨 처음 입니다." , Toast.LENGTH_LONG).show();
         }
         else {
@@ -737,7 +708,7 @@ public class MainActivity extends Activity {
         MainDialog mMainDialog;
         if(System.currentTimeMillis()>backKeyPressedTime+BACK_DELAY){
             backKeyPressedTime = System.currentTimeMillis();
-            if (stackP == 2) {
+            if (goBacks.size() == 1) {
                 Toast.makeText(getApplicationContext(),"\n맨 처음 입니다.\n혹시 종료하려면 뒤로가기를 두번 눌러주세요\n", Toast.LENGTH_LONG).show();
             }
             else {
@@ -748,7 +719,8 @@ public class MainActivity extends Activity {
         else {
             reloadNow();
             history.push();
-            history.save();
+            utils.savePrefers("goBack", goBacks);
+            utils.savePrefers("bookMark", bookMarks);
             mMainDialog = new MainDialog();
             mMainDialog.show(getFragmentManager(), null);
         }
@@ -778,7 +750,7 @@ public class MainActivity extends Activity {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
             mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog_quit, null));
-            mBuilder.setTitle(mainActivity.getResources().getString(R.string.wanna_quit));
+            mBuilder.setTitle(mActivity.getResources().getString(R.string.wanna_quit));
 
 //            mBuilder.setMessage();
             return mBuilder.create();

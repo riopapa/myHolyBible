@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:orientation="vertical"
         android:background="@color/TextBackColor"
@@ -550,105 +551,15 @@
             android:text="@string/bibleBookMark"
             android:layout_gravity="center"
             android:textSize="28sp" />
-        <LinearLayout
-            android:gravity="center"
-            android:layout_margin="2dp"
-            android:orientation="horizontal"
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/book_marks"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/bookmark_bible0"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center_vertical|end"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check0"/>
-            <TextView
-                android:id="@+id/bookmark_bible1"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check1"/>
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_margin="2dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/bookmark_bible2"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center_vertical|end"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check2"/>
-            <TextView
-                android:id="@+id/bookmark_bible3"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check3"/>
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_margin="2dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/bookmark_bible4"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center_vertical|end"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check4"/>
-            <TextView
-                android:id="@+id/bookmark_bible5"
-                android:layout_width="0dp"
-                android:layout_weight="6"
-                android:gravity="end|center_vertical"
-                android:layout_height="wrap_content"
-                android:text="@string/bibleBookMark"
-                android:layout_gravity="center"
-                android:textSize="20sp" />
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/bookmark_check5"/>
-        </LinearLayout>
+            android:layout_height="match_parent"
+            app:layoutManager="GridLayoutManager"
+            app:spanCount="2"
+            >
+        </android.support.v7.widget.RecyclerView>
         <!--app info-->
         <TextView
             android:id="@+id/build_time"

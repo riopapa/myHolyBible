@@ -44,7 +44,7 @@
         android:onClick="finish_bye"
         android:padding="8sp"
         android:text="@string/sure_to_quit"
-        android:textColor="@color/EarthBlue"
+        android:textColor="@color/quitFore"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/myFace"

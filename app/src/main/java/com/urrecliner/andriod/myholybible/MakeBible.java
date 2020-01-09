@@ -40,7 +40,7 @@ import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
 import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
 import static com.urrecliner.andriod.myholybible.Vars.cevShow;
 import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.dictWord;
+import static com.urrecliner.andriod.myholybible.Vars.nowDic;
 import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.andriod.myholybible.Vars.history;
 import static com.urrecliner.andriod.myholybible.Vars.logFile;
@@ -267,7 +267,7 @@ class MakeBible {
         tV.setTextSize(textSizeBibleBody);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
-        tV.setTextColor(ContextCompat.getColor(mContext,R.color.Black));
+        tV.setTextColor(ContextCompat.getColor(mContext,R.color.bibleColorFore));
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
         lp.setMargins(20,16,20,16);
         linearlayout.setLayoutParams(lp);
@@ -496,7 +496,7 @@ class MakeBible {
 
         @Override
         public void onClick(@NonNull View widget) {
-            dictWord = key;
+            nowDic = key;
             nowVerse = verse;
             makeKeyWord();
         }
@@ -516,7 +516,7 @@ class MakeBible {
 
         @Override
         public void onClick(@NonNull View widget) {
-            dictWord = key;
+            nowDic = key;
             nowVerse = verse;
             makeCrossing();
         }
@@ -525,7 +525,7 @@ class MakeBible {
     void makeKeyWord() {
 
         int verse = nowVerse;
-        String txt = "dict/" + dictWord + ".txt";
+        String txt = "dict/" + nowDic + ".txt";
         history.pop();
         nowVerse = verse;
         history.push();
@@ -586,7 +586,7 @@ class MakeBible {
             tVBottom.setText(new3Line);
         }
         else {
-            String errText = "[" + dictWord + "] not found";
+            String errText = "[" + nowDic + "] not found";
             Toast.makeText(mContext,errText,Toast.LENGTH_LONG).show();
             utils.log(logFile, errText);
         }
@@ -600,7 +600,7 @@ class MakeBible {
 
     private void makeCrossing() {
 
-        String cross = dictWord; // 41#4:18
+        String cross = nowDic; // 41#4:18
         int verse = nowVerse;
         history.pop();
         nowVerse = verse;
