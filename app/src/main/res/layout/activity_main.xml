@@ -14,7 +14,7 @@
         android:id="@+id/fragment_top"
         app:layout_constraintVertical_weight="2"
         app:layout_constraintTop_toTopOf="parent"
-        android:name="com.urrecliner.andriod.myholybible.Fragment_Top">
+        android:name="com.urrecliner.myholybible.Fragment_Top">
 
     </fragment>
     <fragment
@@ -23,7 +23,7 @@
         android:id="@+id/fragment_body"
         app:layout_constraintVertical_weight="8"
         app:layout_constraintTop_toBottomOf="@id/fragment_top"
-        android:name="com.urrecliner.andriod.myholybible.Fragment_Body" />
+        android:name="com.urrecliner.myholybible.Fragment_Body" />
 
     <fragment
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:id="@+id/fragment_bottom"
         app:layout_constraintVertical_weight="2"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:name="com.urrecliner.andriod.myholybible.Fragment_Bottom" >
+        android:name="com.urrecliner.myholybible.Fragment_Bottom" >
    </fragment>
 
 </android.support.constraint.ConstraintLayout>

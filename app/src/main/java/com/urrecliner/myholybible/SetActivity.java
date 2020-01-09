@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 
 import android.app.Activity;
@@ -22,37 +22,37 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static com.urrecliner.andriod.myholybible.Vars.LYRIC_ONLY;
-import static com.urrecliner.andriod.myholybible.Vars.LYRIC_THEN_SHEET;
-import static com.urrecliner.andriod.myholybible.Vars.SHEET_ONLY;
-import static com.urrecliner.andriod.myholybible.Vars.SHEET_THEN_LYRIC;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
-import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
-import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
-import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.blackMode;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarkAdapter;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarkView;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
-import static com.urrecliner.andriod.myholybible.Vars.editor;
-import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
-import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
-import static com.urrecliner.andriod.myholybible.Vars.makeBible;
-import static com.urrecliner.andriod.myholybible.Vars.makeHymn;
-import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.setActivity;
-import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
-import static com.urrecliner.andriod.myholybible.Vars.topTab;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
+import static com.urrecliner.myholybible.Vars.LYRIC_ONLY;
+import static com.urrecliner.myholybible.Vars.LYRIC_THEN_SHEET;
+import static com.urrecliner.myholybible.Vars.SHEET_ONLY;
+import static com.urrecliner.myholybible.Vars.SHEET_THEN_LYRIC;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_HYMN;
+import static com.urrecliner.myholybible.Vars.alwaysOn;
+import static com.urrecliner.myholybible.Vars.biblePitch;
+import static com.urrecliner.myholybible.Vars.bibleSpeed;
+import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
+import static com.urrecliner.myholybible.Vars.bookMarkView;
+import static com.urrecliner.myholybible.Vars.bookMarks;
+import static com.urrecliner.myholybible.Vars.editor;
+import static com.urrecliner.myholybible.Vars.hymnShowWhat;
+import static com.urrecliner.myholybible.Vars.hymnSpeed;
+import static com.urrecliner.myholybible.Vars.mContext;
+import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.makeBible;
+import static com.urrecliner.myholybible.Vars.makeHymn;
+import static com.urrecliner.myholybible.Vars.nowBible;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.setActivity;
+import static com.urrecliner.myholybible.Vars.sharedPreferences;
+import static com.urrecliner.myholybible.Vars.textSizeBible66;
+import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
+import static com.urrecliner.myholybible.Vars.textSizeBibleRefer;
+import static com.urrecliner.myholybible.Vars.textSizeHymnBody;
+import static com.urrecliner.myholybible.Vars.textSizeKeyWord;
+import static com.urrecliner.myholybible.Vars.textSizeSpace;
+import static com.urrecliner.myholybible.Vars.topTab;
+import static com.urrecliner.myholybible.Vars.utils;
 
 public class SetActivity extends Activity {
 

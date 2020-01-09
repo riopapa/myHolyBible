@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,22 +14,22 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
-import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.bibleTexts;
-import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
-import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
-import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
-import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
-import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static com.urrecliner.andriod.myholybible.Vars.vCurrBible;
+import static com.urrecliner.myholybible.Vars.biblePitch;
+import static com.urrecliner.myholybible.Vars.bibleSpeed;
+import static com.urrecliner.myholybible.Vars.bibleTexts;
+import static com.urrecliner.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.myholybible.Vars.hymnSpeed;
+import static com.urrecliner.myholybible.Vars.isReadingNow;
+import static com.urrecliner.myholybible.Vars.mContext;
+import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.maxVerse;
+import static com.urrecliner.myholybible.Vars.normalMenuColor;
+import static com.urrecliner.myholybible.Vars.nowBible;
+import static com.urrecliner.myholybible.Vars.nowChapter;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.packageFolder;
+import static com.urrecliner.myholybible.Vars.utils;
+import static com.urrecliner.myholybible.Vars.vCurrBible;
 
 class Text2Speech {
 

@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 public class GoBack {
     private int topTab;

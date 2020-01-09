@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,8 +21,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
+import static com.urrecliner.myholybible.Vars.packageFolder;
+import static com.urrecliner.myholybible.Vars.sharedPreferences;
 
 class Utils {
 

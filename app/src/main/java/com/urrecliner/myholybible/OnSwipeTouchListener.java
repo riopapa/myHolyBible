@@ -1,11 +1,11 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
+import static com.urrecliner.myholybible.Vars.windowYUpper;
 
 public class OnSwipeTouchListener implements View.OnTouchListener {
 

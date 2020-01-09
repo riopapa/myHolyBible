@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.content.DialogInterface;
 import android.graphics.Typeface;
@@ -14,20 +14,20 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarkAdapter;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
-import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.makeBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
-import static com.urrecliner.andriod.myholybible.Vars.setActivity;
-import static com.urrecliner.andriod.myholybible.Vars.topTab;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_NEW;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_OLD;
+import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
+import static com.urrecliner.myholybible.Vars.bookMarks;
+import static com.urrecliner.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.myholybible.Vars.mContext;
+import static com.urrecliner.myholybible.Vars.makeBible;
+import static com.urrecliner.myholybible.Vars.nowBible;
+import static com.urrecliner.myholybible.Vars.nowChapter;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.nowVerse;
+import static com.urrecliner.myholybible.Vars.setActivity;
+import static com.urrecliner.myholybible.Vars.topTab;
+import static com.urrecliner.myholybible.Vars.utils;
 
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHolder>  {
 

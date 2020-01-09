@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,27 +20,27 @@ import java.io.File;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import static com.urrecliner.andriod.myholybible.Vars.LYRIC_ONLY;
-import static com.urrecliner.andriod.myholybible.Vars.LYRIC_THEN_SHEET;
-import static com.urrecliner.andriod.myholybible.Vars.SHEET_ONLY;
-import static com.urrecliner.andriod.myholybible.Vars.SHEET_THEN_LYRIC;
-import static com.urrecliner.andriod.myholybible.Vars.history;
-import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
-import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
-import static com.urrecliner.andriod.myholybible.Vars.mBody;
-import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
-import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleTitle;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnKeypad;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnTitle;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static com.urrecliner.andriod.myholybible.Vars.xPixels;
+import static com.urrecliner.myholybible.Vars.LYRIC_ONLY;
+import static com.urrecliner.myholybible.Vars.LYRIC_THEN_SHEET;
+import static com.urrecliner.myholybible.Vars.SHEET_ONLY;
+import static com.urrecliner.myholybible.Vars.SHEET_THEN_LYRIC;
+import static com.urrecliner.myholybible.Vars.history;
+import static com.urrecliner.myholybible.Vars.hymnShowWhat;
+import static com.urrecliner.myholybible.Vars.hymnTitles;
+import static com.urrecliner.myholybible.Vars.mBody;
+import static com.urrecliner.myholybible.Vars.mContext;
+import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.normalMenuColor;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.packageFolder;
+import static com.urrecliner.myholybible.Vars.paraColorFore;
+import static com.urrecliner.myholybible.Vars.sortedNumbers;
+import static com.urrecliner.myholybible.Vars.textSizeBibleTitle;
+import static com.urrecliner.myholybible.Vars.textSizeHymnBody;
+import static com.urrecliner.myholybible.Vars.textSizeHymnKeypad;
+import static com.urrecliner.myholybible.Vars.textSizeHymnTitle;
+import static com.urrecliner.myholybible.Vars.utils;
+import static com.urrecliner.myholybible.Vars.xPixels;
 
 class MakeHymn {
 

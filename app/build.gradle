@@ -11,7 +11,7 @@ android {
     }
     compileSdkVersion 25
     defaultConfig {
-        applicationId "com.urrecliner.andriod.myholybible"
+        applicationId "com.urrecliner.myholybible"
         minSdkVersion 25
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 25

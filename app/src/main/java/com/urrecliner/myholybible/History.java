@@ -1,13 +1,13 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
-import static com.urrecliner.andriod.myholybible.Vars.goBacks;
-import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
-import static com.urrecliner.andriod.myholybible.Vars.nowDic;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
-import static com.urrecliner.andriod.myholybible.Vars.topTab;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_NEW;
+import static com.urrecliner.myholybible.Vars.goBacks;
+import static com.urrecliner.myholybible.Vars.nowBible;
+import static com.urrecliner.myholybible.Vars.nowChapter;
+import static com.urrecliner.myholybible.Vars.nowDic;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.nowVerse;
+import static com.urrecliner.myholybible.Vars.topTab;
 
 class History {
 

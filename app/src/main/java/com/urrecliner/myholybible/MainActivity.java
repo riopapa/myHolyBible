@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.myholybible;
+package com.urrecliner.myholybible;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -36,70 +36,70 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_DIC;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_HYMN;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_NEW;
-import static com.urrecliner.andriod.myholybible.Vars.TAB_MODE_OLD;
-import static com.urrecliner.andriod.myholybible.Vars.agpColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.agpShow;
-import static com.urrecliner.andriod.myholybible.Vars.alwaysOn;
-import static com.urrecliner.andriod.myholybible.Vars.bibleColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.biblePitch;
-import static com.urrecliner.andriod.myholybible.Vars.bibleSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.blackMode;
-import static com.urrecliner.andriod.myholybible.Vars.blank;
-import static com.urrecliner.andriod.myholybible.Vars.bookMarks;
-import static com.urrecliner.andriod.myholybible.Vars.cevColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.cevShow;
-import static com.urrecliner.andriod.myholybible.Vars.dictColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.editor;
-import static com.urrecliner.andriod.myholybible.Vars.fullBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.goBacks;
-import static com.urrecliner.andriod.myholybible.Vars.history;
-import static com.urrecliner.andriod.myholybible.Vars.hymnImageFirst;
-import static com.urrecliner.andriod.myholybible.Vars.hymnName;
-import static com.urrecliner.andriod.myholybible.Vars.hymnShowWhat;
-import static com.urrecliner.andriod.myholybible.Vars.hymnSpeed;
-import static com.urrecliner.andriod.myholybible.Vars.hymnTitles;
-import static com.urrecliner.andriod.myholybible.Vars.isReadingNow;
-import static com.urrecliner.andriod.myholybible.Vars.mActivity;
-import static com.urrecliner.andriod.myholybible.Vars.mBody;
-import static com.urrecliner.andriod.myholybible.Vars.mContext;
-import static com.urrecliner.andriod.myholybible.Vars.mainActivity;
-import static com.urrecliner.andriod.myholybible.Vars.makeBible;
-import static com.urrecliner.andriod.myholybible.Vars.maxVerse;
-import static com.urrecliner.andriod.myholybible.Vars.nbrOfChapters;
-import static com.urrecliner.andriod.myholybible.Vars.newName;
-import static com.urrecliner.andriod.myholybible.Vars.normalMenuColor;
-import static com.urrecliner.andriod.myholybible.Vars.nowBible;
-import static com.urrecliner.andriod.myholybible.Vars.nowChapter;
-import static com.urrecliner.andriod.myholybible.Vars.nowHymn;
-import static com.urrecliner.andriod.myholybible.Vars.nowScrollView;
-import static com.urrecliner.andriod.myholybible.Vars.nowVerse;
-import static com.urrecliner.andriod.myholybible.Vars.numberColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.oldName;
-import static com.urrecliner.andriod.myholybible.Vars.onSwipeTouchListener;
-import static com.urrecliner.andriod.myholybible.Vars.packageFolder;
-import static com.urrecliner.andriod.myholybible.Vars.paraColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.referColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.sharedPreferences;
-import static com.urrecliner.andriod.myholybible.Vars.shortBibleNames;
-import static com.urrecliner.andriod.myholybible.Vars.sortedNumbers;
-import static com.urrecliner.andriod.myholybible.Vars.text2Speech;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBible66;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleBody;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeBibleRefer;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeHymnBody;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeKeyWord;
-import static com.urrecliner.andriod.myholybible.Vars.textSizeSpace;
-import static com.urrecliner.andriod.myholybible.Vars.topTab;
-import static com.urrecliner.andriod.myholybible.Vars.utils;
-import static com.urrecliner.andriod.myholybible.Vars.vCurrBible;
-import static com.urrecliner.andriod.myholybible.Vars.verseColorFore;
-import static com.urrecliner.andriod.myholybible.Vars.windowXCenter;
-import static com.urrecliner.andriod.myholybible.Vars.windowYUpper;
-import static com.urrecliner.andriod.myholybible.Vars.xPixels;
-import static com.urrecliner.andriod.myholybible.Vars.yPixels;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_DIC;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_HYMN;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_NEW;
+import static com.urrecliner.myholybible.Vars.TAB_MODE_OLD;
+import static com.urrecliner.myholybible.Vars.agpColorFore;
+import static com.urrecliner.myholybible.Vars.agpShow;
+import static com.urrecliner.myholybible.Vars.alwaysOn;
+import static com.urrecliner.myholybible.Vars.bibleColorFore;
+import static com.urrecliner.myholybible.Vars.biblePitch;
+import static com.urrecliner.myholybible.Vars.bibleSpeed;
+import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.blank;
+import static com.urrecliner.myholybible.Vars.bookMarks;
+import static com.urrecliner.myholybible.Vars.cevColorFore;
+import static com.urrecliner.myholybible.Vars.cevShow;
+import static com.urrecliner.myholybible.Vars.dictColorFore;
+import static com.urrecliner.myholybible.Vars.editor;
+import static com.urrecliner.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.myholybible.Vars.goBacks;
+import static com.urrecliner.myholybible.Vars.history;
+import static com.urrecliner.myholybible.Vars.hymnImageFirst;
+import static com.urrecliner.myholybible.Vars.hymnName;
+import static com.urrecliner.myholybible.Vars.hymnShowWhat;
+import static com.urrecliner.myholybible.Vars.hymnSpeed;
+import static com.urrecliner.myholybible.Vars.hymnTitles;
+import static com.urrecliner.myholybible.Vars.isReadingNow;
+import static com.urrecliner.myholybible.Vars.mActivity;
+import static com.urrecliner.myholybible.Vars.mBody;
+import static com.urrecliner.myholybible.Vars.mContext;
+import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.makeBible;
+import static com.urrecliner.myholybible.Vars.maxVerse;
+import static com.urrecliner.myholybible.Vars.nbrOfChapters;
+import static com.urrecliner.myholybible.Vars.newName;
+import static com.urrecliner.myholybible.Vars.normalMenuColor;
+import static com.urrecliner.myholybible.Vars.nowBible;
+import static com.urrecliner.myholybible.Vars.nowChapter;
+import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.nowScrollView;
+import static com.urrecliner.myholybible.Vars.nowVerse;
+import static com.urrecliner.myholybible.Vars.numberColorFore;
+import static com.urrecliner.myholybible.Vars.oldName;
+import static com.urrecliner.myholybible.Vars.onSwipeTouchListener;
+import static com.urrecliner.myholybible.Vars.packageFolder;
+import static com.urrecliner.myholybible.Vars.paraColorFore;
+import static com.urrecliner.myholybible.Vars.referColorFore;
+import static com.urrecliner.myholybible.Vars.sharedPreferences;
+import static com.urrecliner.myholybible.Vars.shortBibleNames;
+import static com.urrecliner.myholybible.Vars.sortedNumbers;
+import static com.urrecliner.myholybible.Vars.text2Speech;
+import static com.urrecliner.myholybible.Vars.textSizeBible66;
+import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
+import static com.urrecliner.myholybible.Vars.textSizeBibleRefer;
+import static com.urrecliner.myholybible.Vars.textSizeHymnBody;
+import static com.urrecliner.myholybible.Vars.textSizeKeyWord;
+import static com.urrecliner.myholybible.Vars.textSizeSpace;
+import static com.urrecliner.myholybible.Vars.topTab;
+import static com.urrecliner.myholybible.Vars.utils;
+import static com.urrecliner.myholybible.Vars.vCurrBible;
+import static com.urrecliner.myholybible.Vars.verseColorFore;
+import static com.urrecliner.myholybible.Vars.windowXCenter;
+import static com.urrecliner.myholybible.Vars.windowYUpper;
+import static com.urrecliner.myholybible.Vars.xPixels;
+import static com.urrecliner.myholybible.Vars.yPixels;
 
 public class MainActivity extends Activity {
 
@@ -107,7 +107,7 @@ public class MainActivity extends Activity {
     TextView vOldBible, vNewBible, vHymn;
     TextView vAgpBible, vLeftAction, vRightAction, vCevBible;
     long backKeyPressedTime;
-    private MakeHymn makeHymn;
+    private com.urrecliner.myholybible.MakeHymn makeHymn;
     int highLiteMenuColor, readNowColor;
     final static String cevVersion = "cev";
     final static String agpVersion = "agp";
@@ -122,14 +122,15 @@ public class MainActivity extends Activity {
         mActivity = this;
         mainActivity = this;
 
-        makeHymn = new MakeHymn();
-        makeBible = new MakeBible();
-        utils = new Utils(this);
-        history = new History();
+        makeHymn = new com.urrecliner.myholybible.MakeHymn();
+        makeBible = new com.urrecliner.myholybible.MakeBible();
+        utils = new com.urrecliner.myholybible.Utils(this);
+        history = new com.urrecliner.myholybible.History();
 
         askPermission();
         mBody = (ViewGroup) findViewById(R.id.fragment_body);
         sharedPreferences = getApplicationContext().getSharedPreferences("bible", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
         getSharedValues();
         goBacks = utils.readGoBacks();
         bookMarks = utils.readBookMarks();
@@ -178,7 +179,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        onSwipeTouchListener = new OnSwipeTouchListener(MainActivity.this) {
+        onSwipeTouchListener = new com.urrecliner.myholybible.OnSwipeTouchListener(MainActivity.this) {
 
             @Override
             public void onSwipeGoBack() {
@@ -228,7 +229,7 @@ public class MainActivity extends Activity {
             else
                 makeHymn.makeHymnKeypad();
         }
-        text2Speech = new Text2Speech();
+        text2Speech = new com.urrecliner.myholybible.Text2Speech();
         text2Speech.setReady(getApplicationContext());
     }
 
@@ -351,7 +352,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 if (isReadingNow)
                     text2Speech.stopRead();
-                Intent i = new Intent(MainActivity.this, SetActivity.class);
+                Intent i = new Intent(MainActivity.this, com.urrecliner.myholybible.SetActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
             }
@@ -532,7 +533,7 @@ public class MainActivity extends Activity {
     void bookMarkThis() {
         if (!bookMarkNow)
             return;
-        BookMark bookMark = new BookMark(nowBible, nowChapter, System.currentTimeMillis(), false);
+        com.urrecliner.myholybible.BookMark bookMark = new com.urrecliner.myholybible.BookMark(nowBible, nowChapter, System.currentTimeMillis(), false);
         bookMarks.add(0, bookMark);
         utils.savePrefers("bookMark", bookMarks);
         Toast.makeText(mContext, fullBibleNames[nowBible]+" "+nowChapter+" 장이\n북마크 되었습니다",Toast.LENGTH_LONG).show();
@@ -698,7 +699,7 @@ public class MainActivity extends Activity {
         return super.onKeyUp(keyCode, event);
     }
 
-    final long BACK_DELAY = 800;
+    final long BACK_DELAY = 1000;
     @Override
     public void onBackPressed() {
 
