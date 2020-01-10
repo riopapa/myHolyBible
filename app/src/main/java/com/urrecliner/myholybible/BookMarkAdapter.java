@@ -42,7 +42,6 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    private static TextView nowTVBibleChapter, nowTVDateTime;
     private static int pos;
 
     static class ViewHolder extends RecyclerView.ViewHolder {

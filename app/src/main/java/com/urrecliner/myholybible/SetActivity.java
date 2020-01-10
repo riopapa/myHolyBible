@@ -230,7 +230,6 @@ public class SetActivity extends Activity {
                             TableRow.LayoutParams.MATCH_PARENT,
                             TableRow.LayoutParams.MATCH_PARENT, 1f);
                     tr.addView(oneLine, params);
-//                    tr.addView(oneLine);
                     tableLayout.addView(tr);
                 }
 
@@ -364,7 +363,6 @@ public class SetActivity extends Activity {
             }
         });
     }
-
 
     // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6
     private void buildSetPlayHymn() {
