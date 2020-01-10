@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
@@ -25,6 +24,9 @@ import static com.urrecliner.myholybible.Vars.LYRIC_THEN_SHEET;
 import static com.urrecliner.myholybible.Vars.SHEET_ONLY;
 import static com.urrecliner.myholybible.Vars.SHEET_THEN_LYRIC;
 import static com.urrecliner.myholybible.Vars.history;
+import static com.urrecliner.myholybible.Vars.hymnColorFore;
+import static com.urrecliner.myholybible.Vars.hymnColorTitle;
+import static com.urrecliner.myholybible.Vars.hymnColorImage;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnTitles;
 import static com.urrecliner.myholybible.Vars.mBody;
@@ -35,6 +37,7 @@ import static com.urrecliner.myholybible.Vars.nowHymn;
 import static com.urrecliner.myholybible.Vars.packageFolder;
 import static com.urrecliner.myholybible.Vars.paraColorFore;
 import static com.urrecliner.myholybible.Vars.sortedNumbers;
+import static com.urrecliner.myholybible.Vars.textColorBack;
 import static com.urrecliner.myholybible.Vars.textSizeBibleTitle;
 import static com.urrecliner.myholybible.Vars.textSizeHymnBody;
 import static com.urrecliner.myholybible.Vars.textSizeHymnKeypad;
@@ -53,6 +56,7 @@ class MakeHymn {
     void makeHymnKeypad() {
 
         scrollView = new ScrollView(mContext);
+//        scrollView.setBackgroundColor(textColorBack);
         int [] ids = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
         Button b;
 
@@ -64,7 +68,7 @@ class MakeHymn {
 
 //        tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
-        tV0.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
+        tV0.setTextColor(hymnColorFore);
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
@@ -75,7 +79,7 @@ class MakeHymn {
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
         tVTitle.setTextSize(textSizeHymnKeypad);
-        tVTitle.setTextColor(ContextCompat.getColor(mContext,R.color.hymnTitle));
+        tVTitle.setTextColor(hymnColorTitle);
         tVTitle.setGravity(Gravity.CENTER);
         tVTitle.setWidth(2000);
         linearlayout.addView(tVTitle);
@@ -150,7 +154,7 @@ class MakeHymn {
         }
         TextView tVSort = new TextView(mContext);
         tVSort.setTextSize(textSizeHymnKeypad);
-        tVSort.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
+        tVSort.setTextColor(hymnColorFore);
         tVSort.setGravity(Gravity.CENTER);
         tVSort.setWidth(2000);
         linearlayout.addView(tVSort);
@@ -198,6 +202,7 @@ class MakeHymn {
     void makeHymnBody() {
 
         scrollView = new ScrollView(mContext);
+        scrollView.setBackgroundColor(textColorBack);
         String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = utils.readBibleFile(txt);
         if (hymnTexts == null) {
@@ -216,7 +221,7 @@ class MakeHymn {
         tVBody.setPadding(0,20,0,20);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
+        tVBody.setTextColor(hymnColorFore);
         tVBody.setBackgroundColor(normalMenuColor | 0x777777);
         linearlayout.addView(tVBody);
 
@@ -247,7 +252,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
+        tVBody.setTextColor(hymnColorFore);
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();
@@ -269,7 +274,7 @@ class MakeHymn {
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             int height = xPixels * bitmap.getHeight() / bitmap.getWidth();
             ImageView imV = new ImageView(mContext);
-            imV.setBackgroundColor(ContextCompat.getColor(mContext,R.color.hymnImageBack));
+            imV.setBackgroundColor(hymnColorImage);
             linearlayout.addView(imV);
             imV.setImageBitmap(Bitmap.createScaledBitmap(bitmap, xPixels, height, false));
             imV.requestLayout();
@@ -281,7 +286,7 @@ class MakeHymn {
         tVBody.setTextSize(textSizeHymnBody);
         tVBody.setGravity(Gravity.CENTER_HORIZONTAL);
         tVBody.setWidth(xPixels);
-        tVBody.setTextColor(ContextCompat.getColor(mContext,R.color.hymnColorFore));
+        tVBody.setTextColor(hymnColorFore);
         linearlayout.addView(tVBody);
 
         StringBuilder bodyText = new StringBuilder();

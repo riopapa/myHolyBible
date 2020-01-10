@@ -142,14 +142,12 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         holder.tvDateTime.setText(s);
         if (bookMark.isSave()) {
             holder.tvBibleChapter.setTypeface(null, Typeface.BOLD_ITALIC);
-            holder.tvBibleChapter.setTextColor(ContextCompat.getColor(mContext, R.color.paraColorFore));
             holder.tvDateTime.setTypeface(null, Typeface.BOLD_ITALIC);
         }
         else {
             holder.tvBibleChapter.setTypeface(null, Typeface.NORMAL);
-            holder.tvBibleChapter.setTextColor(ContextCompat.getColor(mContext, R.color.bibleColorFore));
             holder.tvDateTime.setTypeface(null, Typeface.NORMAL);
         }
-        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 8 - pos * 8 * 256 - pos * 8 * 256 * 256);
+        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 6 - pos * 6 * 256 - pos * 6 * 256 * 256);
     }
 }

@@ -2,10 +2,8 @@ package com.urrecliner.myholybible;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -36,11 +34,11 @@ import static com.urrecliner.myholybible.Vars.TAB_MODE_NEW;
 import static com.urrecliner.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.myholybible.Vars.agpColorFore;
 import static com.urrecliner.myholybible.Vars.agpShow;
+import static com.urrecliner.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.myholybible.Vars.bibleTexts;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
 import static com.urrecliner.myholybible.Vars.cevShow;
-import static com.urrecliner.myholybible.Vars.dictColorFore;
-import static com.urrecliner.myholybible.Vars.nowDic;
+import static com.urrecliner.myholybible.Vars.dicColorFore;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.myholybible.Vars.history;
 import static com.urrecliner.myholybible.Vars.logFile;
@@ -52,6 +50,7 @@ import static com.urrecliner.myholybible.Vars.maxVerse;
 import static com.urrecliner.myholybible.Vars.nbrOfChapters;
 import static com.urrecliner.myholybible.Vars.nowBible;
 import static com.urrecliner.myholybible.Vars.nowChapter;
+import static com.urrecliner.myholybible.Vars.nowDic;
 import static com.urrecliner.myholybible.Vars.nowHymn;
 import static com.urrecliner.myholybible.Vars.nowScrollView;
 import static com.urrecliner.myholybible.Vars.nowVerse;
@@ -60,6 +59,7 @@ import static com.urrecliner.myholybible.Vars.packageFolder;
 import static com.urrecliner.myholybible.Vars.paraColorFore;
 import static com.urrecliner.myholybible.Vars.referColorFore;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
+import static com.urrecliner.myholybible.Vars.textColorBack;
 import static com.urrecliner.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.myholybible.Vars.textSizeBibleNumber;
@@ -84,6 +84,7 @@ class MakeBible {
         if (makeBible == null)
             makeBible = this;
         scrollView = new ScrollView(mContext);
+//        scrollView.setBackgroundColor(textColorBack);
         int loop = (topTab == TAB_MODE_OLD) ?  39: 27;
         int start = (topTab == TAB_MODE_OLD) ? 1 : 40;
         int count = 1;
@@ -145,6 +146,7 @@ class MakeBible {
         int verse = 1;
         TextView tVNbr;
         scrollView = new ScrollView(mContext);
+        scrollView.setBackgroundColor(textColorBack);
         final int nbrColumn = 5;
         int buttonWidth = xPixels / nbrColumn;
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -246,6 +248,7 @@ class MakeBible {
 
     void MakeBibleBody() {
         scrollView = new ScrollView(mContext);
+        scrollView.setBackgroundColor(textColorBack);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         bibleTexts = utils.readBibleFile(file2read);
         if (bibleTexts == null) {
@@ -267,7 +270,7 @@ class MakeBible {
         tV.setTextSize(textSizeBibleBody);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
-        tV.setTextColor(ContextCompat.getColor(mContext,R.color.bibleColorFore));
+        tV.setTextColor(bibleColorFore);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) linearlayout.getLayoutParams();
         lp.setMargins(20,16,20,16);
         linearlayout.setLayoutParams(lp);
@@ -489,7 +492,7 @@ class MakeBible {
         Float dicTextSize = textSizeKeyWord * 2.6f;
         @Override
         public void updateDrawState(@NonNull TextPaint ds) {
-            ds.setColor(dictColorFore);
+            ds.setColor(dicColorFore);
             ds.setTypeface(boldface);
             ds.setTextSize(dicTextSize);
         }
@@ -530,6 +533,7 @@ class MakeBible {
         nowVerse = verse;
         history.push();
         scrollView = new ScrollView(mContext);
+        scrollView.setBackgroundColor(textColorBack);
         String [] dicTexts = utils.readBibleFile(txt);
         if (dicTexts != null) {
             LinearLayout linearlayout = new LinearLayout(mContext);
@@ -558,7 +562,7 @@ class MakeBible {
                     case "~": { // contains subject name
                         TextView tVLine = new TextView(mContext);
                         tVLine.setTextSize(textSizeBibleBody + 3);
-                        tVLine.setTextColor(Color.BLACK);
+                        tVLine.setTextColor(bibleColorFore);
                         tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                         tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
                         tVLine.setWidth(xPixels);
@@ -569,7 +573,7 @@ class MakeBible {
                     default: {
                         TextView tVLine = new TextView(mContext);
                         tVLine.setTextSize(textSizeBibleBody);
-                        tVLine.setTextColor(Color.BLACK);
+                        tVLine.setTextColor(bibleColorFore);
                         tVLine.setGravity(Gravity.START);
                         tVLine.setWidth(xPixels);
                         linearlayout.addView(tVLine);

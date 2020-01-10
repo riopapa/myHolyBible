@@ -57,7 +57,7 @@ import static com.urrecliner.myholybible.Vars.utils;
 public class SetActivity extends Activity {
 
     TextView tv;
-    CheckBox cbKeep, cbBlack;
+    CheckBox cbAlwaysOn, cbBlackMode;
     String txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,13 +346,13 @@ public class SetActivity extends Activity {
             }
         });
 
-        cbKeep = (CheckBox) findViewById(R.id.keep_screen_check);
-        cbKeep.setChecked(alwaysOn);
-        cbKeep.setOnClickListener(new View.OnClickListener() {
+        cbAlwaysOn = (CheckBox) findViewById(R.id.keep_screen_check);
+        cbAlwaysOn.setChecked(alwaysOn);
+        cbAlwaysOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cbKeep = (CheckBox) findViewById(R.id.keep_screen_check);
-                alwaysOn = cbKeep.isChecked();
+                cbAlwaysOn = (CheckBox) findViewById(R.id.keep_screen_check);
+                alwaysOn = cbAlwaysOn.isChecked();
                 editor.putBoolean("alwaysOn", alwaysOn).apply();
 
                 if (alwaysOn)
@@ -362,21 +362,15 @@ public class SetActivity extends Activity {
             }
         });
 
-        cbBlack = (CheckBox) findViewById(R.id.black_back);
-        cbBlack.setChecked(blackMode);
-        cbBlack.setOnClickListener(new View.OnClickListener() {
+        cbBlackMode = (CheckBox) findViewById(R.id.black_back);
+        cbBlackMode.setChecked(blackMode);
+        cbBlackMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cbBlack = (CheckBox) findViewById(R.id.black_back);
-                blackMode = cbKeep.isChecked();
+                cbBlackMode = (CheckBox) findViewById(R.id.black_back);
+                blackMode = cbBlackMode.isChecked();
                 editor.putBoolean("blackMode", blackMode).apply();
-
-                if (blackMode) {
-                    mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
-                else {
-                    mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                }
+                mainActivity.setColors();
             }
         });
     }

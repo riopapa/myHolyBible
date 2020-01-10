@@ -60,7 +60,7 @@ public class Vars {
     static boolean agpShow = false;
     static boolean cevShow = false;
 
-    static int bibleColorFore, verseColorFore, paraColorFore, referColorFore, numberColorFore, cevColorFore, cevColorBlack, agpColorFore, agpColorBlack, dictColorFore;
+    static int bibleColorFore, verseColorFore, paraColorFore, referColorFore, numberColorFore, cevColorFore, agpColorFore, dicColorFore, textColorBack, hymnColorFore, hymnColorTitle, hymnColorImage;
 
     @SuppressLint("StaticFieldLeak")
     static ViewGroup mBody; // assigned to Fragment_Body

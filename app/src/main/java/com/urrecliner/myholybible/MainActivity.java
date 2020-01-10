@@ -51,11 +51,14 @@ import static com.urrecliner.myholybible.Vars.blank;
 import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
 import static com.urrecliner.myholybible.Vars.cevShow;
-import static com.urrecliner.myholybible.Vars.dictColorFore;
+import static com.urrecliner.myholybible.Vars.dicColorFore;
 import static com.urrecliner.myholybible.Vars.editor;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.myholybible.Vars.goBacks;
 import static com.urrecliner.myholybible.Vars.history;
+import static com.urrecliner.myholybible.Vars.hymnColorFore;
+import static com.urrecliner.myholybible.Vars.hymnColorTitle;
+import static com.urrecliner.myholybible.Vars.hymnColorImage;
 import static com.urrecliner.myholybible.Vars.hymnImageFirst;
 import static com.urrecliner.myholybible.Vars.hymnName;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
@@ -86,6 +89,7 @@ import static com.urrecliner.myholybible.Vars.sharedPreferences;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.myholybible.Vars.text2Speech;
+import static com.urrecliner.myholybible.Vars.textColorBack;
 import static com.urrecliner.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.myholybible.Vars.textSizeBibleRefer;
@@ -256,22 +260,31 @@ public class MainActivity extends Activity {
         onSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
-    private void setColors() {
+    void setColors() {
 
         ColorDrawable cd = (ColorDrawable) vCurrBible.getBackground();
         normalMenuColor = cd.getColor();
         highLiteMenuColor = normalMenuColor ^ 0x444444;
         readNowColor = normalMenuColor ^ 0x777777;
 
-        bibleColorFore = ContextCompat.getColor(mContext,R.color.bibleColorFore);
-        verseColorFore = ContextCompat.getColor(mContext,R.color.verseColorFore);
-        paraColorFore = ContextCompat.getColor(mContext,R.color.paraColorFore);
-        referColorFore = ContextCompat.getColor(mContext,R.color.referColorFore);
-        numberColorFore = ContextCompat.getColor(mContext,R.color.numberColorFore);
-
-        cevColorFore = ContextCompat.getColor(mContext,R.color.cevColorFore);
-        agpColorFore = ContextCompat.getColor(mContext,R.color.agpColorFore);
-        dictColorFore = ContextCompat.getColor(mContext,R.color.dictColorFore);
+        bibleColorFore = ContextCompat.getColor(mContext, R.color.bibleColorFore);
+        verseColorFore = ContextCompat.getColor(mContext, R.color.verseColorFore);
+        paraColorFore = ContextCompat.getColor(mContext, R.color.paraColorFore);
+        referColorFore = ContextCompat.getColor(mContext, R.color.referColorFore);
+        numberColorFore = ContextCompat.getColor(mContext, R.color.numberColorFore);
+        textColorBack  = ContextCompat.getColor(mContext, R.color.TextBackColor);
+        cevColorFore = ContextCompat.getColor(mContext, R.color.cevColorFore);
+        agpColorFore = ContextCompat.getColor(mContext, R.color.agpColorFore);
+        dicColorFore = ContextCompat.getColor(mContext, R.color.dictColorFore);
+        hymnColorFore = ContextCompat.getColor(mContext,R.color.hymnColorFore);
+        hymnColorTitle = ContextCompat.getColor(mContext,R.color.hymnColorTitle);
+        hymnColorImage = ContextCompat.getColor(mContext,R.color.hymnImageBack);
+        if (blackMode) {
+            bibleColorFore ^= 0xffffff; verseColorFore ^= 0xffffff; paraColorFore ^= 0xfffffff;
+            referColorFore ^= 0xffffff; numberColorFore ^= 0xffffff; textColorBack ^= 0xffffff;
+            cevColorFore ^= 0xffffff; agpColorFore ^= 0xffffff; dicColorFore ^= 0xffffff;
+            hymnColorFore ^= 0xffffff;
+        }
     }
 
     public void makeTopBottomMenu() {
