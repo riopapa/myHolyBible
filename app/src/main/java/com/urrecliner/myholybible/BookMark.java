@@ -12,15 +12,12 @@ public class BookMark {
         this.save = save;
     }
 
-    public int getBible() { return bible; }
-    public void setBible(int bible) { this.bible = bible; }
+    int getBible() { return bible; }
 
-    public int getChapter() { return chapter; }
-    public void setChapter(int chapter) { this.chapter = chapter; }
+    int getChapter() { return chapter; }
 
-    public long getWhen() { return when; }
-    public void setWhen(long when) { this.when = when; }
+    long getWhen() { return when; }
 
-    public boolean isSave() { return save; }
-    public void setSave(boolean save) { this.save = save; }
+    boolean isSave() { return save; }
+    void setSave(boolean save) { this.save = save; }
 }

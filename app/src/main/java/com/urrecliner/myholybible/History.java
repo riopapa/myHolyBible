@@ -13,10 +13,8 @@ class History {
 
     void push() {
         if (goBacks.size() > 40) {
-            goBacks.remove(0);
-            goBacks.remove(0);
-            goBacks.remove(0);
-            goBacks.remove(0);
+            goBacks.remove(0); goBacks.remove(0); goBacks.remove(0);
+            goBacks.remove(0); goBacks.remove(0); goBacks.remove(0);
         }
         GoBack goBack = new GoBack(topTab,nowBible, nowChapter, nowVerse, nowHymn, nowDic);
         goBacks.add(goBack);

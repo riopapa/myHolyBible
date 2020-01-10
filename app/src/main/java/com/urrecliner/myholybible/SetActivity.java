@@ -33,7 +33,6 @@ import static com.urrecliner.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.myholybible.Vars.blackMode;
 import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
 import static com.urrecliner.myholybible.Vars.bookMarkView;
-import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.editor;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnSpeed;
@@ -44,7 +43,6 @@ import static com.urrecliner.myholybible.Vars.makeHymn;
 import static com.urrecliner.myholybible.Vars.nowBible;
 import static com.urrecliner.myholybible.Vars.nowHymn;
 import static com.urrecliner.myholybible.Vars.setActivity;
-import static com.urrecliner.myholybible.Vars.sharedPreferences;
 import static com.urrecliner.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.myholybible.Vars.textSizeBibleRefer;
@@ -65,20 +63,12 @@ public class SetActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         setActivity = this;
-        editor = sharedPreferences.edit();
         buildSetBible();
         buildSetBibleRead();
         buildSetHymn();
         buildSetPlayHymn();
         buildSetBookMark();
         buildShowAuthor();
-        utils.log("s","bookmark "+bookMarks.size());
-    }
-
-    void buildSetBookMark() {
-        bookMarkView = (RecyclerView) findViewById(R.id.book_marks);
-        bookMarkAdapter = new BookMarkAdapter();
-        bookMarkView.setAdapter(bookMarkAdapter);
     }
 
     private void buildSetBible() {
@@ -396,6 +386,12 @@ public class SetActivity extends Activity {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
+    }
+
+    private void buildSetBookMark() {
+        bookMarkView = (RecyclerView) findViewById(R.id.book_marks);
+        bookMarkAdapter = new BookMarkAdapter();
+        bookMarkView.setAdapter(bookMarkAdapter);
     }
 
     private void buildShowAuthor() {
