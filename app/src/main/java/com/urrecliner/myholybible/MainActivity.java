@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
             bibleColorFore ^= 0xffffff; verseColorFore ^= 0xffffff; paraColorFore ^= 0xfffffff;
             referColorFore ^= 0xffffff; numberColorFore ^= 0xffffff; textColorBack ^= 0xffffff;
             cevColorFore ^= 0xffffff; agpColorFore ^= 0xffffff; dicColorFore ^= 0xffffff;
-            hymnColorFore ^= 0xffffff;
+            hymnColorFore ^= 0xffffff;  // no hymnColorTitle, hymnColorImage
         }
     }
 
