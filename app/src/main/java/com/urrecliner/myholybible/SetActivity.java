@@ -278,20 +278,20 @@ public class SetActivity extends Activity {
     }
 
     private void buildSetHymn() {
-        RadioGroup rg = (RadioGroup)findViewById(R.id.radioGroup1);
-        RadioButton rb;
+        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup1);
+        RadioButton radioBtn;
         switch(hymnShowWhat) {
             case SHEET_THEN_LYRIC:
-                rb = (RadioButton) findViewById(R.id.sheet_lyric); rb.setChecked(true); break;
+                radioBtn = (RadioButton) findViewById(R.id.sheet_lyric); radioBtn.setChecked(true); break;
             case LYRIC_THEN_SHEET:
-                rb = (RadioButton) findViewById(R.id.lyric_sheet); rb.setChecked(true); break;
+                radioBtn = (RadioButton) findViewById(R.id.lyric_sheet); radioBtn.setChecked(true); break;
             case SHEET_ONLY:
-                rb = (RadioButton) findViewById(R.id.sheet_only); rb.setChecked(true); break;
+                radioBtn = (RadioButton) findViewById(R.id.sheet_only); radioBtn.setChecked(true); break;
             case LYRIC_ONLY:
-                rb = (RadioButton) findViewById(R.id.lyric_only); rb.setChecked(true); break;
+                radioBtn = (RadioButton) findViewById(R.id.lyric_only); radioBtn.setChecked(true); break;
         }
 
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -340,7 +340,6 @@ public class SetActivity extends Activity {
         cbAlwaysOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cbAlwaysOn = (CheckBox) findViewById(R.id.keep_screen_check);
                 alwaysOn = cbAlwaysOn.isChecked();
                 editor.putBoolean("alwaysOn", alwaysOn).apply();
 
@@ -356,7 +355,6 @@ public class SetActivity extends Activity {
         cbBlackMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cbBlackMode = (CheckBox) findViewById(R.id.black_back);
                 blackMode = cbBlackMode.isChecked();
                 editor.putBoolean("blackMode", blackMode).apply();
                 mainActivity.setColors();
@@ -411,7 +409,7 @@ public class SetActivity extends Activity {
         else if (topTab == TAB_MODE_HYMN) {
             if (makeHymn == null)
                 makeHymn = new MakeHymn();
-            if (nowHymn == 0)
+            if (nowHymn <= 0)
                 makeHymn.makeHymnKeypad();
             else
                 makeHymn.makeHymnBody();

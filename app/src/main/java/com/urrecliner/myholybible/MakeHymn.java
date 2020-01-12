@@ -2,7 +2,6 @@ package com.urrecliner.myholybible;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -23,15 +22,19 @@ import static com.urrecliner.myholybible.Vars.LYRIC_ONLY;
 import static com.urrecliner.myholybible.Vars.LYRIC_THEN_SHEET;
 import static com.urrecliner.myholybible.Vars.SHEET_ONLY;
 import static com.urrecliner.myholybible.Vars.SHEET_THEN_LYRIC;
+import static com.urrecliner.myholybible.Vars.bibleColorFore;
+import static com.urrecliner.myholybible.Vars.blackMode;
 import static com.urrecliner.myholybible.Vars.history;
 import static com.urrecliner.myholybible.Vars.hymnColorFore;
-import static com.urrecliner.myholybible.Vars.hymnColorTitle;
 import static com.urrecliner.myholybible.Vars.hymnColorImage;
+import static com.urrecliner.myholybible.Vars.hymnColorTitle;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnTitles;
+import static com.urrecliner.myholybible.Vars.mActivity;
 import static com.urrecliner.myholybible.Vars.mBody;
 import static com.urrecliner.myholybible.Vars.mContext;
 import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.mainScreen;
 import static com.urrecliner.myholybible.Vars.normalMenuColor;
 import static com.urrecliner.myholybible.Vars.nowHymn;
 import static com.urrecliner.myholybible.Vars.packageFolder;
@@ -52,12 +55,13 @@ class MakeHymn {
     private TextView tVTitle;
     private String hymnTitle = "";
     private ScrollView scrollView;
+    private int [] ids = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
 
     void makeHymnKeypad() {
 
         scrollView = new ScrollView(mContext);
-//        scrollView.setBackgroundColor(textColorBack);
-        int [] ids = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
+        scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         Button b;
 
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -66,14 +70,13 @@ class MakeHymn {
         scrollView.addView(linearlayout);
         TextView tV0 = new TextView(mContext);
 
-//        tV0.setText(newLine);
         tV0.setTextSize(textSizeHymnTitle);
         tV0.setTextColor(hymnColorFore);
         tV0.setGravity(Gravity.CENTER_HORIZONTAL);
         linearlayout.addView(tV0);
 
         tVTitle = new TextView(mContext);
-        if (nowHymn != 0)
+        if (nowHymn > 0)
             hymnTitle = nowHymn + " : " + hymnTitles[nowHymn];
         else
             hymnTitle = "";
@@ -111,11 +114,12 @@ class MakeHymn {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
-                b.setBackgroundResource(R.drawable.button_number);
+                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark: R.drawable.button_number);
                 b.setTextSize(textSizeHymnKeypad);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setWidth(buttonWidth);
                 b.setText(buttonText);
+                b.setTextColor((blackMode)? mActivity.getColor(R.color.TextBackColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId(id);
                 if (id < 10) {
@@ -169,10 +173,12 @@ class MakeHymn {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
-                b.setTextSize(textSizeHymnBody);
-                b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark: R.drawable.button_number);
+                b.setTextSize(textSizeHymnBody*9/10);
+                b.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
                 b.setWidth(xPixels/2 - 16);
                 b.setText(text);
+                b.setTextColor((blackMode)? mActivity.getColor(R.color.TextBackColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId((row+row+col)*41);    // 81
                 b.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +209,7 @@ class MakeHymn {
 
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = utils.readBibleFile(txt);
         if (hymnTexts == null) {
@@ -324,7 +331,7 @@ class MakeHymn {
             columnLayout.setOrientation(LinearLayout.HORIZONTAL);
             titleTV = new TextView(mContext);
             titleTV.setText(hymnTitles[sortedNumbers[start]]);
-            titleTV.setTextColor(Color.BLACK);
+            titleTV.setTextColor(bibleColorFore);
             titleTV.setTextSize(textSizeHymnBody);
             columnLayout.addView(titleTV);
             numberTV = new TextView(mContext);

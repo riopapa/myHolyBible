@@ -19,6 +19,7 @@ import static com.urrecliner.myholybible.Vars.TAB_MODE_OLD;
 import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
 import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.myholybible.Vars.history;
 import static com.urrecliner.myholybible.Vars.mContext;
 import static com.urrecliner.myholybible.Vars.makeBible;
 import static com.urrecliner.myholybible.Vars.nowBible;
@@ -106,6 +107,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         builder.setPositiveButton(s+"로 이동",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        history.push();
                         nowBible = bookMark.getBible();
                         nowChapter = bookMark.getChapter();
                         nowVerse = 0;
@@ -147,6 +149,6 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             holder.tvBibleChapter.setTypeface(null, Typeface.NORMAL);
             holder.tvDateTime.setTypeface(null, Typeface.NORMAL);
         }
-        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 6 - pos * 6 * 256 - pos * 6 * 256 * 256);
+        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 5 - pos * 5 * 256 - pos * 5 * 256 * 256);
     }
 }

@@ -62,6 +62,7 @@ public class Vars {
 
     @SuppressLint("StaticFieldLeak")
     static ViewGroup mBody; // assigned to Fragment_Body
+    static ViewGroup mainScreen;
     static String nowDic;
 
     static int textSizeBibleNumber = 20;

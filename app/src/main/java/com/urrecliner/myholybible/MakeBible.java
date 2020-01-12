@@ -36,15 +36,18 @@ import static com.urrecliner.myholybible.Vars.agpColorFore;
 import static com.urrecliner.myholybible.Vars.agpShow;
 import static com.urrecliner.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.myholybible.Vars.bibleTexts;
+import static com.urrecliner.myholybible.Vars.blackMode;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
 import static com.urrecliner.myholybible.Vars.cevShow;
 import static com.urrecliner.myholybible.Vars.dicColorFore;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.myholybible.Vars.history;
 import static com.urrecliner.myholybible.Vars.logFile;
+import static com.urrecliner.myholybible.Vars.mActivity;
 import static com.urrecliner.myholybible.Vars.mBody;
 import static com.urrecliner.myholybible.Vars.mContext;
 import static com.urrecliner.myholybible.Vars.mainActivity;
+import static com.urrecliner.myholybible.Vars.mainScreen;
 import static com.urrecliner.myholybible.Vars.makeBible;
 import static com.urrecliner.myholybible.Vars.maxVerse;
 import static com.urrecliner.myholybible.Vars.nbrOfChapters;
@@ -84,7 +87,8 @@ class MakeBible {
         if (makeBible == null)
             makeBible = this;
         scrollView = new ScrollView(mContext);
-//        scrollView.setBackgroundColor(textColorBack);
+        scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         int loop = (topTab == TAB_MODE_OLD) ?  39: 27;
         int start = (topTab == TAB_MODE_OLD) ? 1 : 40;
         int count = 1;
@@ -103,11 +107,12 @@ class MakeBible {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setOrientation(LinearLayout.VERTICAL);
                 b = new Button(mContext);
-                b.setBackgroundResource(R.drawable.button_bible);
+                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark:R.drawable.button_bible);
                 b.setText(fullBibleNames[start]);
                 b.setId(start);
                 b.setWidth(buttonWidth);
                 b.setTextSize(textSizeBible66);
+                b.setTextColor((blackMode)? mActivity.getColor(R.color.TextBackColor) : mActivity.getColor(R.color.bibleColorFore));
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 columnLayout.addView(b);
                 b.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +152,7 @@ class MakeBible {
         TextView tVNbr;
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         final int nbrColumn = 5;
         int buttonWidth = xPixels / nbrColumn;
         LinearLayout linearlayout = new LinearLayout(mContext);
@@ -195,14 +201,6 @@ class MakeBible {
             if (verse > verseMax)
                 break;
         }
-        tV = new TextView(mContext);
-        tV.setText(newLine);
-        tV.setText(newLine);
-        tV.setTextSize(28);
-        tV.setWidth(10);
-        tV.setTextColor(0);
-        linearlayout.addView(tV);
-
         return scrollView;
     }
 
@@ -249,6 +247,7 @@ class MakeBible {
     void MakeBibleBody() {
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         bibleTexts = utils.readBibleFile(file2read);
         if (bibleTexts == null) {
@@ -534,6 +533,7 @@ class MakeBible {
         history.push();
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
+        mainScreen.setBackgroundColor(textColorBack);
         String [] dicTexts = utils.readBibleFile(txt);
         if (dicTexts != null) {
             LinearLayout linearlayout = new LinearLayout(mContext);
