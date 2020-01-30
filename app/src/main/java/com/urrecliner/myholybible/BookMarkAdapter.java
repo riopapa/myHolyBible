@@ -149,6 +149,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             holder.tvBibleChapter.setTypeface(null, Typeface.NORMAL);
             holder.tvDateTime.setTypeface(null, Typeface.NORMAL);
         }
-        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - pos * 5 - pos * 5 * 256 - pos * 5 * 256 * 256);
+        int grayed = 200 * pos / (bookMarks.size()+1);
+        holder.lo.setBackgroundColor(ContextCompat.getColor(mContext,R.color.TextBackColor) - grayed - grayed * 256 - grayed * 256 * 256);
     }
 }

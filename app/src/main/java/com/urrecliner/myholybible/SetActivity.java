@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -232,23 +233,28 @@ public class SetActivity extends Activity {
                     tr.addView(oneLine, params);
                     tableLayout.addView(tr);
                 }
-
+                final ScrollView sv = (ScrollView) findViewById(R.id.setScrollView);
+                sv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        sv.scrollTo(0, 500);
+                    }
+                });
             }
         });
-
     }
 
-    // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6
+    // 0.6f < bibleSpeed < (0.6 + 0.8) f     <==  0 <seekBar < 8
     private void buildSetBibleRead() {
         int progress;
         final SeekBar speedBar = (SeekBar) findViewById(R.id.bibleSpeed);
-        progress = (int) (bibleSpeed * 10) - 7;
+        progress = (int) (bibleSpeed * 10) - 6;
         speedBar.setProgress(progress);
         speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = seekBar.getProgress();
-                bibleSpeed =  (float) (progress+7) / 10f;
+                bibleSpeed =  (float) (progress+8) / 10f;
                 editor.putFloat("bibleSpeed", bibleSpeed).apply();
             }
             @Override
@@ -259,13 +265,13 @@ public class SetActivity extends Activity {
             }
         });
         final SeekBar pitchBar = (SeekBar) findViewById(R.id.biblePitch);
-        progress = (int) (biblePitch * 10) - 7;
+        progress = (int) (biblePitch * 10) - 6;
         pitchBar.setProgress(progress);
         pitchBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = seekBar.getProgress();
-                biblePitch =  (float) (progress+7) / 10f;
+                biblePitch =  (float) (progress+6) / 10f;
                 editor.putFloat("biblePitch", biblePitch).apply();
             }
             @Override
@@ -362,17 +368,17 @@ public class SetActivity extends Activity {
         });
     }
 
-    // 0.7f < bibleSpeed < (0.7 + 0.6) f     <==  0 <seekBar < 6
+    // 0.6f < bibleSpeed < (0.6 + 0.8) f     <==  0 <seekBar < 8
     private void buildSetPlayHymn() {
         int progress;
         final SeekBar speedBar = (SeekBar) findViewById(R.id.hymnSpeed);
-        progress = (int) (hymnSpeed * 10) - 7;
+        progress = (int) (hymnSpeed * 10) - 6;
         speedBar.setProgress(progress);
         speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = seekBar.getProgress();
-                hymnSpeed =  (float) (progress+7) / 10f;
+                hymnSpeed =  (float) (progress+6) / 10f;
                 editor.putFloat("hymnSpeed", hymnSpeed).apply();
             }
             @Override

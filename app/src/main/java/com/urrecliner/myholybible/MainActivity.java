@@ -717,8 +717,8 @@ public class MainActivity extends Activity {
                 .create()
                 .show();
     }
-// ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
 
+// ↑ ↑ ↑ ↑ P E R M I S S I O N    RELATED /////// ↑ ↑ ↑
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -777,9 +777,7 @@ public class MainActivity extends Activity {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
             LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
             mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog_quit, null));
-            mBuilder.setTitle(mActivity.getResources().getString(R.string.wanna_quit));
-
-//            mBuilder.setMessage();
+            mBuilder.setTitle(getString(R.string.wanna_quit));
             return mBuilder.create();
         }
 
