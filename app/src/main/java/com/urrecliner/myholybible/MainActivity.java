@@ -105,6 +105,7 @@ import static com.urrecliner.myholybible.Vars.windowXCenter;
 import static com.urrecliner.myholybible.Vars.windowYUpper;
 import static com.urrecliner.myholybible.Vars.xPixels;
 import static com.urrecliner.myholybible.Vars.yPixels;
+import static com.urrecliner.myholybible.Vars.zoomSize;
 
 public class MainActivity extends Activity {
 
@@ -193,7 +194,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        onSwipeTouchListener = new com.urrecliner.myholybible.OnSwipeTouchListener(MainActivity.this) {
+        onSwipeTouchListener = new OnSwipeTouchListener(MainActivity.this) {
 
             @Override
             public void onSwipeGoBack() {
@@ -205,6 +206,48 @@ public class MainActivity extends Activity {
 //                goForward();
             }
 
+            int savedTextSizeBibleBody, savedTextSizeBibleRefer, saveTextSizeHymnBody, savedTextSizeKeyWord;
+            @Override
+            public void zoomText() {
+                switch (zoomSize) {
+                    case 0:
+                        savedTextSizeBibleBody = textSizeBibleBody;
+                        savedTextSizeBibleRefer = textSizeBibleRefer;
+                        savedTextSizeKeyWord = textSizeKeyWord;
+                        saveTextSizeHymnBody = textSizeHymnBody;
+                        textSizeBibleBody = textSizeBibleBody * 12 / 10;
+                        textSizeBibleRefer = textSizeBibleRefer * 12/ 10;
+                        textSizeKeyWord = textSizeKeyWord * 12 / 10;
+                        textSizeHymnBody = textSizeHymnBody * 12 / 10;
+                        zoomSize++;
+                        break;
+                    case 1:
+                        textSizeBibleBody = savedTextSizeBibleBody * 14 / 10;
+                        textSizeBibleRefer = savedTextSizeBibleRefer * 14/ 10;
+                        textSizeKeyWord = savedTextSizeKeyWord * 14 / 10;
+                        textSizeHymnBody = textSizeHymnBody * 14 / 10;
+                        zoomSize++;
+                        break;
+                    case 2:
+                        textSizeBibleBody = savedTextSizeBibleBody * 16 / 10;
+                        textSizeBibleRefer = savedTextSizeBibleRefer * 16/ 10;
+                        textSizeKeyWord = savedTextSizeKeyWord * 16 / 10;
+                        textSizeHymnBody = textSizeHymnBody * 16 / 10;
+                        zoomSize++;
+                        break;
+                    case 3:
+                        textSizeBibleBody = savedTextSizeBibleBody;
+                        textSizeBibleRefer = savedTextSizeBibleRefer;
+                        textSizeKeyWord = savedTextSizeKeyWord;
+                        textSizeHymnBody = saveTextSizeHymnBody;
+                        zoomSize = 0;
+                        break;
+                }
+                if (topTab < TAB_MODE_HYMN)
+                    makeBible.makeBibleBody();
+                else if (topTab == TAB_MODE_HYMN)
+                    makeHymn.makeHymnBody();
+            }
             @Override
             public void onSwipePrev() {
                 if (vLeftAction.getText().toString().equals(blank))
@@ -226,6 +269,7 @@ public class MainActivity extends Activity {
             }
         };
         mBody.setOnTouchListener(onSwipeTouchListener);
+//        mBody.setOnTouchListener(new MyPinchListener(mContext));
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -234,7 +278,7 @@ public class MainActivity extends Activity {
 
         if (topTab < TAB_MODE_HYMN) {
             if (nowBible > 0)
-                makeBible.MakeBibleBody();
+                makeBible.makeBibleBody();
             else
                 makeBible.showBibleList();
         } else {
@@ -245,6 +289,7 @@ public class MainActivity extends Activity {
         }
         text2Speech = new com.urrecliner.myholybible.Text2Speech();
         text2Speech.setReady(getApplicationContext());
+
     }
 
     private void getSharedValues() {
@@ -264,6 +309,7 @@ public class MainActivity extends Activity {
         agpShow = sharedPreferences.getBoolean("agpShow", false);
         cevShow = sharedPreferences.getBoolean("cevShow", false);
     }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
@@ -471,7 +517,7 @@ public class MainActivity extends Activity {
                 editor.putBoolean("agpShow", agpShow).apply();
                 history.pop();
                 nowVerse = currVerse;
-                makeBible.MakeBibleBody();
+                makeBible.makeBibleBody();
             }
         });
         vCevBible.setOnClickListener(new View.OnClickListener() {
@@ -484,7 +530,7 @@ public class MainActivity extends Activity {
                 editor.putBoolean("cevShow", cevShow).apply();
                 history.pop();
                 nowVerse = currVerse;
-                makeBible.MakeBibleBody();
+                makeBible.makeBibleBody();
             }
         });
     }
@@ -551,7 +597,7 @@ public class MainActivity extends Activity {
         } else
             nowChapter = prevChapter;
         nowVerse = 1;
-        makeBible.MakeBibleBody();
+        makeBible.makeBibleBody();
     }
 
     void bookMarkThis() {
@@ -590,7 +636,7 @@ public class MainActivity extends Activity {
             nowChapter = nextChapter;
         }
         nowVerse = 1;
-        makeBible.MakeBibleBody();
+        makeBible.makeBibleBody();
     }
 
     public void goHymnRight() {
@@ -630,7 +676,7 @@ public class MainActivity extends Activity {
             history.pop();
             if (topTab < TAB_MODE_HYMN) {
                 if (nowBible > 0)
-                    makeBible.MakeBibleBody();
+                    makeBible.makeBibleBody();
                 else
                     makeBible.showBibleList();
             } else if (topTab == TAB_MODE_HYMN) {

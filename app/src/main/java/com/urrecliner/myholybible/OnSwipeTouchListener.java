@@ -14,9 +14,11 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     OnSwipeTouchListener(Context c) {
         gestureDetector = new GestureDetector(c, new GestureListener());
     }
-    GestureDetector getGestureDetector(){
-        return  gestureDetector;
+
+    GestureDetector getGestureDetector() {
+        return gestureDetector;
     }
+
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
         return gestureDetector.onTouchEvent(motionEvent);
     }
@@ -49,9 +51,24 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 //        }
 
         @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            zoomText();
+            return super.onDoubleTap(e);
+        }
+
+//        @Override
+//        public void onLongPress(MotionEvent e) {
+//            onLongClick();
+//            super.onLongPress(e);
+//        }
+
+        @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
-                float e1X = e1.getX(); float e2X = e2.getX(); float e1Y = e1.getY();float e2Y = e2.getY();
+                float e1X = e1.getX();
+                float e2X = e2.getX();
+                float e1Y = e1.getY();
+                float e2Y = e2.getY();
                 float diffX = e1X - e2X;
 //                Log.w("x ", e1X+" > "+e2X+" d= "+diffX+" y=" + e1Y);
                 if (diffX > SWIPE_THRESHOLD && e2Y < windowYUpper)
@@ -69,6 +86,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
         }
     }
 
+
     public void onSwipeGoBack() { }
 
     public void onSwipeGoFore() { }
@@ -77,6 +95,6 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
 
     public void onSwipeNext() { }
 
+    public void zoomText() { }
     private void onClick() { }
-
 }

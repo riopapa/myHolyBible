@@ -189,7 +189,7 @@ class MakeBible {
                     public void onClick(View v) {
                         nowChapter = v.getId();
                         nowVerse = 0;
-                        MakeBibleBody();
+                        makeBibleBody();
                     }
                 });
                 rowLayout.addView(columnLayout);
@@ -243,7 +243,7 @@ class MakeBible {
     private int ptrBody;
     private StringBuilder bodyText;
 
-    void MakeBibleBody() {
+    void makeBibleBody() {
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
         mainScreen.setBackgroundColor(textColorBack);
@@ -616,7 +616,7 @@ class MakeBible {
         nowChapter = parseInt(cross.substring(0,ptr));
         int ptr2 = getNumberPtr(chars,ptr+2);
         nowVerse = parseInt(cross.substring(ptr+1,ptr2));
-        MakeBibleBody();
+        makeBibleBody();
     }
 
     private int getNumberPtr(char[] chars, int ptr) {

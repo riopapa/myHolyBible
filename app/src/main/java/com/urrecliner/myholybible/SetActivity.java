@@ -408,7 +408,7 @@ public class SetActivity extends Activity {
 
         if (topTab < TAB_MODE_HYMN) {
             if (nowBible != 0)
-                makeBible.MakeBibleBody();
+                makeBible.makeBibleBody();
             else
                 makeBible.showBibleList();
         }

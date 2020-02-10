@@ -115,7 +115,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
                         topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
                         if (makeBible == null)
                             makeBible = new MakeBible();
-                        makeBible.MakeBibleBody();
+                        makeBible.makeBibleBody();
                         setActivity.finish();
                         setActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                     }

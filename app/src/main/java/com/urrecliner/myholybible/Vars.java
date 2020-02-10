@@ -68,6 +68,7 @@ public class Vars {
     static int textSizeBibleNumber = 20;
     static int textSizeHymnTitle = 20;
     static int textSizeHymnKeypad = 24;
+    static int zoomSize = 0;
 
     // followings are from shared preference
     static SharedPreferences sharedPreferences;
