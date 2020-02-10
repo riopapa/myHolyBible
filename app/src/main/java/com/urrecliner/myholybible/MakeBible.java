@@ -447,7 +447,7 @@ class MakeBible {
         } else {  // keyword case
             int tilde = keyword.indexOf("~");
             String searchKey = (tilde != -1)? keyword.substring(0, tilde) + keyword.substring(tilde + 1) : keyword;
-            if (isNewKeyword(searchKey, keywords, idxKeyword)) {
+//            if (isNewKeyword(searchKey, keywords, idxKeyword)) {
                 keywordF[idxKeyword] = ptrBody;
                 keywordV[idxKeyword] = verse;
                 if (tilde != -1) {
@@ -462,12 +462,12 @@ class MakeBible {
                     bodyText.append(keyword);
                 }
                 idxKeyword++;
-            } else {
-                if (tilde != -1)
-                    searchKey = searchKey.substring(0,searchKey.length()-1);
-                bodyText.append(searchKey);
-                ptrBody += searchKey.length();
-            }
+//            } else {
+//                if (tilde != -1)
+//                    searchKey = searchKey.substring(0,searchKey.length()-1);
+//                bodyText.append(searchKey);
+//                ptrBody += searchKey.length();
+//            }
         }
         return ptr;
     }
