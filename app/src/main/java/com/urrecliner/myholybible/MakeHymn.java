@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -213,7 +212,7 @@ class MakeHymn {
         String txt = "Hymn/" + nowHymn + ".txt";
         String [] hymnTexts = utils.readBibleFile(txt);
         if (hymnTexts == null) {
-            Toast.makeText(mContext, "찬송가 " + nowHymn + " 가사 파일 없음",Toast.LENGTH_LONG).show();
+//            Toast.makeText(mContext, "찬송가 " + nowHymn + " 가사 파일 없음",Toast.LENGTH_LONG).show();
             return;
         }
         LinearLayout linearlayout = new LinearLayout(mContext);

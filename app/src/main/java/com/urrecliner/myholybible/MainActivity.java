@@ -6,10 +6,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,11 +19,12 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -82,7 +83,6 @@ import static com.urrecliner.myholybible.Vars.nowScrollView;
 import static com.urrecliner.myholybible.Vars.nowVerse;
 import static com.urrecliner.myholybible.Vars.numberColorFore;
 import static com.urrecliner.myholybible.Vars.oldName;
-import static com.urrecliner.myholybible.Vars.onSwipeTouchListener;
 import static com.urrecliner.myholybible.Vars.packageFolder;
 import static com.urrecliner.myholybible.Vars.paraColorFore;
 import static com.urrecliner.myholybible.Vars.referColorFore;
@@ -101,11 +101,9 @@ import static com.urrecliner.myholybible.Vars.topTab;
 import static com.urrecliner.myholybible.Vars.utils;
 import static com.urrecliner.myholybible.Vars.vCurrBible;
 import static com.urrecliner.myholybible.Vars.verseColorFore;
-import static com.urrecliner.myholybible.Vars.windowXCenter;
-import static com.urrecliner.myholybible.Vars.windowYUpper;
 import static com.urrecliner.myholybible.Vars.xPixels;
 import static com.urrecliner.myholybible.Vars.yPixels;
-import static com.urrecliner.myholybible.Vars.zoomSize;
+import static com.urrecliner.myholybible.Vars.zoomInOutListener;
 
 public class MainActivity extends Activity {
 
@@ -194,87 +192,58 @@ public class MainActivity extends Activity {
             }
         });
 
-        onSwipeTouchListener = new OnSwipeTouchListener(MainActivity.this) {
+        zoomInOutListener = new ZoomInOutListener(MainActivity.this) {
 
             @Override
-            public void onSwipeGoBack() {
-                goBackward();
-            }
-
-            @Override
-            public void onSwipeGoFore() {
-//                goForward();
-            }
-
-            int savedTextSizeBibleBody, savedTextSizeBibleRefer, saveTextSizeHymnBody, savedTextSizeKeyWord;
-            @Override
-            public void zoomText() {
-                switch (zoomSize) {
-                    case 0:
-                        savedTextSizeBibleBody = textSizeBibleBody;
-                        savedTextSizeBibleRefer = textSizeBibleRefer;
-                        savedTextSizeKeyWord = textSizeKeyWord;
-                        saveTextSizeHymnBody = textSizeHymnBody;
-                        textSizeBibleBody = textSizeBibleBody * 12 / 10;
-                        textSizeBibleRefer = textSizeBibleRefer * 12/ 10;
-                        textSizeKeyWord = textSizeKeyWord * 12 / 10;
-                        textSizeHymnBody = textSizeHymnBody * 12 / 10;
-                        zoomSize++;
-                        break;
-                    case 1:
-                        textSizeBibleBody = savedTextSizeBibleBody * 14 / 10;
-                        textSizeBibleRefer = savedTextSizeBibleRefer * 14/ 10;
-                        textSizeKeyWord = savedTextSizeKeyWord * 14 / 10;
-                        textSizeHymnBody = textSizeHymnBody * 14 / 10;
-                        zoomSize++;
-                        break;
-                    case 2:
-                        textSizeBibleBody = savedTextSizeBibleBody * 16 / 10;
-                        textSizeBibleRefer = savedTextSizeBibleRefer * 16/ 10;
-                        textSizeKeyWord = savedTextSizeKeyWord * 16 / 10;
-                        textSizeHymnBody = textSizeHymnBody * 16 / 10;
-                        zoomSize++;
-                        break;
-                    case 3:
-                        textSizeBibleBody = savedTextSizeBibleBody;
-                        textSizeBibleRefer = savedTextSizeBibleRefer;
-                        textSizeKeyWord = savedTextSizeKeyWord;
-                        textSizeHymnBody = saveTextSizeHymnBody;
-                        zoomSize = 0;
-                        break;
-                }
+            public void onZoomOut() {
+                textSizeBibleBody++;
+                textSizeBibleRefer++;
+                textSizeKeyWord++;
+                textSizeHymnBody++;
                 if (topTab < TAB_MODE_HYMN)
                     makeBible.makeBibleBody();
                 else if (topTab == TAB_MODE_HYMN)
                     makeHymn.makeHymnBody();
             }
-            @Override
-            public void onSwipePrev() {
-                if (vLeftAction.getText().toString().equals(blank))
-                    return;
-                if (topTab < TAB_MODE_HYMN)
-                    goBibleLeft();
-                else if (topTab == TAB_MODE_HYMN)
-                    goHymnLeft();
-            }
 
             @Override
-            public void onSwipeNext() {
-                if (vRightAction.getText().toString().equals(blank))
-                    return;
+            public void onZoomIn() {
+                textSizeBibleBody--;
+                textSizeBibleRefer--;
+                textSizeKeyWord--;
+                textSizeHymnBody--;
                 if (topTab < TAB_MODE_HYMN)
-                    goBibleRight();
+                    makeBible.makeBibleBody();
                 else if (topTab == TAB_MODE_HYMN)
-                    goHymnRight();
+                    makeHymn.makeHymnBody();
             }
+//
+//            @Override
+//            public void onSwipePrev() {
+//                if (vLeftAction.getText().toString().equals(blank))
+//                    return;
+//                if (topTab < TAB_MODE_HYMN)
+//                    goBibleLeft();
+//                else if (topTab == TAB_MODE_HYMN)
+//                    goHymnLeft();
+//            }
+//
+//            @Override
+//            public void onSwipeNext() {
+//                if (vRightAction.getText().toString().equals(blank))
+//                    return;
+//                if (topTab < TAB_MODE_HYMN)
+//                    goBibleRight();
+//                else if (topTab == TAB_MODE_HYMN)
+//                    goHymnRight();
+//            }
         };
-        mBody.setOnTouchListener(onSwipeTouchListener);
-//        mBody.setOnTouchListener(new MyPinchListener(mContext));
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        windowYUpper = size.y * 6f / 10f;
-        windowXCenter = size.x / 2f;
+        mBody.setOnTouchListener(zoomInOutListener);
+//        Display display = getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        windowYUpper = size.y * 6f / 10f;
+//        windowXCenter = size.x / 2f;
 
         if (topTab < TAB_MODE_HYMN) {
             if (nowBible > 0)
@@ -313,7 +282,8 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
-        onSwipeTouchListener.getGestureDetector().onTouchEvent(ev);
+//        zoomInOutListener.getGestureDetector().onTouchEvent(ev);
+        zoomInOutListener.getScaleGestureDetector().onTouchEvent(ev);
         return super.dispatchTouchEvent(ev);
     }
     void setColors() {
@@ -616,10 +586,10 @@ public class MainActivity extends Activity {
         makeHymn.makeHymnBody();
     }
 
-    final Handler nextHandler = new Handler() {
+    final Handler goRightHandler = new Handler() {
         public void handleMessage(Message msg) { goBibleRight(); }};
     public void handleBibleRight() {
-        nextHandler.sendEmptyMessage(0);
+        goRightHandler.sendEmptyMessage(0);
     }
 
     public void goBibleRight() {
@@ -838,6 +808,40 @@ public class MainActivity extends Activity {
         finish();
         System.exit(0);
         android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    public class ScaleableView extends View
+            implements View.OnTouchListener, ScaleGestureDetector.OnScaleGestureListener {
+
+        ScaleGestureDetector  mScaleDetector = new ScaleGestureDetector(getContext(), this);
+
+        public ScaleableView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            // Code for scale here
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            // Code for scale begin here
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+            // Code for scale end here
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (mScaleDetector.onTouchEvent(event))
+                return true;
+            return super.onTouchEvent(event);
+        }
     }
 
 }

@@ -15,24 +15,19 @@ public class GoBack {
     int getTopTab() {
         return topTab;
     }
-
+    int getBible() {
+        return bible;
+    }
     int getChapter() {
         return chapter;
     }
-
     int getVerse() {
         return verse;
     }
-
     int getHymn() {
         return hymn;
     }
-
     String getDic() {
         return dic;
-    }
-
-    int getBible() {
-        return bible;
     }
 }

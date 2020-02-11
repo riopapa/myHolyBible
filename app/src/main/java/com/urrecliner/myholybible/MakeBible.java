@@ -250,7 +250,7 @@ class MakeBible {
         String file2read = "bible/" + nowBible + "/" + nowChapter + ".txt";
         bibleTexts = utils.readBibleFile(file2read);
         if (bibleTexts == null) {
-            Toast.makeText(mContext, "Bible source not found " + fullBibleNames[nowBible] + " " + nowChapter,Toast.LENGTH_LONG).show();
+//            Toast.makeText(mContext, "Bible source not found " + fullBibleNames[nowBible] + " " + nowChapter,Toast.LENGTH_LONG).show();
             return;
         }
         idxVerse = 0;
@@ -472,13 +472,13 @@ class MakeBible {
         return ptr;
     }
 
-    private boolean isNewKeyword(String s, String [] keywords, int iKeyword) {
-        for (int i = 0 ; i < iKeyword; i++) {
-            if (s.equals(keywords[i]))
-                return false;
-        }
-        return true;
-    }
+//    private boolean isNewKeyword(String s, String [] keywords, int iKeyword) {
+//        for (int i = 0 ; i < iKeyword; i++) {
+//            if (s.equals(keywords[i]))
+//                return false;
+//        }
+//        return true;
+//    }
 
     public class keywordSpan extends ClickableSpan {
 
