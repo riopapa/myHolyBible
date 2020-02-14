@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.urrecliner.myholybible.Vars.packageFolder;
-import static com.urrecliner.myholybible.Vars.sharedPreferences;
+import static com.urrecliner.myholybible.Vars.sharedPref;
 
 class Utils {
 
@@ -70,7 +70,7 @@ class Utils {
 
     void savePrefers(String key, ArrayList arrayList) {
 
-        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
         Gson gson = new Gson();
         String json = gson.toJson(arrayList);
         prefsEditor.putString(key, json);
@@ -81,7 +81,7 @@ class Utils {
 
         ArrayList<GoBack> list;
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("goBack", "");
+        String json = sharedPref.getString("goBack", "");
         if (json.isEmpty()) {
             list = new ArrayList<>();
         } else {
@@ -96,7 +96,7 @@ class Utils {
 
         ArrayList<BookMark> list;
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("bookMark", "");
+        String json = sharedPref.getString("bookMark", "");
         if (json.isEmpty()) {
             list = new ArrayList<>();
         } else {

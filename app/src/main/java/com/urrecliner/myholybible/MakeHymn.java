@@ -118,7 +118,7 @@ class MakeHymn {
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setWidth(buttonWidth);
                 b.setText(buttonText);
-                b.setTextColor((blackMode)? mActivity.getColor(R.color.TextBackColor) : mActivity.getColor(R.color.bibleColorFore));
+                b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId(id);
                 if (id < 10) {
@@ -177,7 +177,7 @@ class MakeHymn {
                 b.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
                 b.setWidth(xPixels/2 - 16);
                 b.setText(text);
-                b.setTextColor((blackMode)? mActivity.getColor(R.color.TextBackColor) : mActivity.getColor(R.color.bibleColorFore));
+                b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId((row+row+col)*41);    // 81
                 b.setOnClickListener(new View.OnClickListener() {

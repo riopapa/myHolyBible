@@ -126,52 +126,52 @@ public class SetActivity extends Activity {
             }
         });
 
-        tv = (TextView) findViewById(R.id.keyword_size);
+        tv = (TextView) findViewById(R.id.dic_size);
         txt = "" + textSizeKeyWord;
         tv.setText(txt);
-        tv = (TextView) findViewById(R.id.keyword_size_down);
+        tv = (TextView) findViewById(R.id.dic_size_down);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textSizeKeyWord--;
-                tv = (TextView) findViewById(R.id.keyword_size);
+                tv = (TextView) findViewById(R.id.dic_size);
                 String t = "" + textSizeKeyWord;
                 tv.setText(t);
                 editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
             }
         });
-        tv = (TextView) findViewById(R.id.keyword_size_up);
+        tv = (TextView) findViewById(R.id.dic_size_up);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textSizeKeyWord++;
-                tv = (TextView) findViewById(R.id.keyword_size);
+                tv = (TextView) findViewById(R.id.dic_size);
                 String t = "" + textSizeKeyWord;
                 tv.setText(t);
                 editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
             }
         });
 
-        tv = (TextView) findViewById(R.id.crossing_size);
+        tv = (TextView) findViewById(R.id.ref_size);
         txt = "" + textSizeBibleRefer;
         tv.setText(txt);
-        tv = (TextView) findViewById(R.id.crossing_size_down);
+        tv = (TextView) findViewById(R.id.ref_size_down);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textSizeBibleRefer--;
-                tv = (TextView) findViewById(R.id.crossing_size);
+                tv = (TextView) findViewById(R.id.ref_size);
                 String t = "" + textSizeBibleRefer;
                 tv.setText(t);
                 editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
             }
         });
-        tv = (TextView) findViewById(R.id.crossing_size_up);
+        tv = (TextView) findViewById(R.id.ref_size_up);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 textSizeBibleRefer++;
-                tv = (TextView) findViewById(R.id.crossing_size);
+                tv = (TextView) findViewById(R.id.ref_size);
                 String t = "" + textSizeBibleRefer;
                 tv.setText(t);
                 editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();

@@ -70,7 +70,7 @@ public class Vars {
     static int textSizeHymnKeypad = 24;
 
     // followings are from shared preference
-    static SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPref;
     static SharedPreferences.Editor editor;
     static int textSizeBible66 = 24;
     static int textSizeBibleTitle = 24;

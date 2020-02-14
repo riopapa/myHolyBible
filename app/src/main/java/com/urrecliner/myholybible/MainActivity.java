@@ -86,7 +86,7 @@ import static com.urrecliner.myholybible.Vars.oldName;
 import static com.urrecliner.myholybible.Vars.packageFolder;
 import static com.urrecliner.myholybible.Vars.paraColorFore;
 import static com.urrecliner.myholybible.Vars.referColorFore;
-import static com.urrecliner.myholybible.Vars.sharedPreferences;
+import static com.urrecliner.myholybible.Vars.sharedPref;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.myholybible.Vars.sortedNumbers;
 import static com.urrecliner.myholybible.Vars.text2Speech;
@@ -134,8 +134,8 @@ public class MainActivity extends Activity {
         askPermission();
         mBody = (ViewGroup) findViewById(R.id.fragment_body);
         mainScreen = (ViewGroup) findViewById(R.id.mainScreen);
-        sharedPreferences = getApplicationContext().getSharedPreferences("bible", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+        sharedPref = getApplicationContext().getSharedPreferences("bible", MODE_PRIVATE);
+        editor = sharedPref.edit();
         getSharedValues();
         goBacks = utils.readGoBacks();
         if (goBacks.size() < 1) {
@@ -262,21 +262,22 @@ public class MainActivity extends Activity {
     }
 
     private void getSharedValues() {
-        textSizeBible66 = sharedPreferences.getInt("textSizeBible66", 20);
-        textSizeBibleBody = sharedPreferences.getInt("textSizeBibleBody", 20);
-        textSizeBibleRefer = sharedPreferences.getInt("textSizeBibleRefer", 26);
-        textSizeHymnBody = sharedPreferences.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = sharedPreferences.getInt("textSizeKeyWord", 30);
-        textSizeSpace = sharedPreferences.getInt("textSizeSpace", 15);
-        hymnImageFirst = sharedPreferences.getBoolean("hymnImageFirst", true);
-        blackMode = sharedPreferences.getBoolean("blackMode", false);
-        hymnShowWhat = sharedPreferences.getInt("hymnShowWhat", 0);
-        alwaysOn = sharedPreferences.getBoolean("alwaysOn",true);
-        bibleSpeed = sharedPreferences.getFloat("bibleSpeed", 0.8f);
-        biblePitch = sharedPreferences.getFloat("biblePitch",1.0f);
-        hymnSpeed = sharedPreferences.getFloat("hymnSpeed", 0.8f);
-        agpShow = sharedPreferences.getBoolean("agpShow", false);
-        cevShow = sharedPreferences.getBoolean("cevShow", false);
+        textSizeBible66 = sharedPref.getInt("textSizeBible66", 20);
+        textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 20);
+        textSizeBibleRefer = sharedPref.getInt("textSizeBibleRefer", 26);
+        textSizeHymnBody = sharedPref.getInt("textSizeHymnBody", 20);
+        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 30);
+        textSizeSpace = sharedPref.getInt("textSizeSpace", 15);
+        hymnImageFirst = sharedPref.getBoolean("hymnImageFirst", true);
+        blackMode = sharedPref.getBoolean("blackMode", false);
+        hymnShowWhat = sharedPref.getInt("hymnShowWhat", 0);
+        alwaysOn = sharedPref.getBoolean("alwaysOn",true);
+        bibleSpeed = sharedPref.getFloat("bibleSpeed", 0.8f);
+        biblePitch = sharedPref.getFloat("biblePitch",1.0f);
+        hymnSpeed = sharedPref.getFloat("hymnSpeed", 0.8f);
+        agpShow = sharedPref.getBoolean("agpShow", false);
+        cevShow = sharedPref.getBoolean("cevShow", false);
+
     }
 
 
@@ -293,12 +294,18 @@ public class MainActivity extends Activity {
         highLiteMenuColor = normalMenuColor ^ 0x444444;
         readNowColor = normalMenuColor ^ 0x777777;
 
+        bibleColorFore = sharedPref.getInt("bibleColorFore", ContextCompat.getColor(mContext, R.color.bibleColorFore));
+        verseColorFore = sharedPref.getInt("verseColorFore", ContextCompat.getColor(mContext, R.color.verseColorFore));
+        verseColorFore = sharedPref.getInt("verseColorFore", ContextCompat.getColor(mContext, R.color.verseColorFore));
+        referColorFore = sharedPref.getInt("referColorFore", ContextCompat.getColor(mContext, R.color.referColorFore));
+
+
         bibleColorFore = ContextCompat.getColor(mContext, R.color.bibleColorFore);
         verseColorFore = ContextCompat.getColor(mContext, R.color.verseColorFore);
         paraColorFore = ContextCompat.getColor(mContext, R.color.paraColorFore);
         referColorFore = ContextCompat.getColor(mContext, R.color.referColorFore);
         numberColorFore = ContextCompat.getColor(mContext, R.color.numberColorFore);
-        textColorBack  = ContextCompat.getColor(mContext, R.color.TextBackColor);
+        textColorBack  = ContextCompat.getColor(mContext, R.color.screenBodyColor);
         cevColorFore = ContextCompat.getColor(mContext, R.color.cevColorFore);
         agpColorFore = ContextCompat.getColor(mContext, R.color.agpColorFore);
         dicColorFore = ContextCompat.getColor(mContext, R.color.dictColorFore);

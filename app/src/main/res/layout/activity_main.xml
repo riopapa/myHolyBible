@@ -5,7 +5,7 @@
     android:id="@+id/mainScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/TextBackColor"
+    android:background="@color/screenBodyColor"
     tools:context=".MainActivity">
 
     <fragment
