@@ -10,6 +10,7 @@ public class ZoomInOutListener implements View.OnTouchListener {
     private ScaleGestureDetector scaleGestureDetector;
 
     ZoomInOutListener(Context c) {
+
         scaleGestureDetector = new ScaleGestureDetector(c, new MyOnScaleGestureListener());
     }
 
@@ -18,6 +19,8 @@ public class ZoomInOutListener implements View.OnTouchListener {
     }
 
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
+
+
         return scaleGestureDetector.onTouchEvent(motionEvent);
     }
 
@@ -44,6 +47,7 @@ public class ZoomInOutListener implements View.OnTouchListener {
 //
 //        @Override
 //        public void onLongPress(MotionEvent e) {
+//            Log.w("long","clicked");
 //            onLongClick();
 //            super.onLongPress(e);
 //        }
@@ -90,6 +94,7 @@ public class ZoomInOutListener implements View.OnTouchListener {
 //    public void onSwipeNext() { }
 //    public void zoomText() { }
 //    private void onClick() { }
+//    }
 
     public class MyOnScaleGestureListener extends
             ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -116,6 +121,7 @@ public class ZoomInOutListener implements View.OnTouchListener {
         public void onScaleEnd(ScaleGestureDetector detector) {
 //            utils.log("Scale"," End factor "+detector.getScaleFactor());
         }
+
     }
     public void onZoomOut() { }
     public void onZoomIn() { }

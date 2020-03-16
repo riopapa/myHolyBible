@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -24,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -239,6 +242,7 @@ class MakeBible {
     private int idxSpace;
 
     private int versePtr;
+    private int highLightF, highLightT;
 
     private int ptrBody;
     private StringBuilder bodyText;
@@ -291,7 +295,11 @@ class MakeBible {
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-                scrollView.scrollTo(0, tV.getBottom() * versePtr / ptrBody);
+                new Timer().schedule(new TimerTask() {
+                    public void run() {
+                        scrollView.scrollTo(0, tV.getBottom() * versePtr / ptrBody);
+                    }
+                }, 200);
             }
         });
         nowScrollView = scrollView;
@@ -326,14 +334,19 @@ class MakeBible {
         for (int i = 0; i < idxSpace; i++) {
             ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        if (highLightF > 0) {
+            int color = (blackMode) ? 0x77888888 : 0xffcccccc;
+            ss.setSpan(new BackgroundColorSpan(color), highLightF, highLightT, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         return ss;
     }
 
     private void makeBibleAllVerses() {
         maxVerse  = bibleTexts.length;
         versePtr = 0;
+        highLightF = 0;
         for (int line = 0; line < maxVerse; line++) {
-            if (line == (nowVerse-2))
+            if (line == (nowVerse-3))   // to show this verse no too top or above top
                 versePtr = ptrBody;
             String str;
             String workLine = bibleTexts[line] + "~";   // "~" is end character
@@ -378,6 +391,8 @@ class MakeBible {
                     ptrBody += 2;
                     idxSpace++;
                 }
+                if (nowVerse > 0 && line == (nowVerse-1))
+                    highLightF = ptrBody;
                 str = " " + verseString + " ";
                 verseF[idxVerse] = ptrBody;
                 verseT[idxVerse] = ptrBody + str.length();
@@ -403,6 +418,9 @@ class MakeBible {
                         lenWorkLine = workLine.length();
                     }
                 }
+                if (nowVerse > 0 && line == (nowVerse-1))
+                    highLightT = ptrBody;
+
                 if (agpShow) {
                     agpText = newLine + agpText;
                     bodyText.append(agpText);

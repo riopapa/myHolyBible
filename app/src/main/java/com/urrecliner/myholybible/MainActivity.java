@@ -1,7 +1,6 @@
 package com.urrecliner.myholybible;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,13 +10,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -86,6 +83,7 @@ import static com.urrecliner.myholybible.Vars.oldName;
 import static com.urrecliner.myholybible.Vars.packageFolder;
 import static com.urrecliner.myholybible.Vars.paraColorFore;
 import static com.urrecliner.myholybible.Vars.referColorFore;
+import static com.urrecliner.myholybible.Vars.searchDepth;
 import static com.urrecliner.myholybible.Vars.sharedPref;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.myholybible.Vars.sortedNumbers;
@@ -107,7 +105,7 @@ import static com.urrecliner.myholybible.Vars.zoomInOutListener;
 
 public class MainActivity extends Activity {
 
-    ImageView vSetting;
+    ImageView vSetting, vSearch;
     TextView vOldBible, vNewBible, vHymn;
     TextView vAgpBible, vLeftAction, vRightAction, vCevBible;
     long backKeyPressedTime;
@@ -159,6 +157,7 @@ public class MainActivity extends Activity {
         vHymn = (TextView) fTop.findViewById(R.id.hymn);
         vAgpBible = (TextView) fTop.findViewById(R.id.agpBible);
         vCevBible = (TextView) findViewById(R.id.cevBible);
+        vSearch = (ImageView) fTop.findViewById(R.id.search);
 
         vLeftAction = (TextView) fBtm.findViewById(R.id.leftAction);
         vCurrBible = (TextView) fBtm.findViewById(R.id.currBible);
@@ -182,20 +181,30 @@ public class MainActivity extends Activity {
         setColors();
 
         assignAllButtonListeners();
-        vSetting.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = vSetting.getWidth();
-                int height = vNewBible.getHeight();
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
-                vSetting.setLayoutParams(layoutParams);
-            }
-        });
+//        vSetting.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int width = vSetting.getWidth();
+//                int height = vNewBible.getHeight();
+//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+//                vSetting.setLayoutParams(layoutParams);
+//            }
+//        });
+//        vSearch.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int width = vSearch.getWidth();
+//                int height = vNewBible.getHeight();
+//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+//                vSearch.setLayoutParams(layoutParams);
+//            }
+//        });
 
         zoomInOutListener = new ZoomInOutListener(MainActivity.this) {
 
             @Override
             public void onZoomOut() {
+                saveYPositionRatio();
                 textSizeBibleBody++;
                 textSizeBibleRefer++;
                 textSizeKeyWord++;
@@ -204,10 +213,16 @@ public class MainActivity extends Activity {
                     makeBible.makeBibleBody();
                 else if (topTab == TAB_MODE_HYMN)
                     makeHymn.makeHymnBody();
+                nowScrollView.post(new Runnable() {
+                    public void run() {
+                        nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                    }
+                });
             }
 
             @Override
             public void onZoomIn() {
+                saveYPositionRatio();
                 textSizeBibleBody--;
                 textSizeBibleRefer--;
                 textSizeKeyWord--;
@@ -216,7 +231,21 @@ public class MainActivity extends Activity {
                     makeBible.makeBibleBody();
                 else if (topTab == TAB_MODE_HYMN)
                     makeHymn.makeHymnBody();
+                nowScrollView.post(new Runnable() {
+                    public void run() {
+                        nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                    }
+                });
             }
+            int yRatio, totalHeight;
+
+            void saveYPositionRatio() {
+                totalHeight = nowScrollView.getChildAt(0).getHeight();
+                if (totalHeight != 0) {
+                    yRatio = nowScrollView.getHeight() * 1000 / totalHeight;
+                }
+            }
+
 //
 //            @Override
 //            public void onSwipePrev() {
@@ -238,7 +267,9 @@ public class MainActivity extends Activity {
 //                    goHymnRight();
 //            }
         };
+
         mBody.setOnTouchListener(zoomInOutListener);
+
 //        Display display = getWindowManager().getDefaultDisplay();
 //        Point size = new Point();
 //        display.getSize(size);
@@ -277,7 +308,7 @@ public class MainActivity extends Activity {
         hymnSpeed = sharedPref.getFloat("hymnSpeed", 0.8f);
         agpShow = sharedPref.getBoolean("agpShow", false);
         cevShow = sharedPref.getBoolean("cevShow", false);
-
+        searchDepth = sharedPref.getInt("searchDepth", 10);
     }
 
 
@@ -329,6 +360,7 @@ public class MainActivity extends Activity {
         vCevBible.setText(blank);
         vAgpBible.setBackgroundColor(normalMenuColor);
         vCevBible.setBackgroundColor(normalMenuColor);
+        vSearch.setAlpha((nowBible > 0 & nowChapter > 0) ? 1f:0.1f);
 
         if (topTab < 4)
             makeBibleMenu();
@@ -510,6 +542,17 @@ public class MainActivity extends Activity {
                 makeBible.makeBibleBody();
             }
         });
+        vSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0) {
+                    history.push();
+                    Intent i = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+                }
+            }
+        });
     }
 
     private final Handler aHandler = new Handler() {
@@ -573,7 +616,7 @@ public class MainActivity extends Activity {
             }
         } else
             nowChapter = prevChapter;
-        nowVerse = 1;
+        nowVerse = 0;
         makeBible.makeBibleBody();
     }
 
@@ -612,7 +655,7 @@ public class MainActivity extends Activity {
         } else {
             nowChapter = nextChapter;
         }
-        nowVerse = 1;
+        nowVerse = 0;
         makeBible.makeBibleBody();
     }
 
@@ -644,7 +687,7 @@ public class MainActivity extends Activity {
         makeBible.showBibleList();
     }
 
-    private void goBackward() {
+    void goBackward() {
         if (goBacks.size() == 1) {
             Toast.makeText(mContext,"맨 처음 입니다." , Toast.LENGTH_LONG).show();
         }
@@ -684,7 +727,7 @@ public class MainActivity extends Activity {
     ArrayList<String> permissionsRejected = new ArrayList<>();
 
     private void askPermission() {
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+//        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         permissionsToRequest = findUnAskedPermissions(permissions);
         if (permissionsToRequest.size() != 0) {
@@ -703,7 +746,7 @@ public class MainActivity extends Activity {
         return (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+//    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == ALL_PERMISSIONS_RESULT) {

@@ -546,6 +546,7 @@
             </LinearLayout>
         </LinearLayout>
         <!--bible bookmark-->
+
         <TextView
             android:padding="4dp"
             android:layout_margin="4dp"
@@ -573,6 +574,7 @@
             android:gravity="center_horizontal"
             android:background="@color/appInfo"
             android:layout_gravity="center"
+            android:text="@string/about"
             android:textSize="18sp" />
         <!--app info-->
         <TableLayout
