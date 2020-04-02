@@ -32,59 +32,12 @@
             <TextView
                 android:id="@+id/search_from"
                 android:layout_width="0dp"
-                android:layout_weight="9"
+                android:layout_weight="5"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="마가복음 6 부터"
-                android:textSize="20sp" />
-            <TextView
-                android:id="@+id/search_down"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:text="@string/minus"
-                android:textColor="#012345"
-                android:textStyle="bold"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/search_depth_size"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:text="@string/number"
-                android:textStyle="bold"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/search_up"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_height="wrap_content"
-                android:text="@string/plus"
-                android:textColor="#012345"
-                android:textStyle="bold"
-                android:textSize="24sp" />
-            <TextView
-                android:id="@+id/search_depth"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textColor="@color/setText"
-                android:layout_height="wrap_content"
-                android:text="장"
-                android:layout_gravity="center"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal" >
+                android:text="고전12:31"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/search_clear"
@@ -99,7 +52,7 @@
             <EditText
                 android:id="@+id/search_text"
                 android:layout_width="0dp"
-                android:layout_weight="12"
+                android:layout_weight="8"
                 android:inputType="text"
                 android:gravity="center"
                 android:selectAllOnFocus="true"
@@ -110,13 +63,26 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/find"
+                android:id="@+id/search"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                android:layout_height="40dp"
+                android:padding="4dp"
+                android:layout_height="32dp"
+                android:background="#00000000"
+                style="@style/exitButton"
+                app:layout_constraintHorizontal_weight="3"
+                android:src="@mipmap/search" />
+
+            <ImageView
+                android:id="@+id/searchNext"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:padding="4dp"
+                android:layout_height="32dp"
+                android:background="#00000000"
                 style="@style/exitButton"
                 app:layout_constraintHorizontal_weight="2"
-                android:src="@mipmap/search" />
+                android:src="@mipmap/search_next" />
 
         </LinearLayout>
 

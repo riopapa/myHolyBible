@@ -22,6 +22,7 @@
     <string name="scripture_size">본문</string>
     <string name="keyword_size">키워드</string>
     <string name="crossing_size">관주</string>
+    <string name="depth_size">검색장수</string>
     <string name="verse_space_size">절간격</string>
     <string name="show_hymn_sheetFirst">악보를위에</string>
     <string name="show_hymn_sheet">찬송악보</string>
@@ -39,5 +40,6 @@
     <string name="pitch_down">낮게</string>
     <string name="pitch_up">높게</string>
     <string name="about">이 성경찬송 앱 업데이트 이력 . .</string>
+    <string name="background_black">바탕을 검게</string>
 
 </resources>

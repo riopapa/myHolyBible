@@ -80,7 +80,7 @@ public class Vars {
     static int textSizeHymnBody = 20;
     static int textSizeBibleBody = 20;
     static int textSizeKeyWord = 20;
-    static int searchDepth;
+    static int searchDepth = 20;
     static String searchText = null;
 
     static boolean hymnImageFirst = true;
@@ -101,6 +101,7 @@ public class Vars {
     static float bibleSpeed = 0.8f;
     static float biblePitch = 1.0f;
     static float hymnSpeed = 0.9f;
+    static boolean searchNext = false;
 
     static String [] bibleTexts;
 

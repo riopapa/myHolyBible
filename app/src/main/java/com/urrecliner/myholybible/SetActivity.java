@@ -43,6 +43,7 @@ import static com.urrecliner.myholybible.Vars.makeBible;
 import static com.urrecliner.myholybible.Vars.makeHymn;
 import static com.urrecliner.myholybible.Vars.nowBible;
 import static com.urrecliner.myholybible.Vars.nowHymn;
+import static com.urrecliner.myholybible.Vars.searchDepth;
 import static com.urrecliner.myholybible.Vars.setActivity;
 import static com.urrecliner.myholybible.Vars.textSizeBible66;
 import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
@@ -201,6 +202,32 @@ public class SetActivity extends Activity {
                 String t = "" + textSizeSpace;
                 tv.setText(t);
                 editor.putInt("textSizeSpace", textSizeSpace).apply();
+            }
+        });
+
+        tv = (TextView) findViewById(R.id.depth_size);
+        txt = "" + searchDepth;
+        tv.setText(txt);
+        tv = (TextView) findViewById(R.id.depth_down);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchDepth--;
+                tv = (TextView) findViewById(R.id.depth_size);
+                String t = "" + searchDepth;
+                tv.setText(t);
+                editor.putInt("searchDepth", searchDepth).apply();
+            }
+        });
+        tv = (TextView) findViewById(R.id.depth_up);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchDepth++;
+                tv = (TextView) findViewById(R.id.depth_size);
+                String t = "" + searchDepth;
+                tv.setText(t);
+                editor.putInt("searchDepth", searchDepth).apply();
             }
         });
 

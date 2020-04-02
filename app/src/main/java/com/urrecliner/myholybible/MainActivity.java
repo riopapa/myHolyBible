@@ -308,9 +308,8 @@ public class MainActivity extends Activity {
         hymnSpeed = sharedPref.getFloat("hymnSpeed", 0.8f);
         agpShow = sharedPref.getBoolean("agpShow", false);
         cevShow = sharedPref.getBoolean("cevShow", false);
-        searchDepth = sharedPref.getInt("searchDepth", 10);
+        searchDepth = sharedPref.getInt("searchDepth", 20);
     }
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev){
