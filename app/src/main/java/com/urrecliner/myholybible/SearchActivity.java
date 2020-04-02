@@ -56,6 +56,14 @@ public class SearchActivity extends Activity {
                 }
             }
         });
+        tv = (TextView) findViewById(R.id.search_clear);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv = (TextView) findViewById(R.id.search_text);
+                tv.setText("");
+            }
+        });
         tv = (TextView) findViewById(R.id.search_down);
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
