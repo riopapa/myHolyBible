@@ -79,7 +79,7 @@
     <ImageView
         android:id="@+id/search"
         style="@style/MenuStyle"
-        android:layout_width="0dp"
+        android:layout_width="40dp"
         android:layout_height="32dp"
         app:layout_constraintHorizontal_weight="2"
         android:src="@mipmap/search"

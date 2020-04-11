@@ -1,6 +1,5 @@
 package com.urrecliner.myholybible;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +27,7 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
         return  (searchResults == null)? 0:searchResults.size();
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false);
         return new ViewHolder(view);
     }

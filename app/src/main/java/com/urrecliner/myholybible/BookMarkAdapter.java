@@ -2,7 +2,6 @@ package com.urrecliner.myholybible;
 
 import android.content.DialogInterface;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -37,8 +36,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         return bookMarks.size();
     }
 
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_mark, parent, false);
         return new ViewHolder(view);
     }
@@ -132,7 +130,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int pos) {
+    public void onBindViewHolder(final ViewHolder holder, final int pos) {
 
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.US);
         String s;

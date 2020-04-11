@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -297,7 +296,7 @@ public class MainActivity extends Activity {
         textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 20);
         textSizeBibleRefer = sharedPref.getInt("textSizeBibleRefer", 26);
         textSizeHymnBody = sharedPref.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 30);
+        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 22);
         textSizeSpace = sharedPref.getInt("textSizeSpace", 15);
         hymnImageFirst = sharedPref.getBoolean("hymnImageFirst", true);
         blackMode = sharedPref.getBoolean("blackMode", false);
@@ -736,18 +735,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    private ArrayList findUnAskedPermissions(@NonNull ArrayList<String> wanted) {
+    private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
         ArrayList <String> result = new ArrayList<String>();
         for (String perm : wanted) if (hasPermission(perm)) result.add(perm);
         return result;
     }
-    private boolean hasPermission(@NonNull String permission) {
+    private boolean hasPermission(String permission) {
         return (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED);
     }
 
 //    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == ALL_PERMISSIONS_RESULT) {
             for (String perms : permissionsToRequest) {
                 if (hasPermission(perms)) {

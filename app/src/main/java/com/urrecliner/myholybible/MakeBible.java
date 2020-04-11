@@ -3,7 +3,6 @@ package com.urrecliner.myholybible;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -305,7 +304,6 @@ class MakeBible {
         nowScrollView = scrollView;
     }
 
-    @NonNull
     private SpannableString settleSpannableString() {
         SpannableString ss = new SpannableString(bodyText);
         for (int i = 0; i < idxKeyword; i++) {
@@ -507,14 +505,14 @@ class MakeBible {
         Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
         Float dicTextSize = textSizeKeyWord * 2.6f;
         @Override
-        public void updateDrawState(@NonNull TextPaint ds) {
+        public void updateDrawState(TextPaint ds) {
             ds.setColor(dicColorFore);
             ds.setTypeface(boldface);
             ds.setTextSize(dicTextSize);
         }
 
         @Override
-        public void onClick(@NonNull View widget) {
+        public void onClick(View widget) {
             nowDic = key;
             nowVerse = verse;
             makeKeyWord();
@@ -527,14 +525,14 @@ class MakeBible {
         int verse;
         crossSpan(String key, int verse) { this.key = key; this.verse = verse;}
         @Override
-        public void updateDrawState(@NonNull TextPaint ds) {
+        public void updateDrawState(TextPaint ds) {
             ds.setColor(referColorFore);
             ds.setTextSize(textSizeBibleRefer+textSizeBibleRefer);  // double size
             ds.setUnderlineText(false);    // this remove the underline
         }
 
         @Override
-        public void onClick(@NonNull View widget) {
+        public void onClick(View widget) {
             nowDic = key;
             nowVerse = verse;
             makeCrossing();
