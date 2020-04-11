@@ -32,38 +32,32 @@ public class ZoomInOutListener implements View.OnTouchListener {
 //        public boolean onDown(MotionEvent e) {
 //            return true;
 //        }
-//
 //        @Override
 //        public boolean onSingleTapUp(MotionEvent e) {
 //            onClick();
 //            return super.onSingleTapUp(e);
 //        }
-//
 //        @Override
 //        public boolean onDoubleTap(MotionEvent e) {
 ////            onDoubleClick(e);
 //            return super.onDoubleTap(e);
 //        }
-//
 //        @Override
 //        public void onLongPress(MotionEvent e) {
 //            Log.w("long","clicked");
 //            onLongClick();
 //            super.onLongPress(e);
 //        }
-//
 //        @Override
 //        public boolean onDoubleTap(MotionEvent e) {
 //            zoomText();
 //            return super.onDoubleTap(e);
 //        }
-
 //        @Override
 //        public void onLongPress(MotionEvent e) {
 //            onLongClick();
 //            super.onLongPress(e);
 //        }
-//
 //        @Override
 //        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 //            try {
