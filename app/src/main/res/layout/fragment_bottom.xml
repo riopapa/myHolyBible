@@ -5,15 +5,29 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--        style="@style/MenuStyle"-->
+
+    <ImageView
+        android:id="@+id/speak"
+        android:layout_width="40dp"
+        android:layout_height="28dp"
+        style="@style/MenuStyle"
+        app:layout_constraintHorizontal_weight="1"
+        android:src="@mipmap/speak_on"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/leftAction"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <TextView
         android:id="@+id/leftAction"
         style="@style/MenuStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/prevBible"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/speak"
         app:layout_constraintRight_toLeftOf="@+id/currBible"/>
 
     <TextView
@@ -44,7 +58,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/blank"
-        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintHorizontal_weight="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toLeftOf="@id/rightAction" />

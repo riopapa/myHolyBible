@@ -104,7 +104,7 @@ import static com.urrecliner.myholybible.Vars.zoomInOutListener;
 
 public class MainActivity extends Activity {
 
-    ImageView vSetting, vSearch;
+    ImageView vSetting, vSearch, vSpeak;
     TextView vOldBible, vNewBible, vHymn;
     TextView vAgpBible, vLeftAction, vRightAction, vCevBible;
     long backKeyPressedTime;
@@ -158,6 +158,7 @@ public class MainActivity extends Activity {
         vCevBible = (TextView) findViewById(R.id.cevBible);
         vSearch = (ImageView) fTop.findViewById(R.id.search);
 
+        vSpeak = (ImageView) fBtm.findViewById(R.id.speak);
         vLeftAction = (TextView) fBtm.findViewById(R.id.leftAction);
         vCurrBible = (TextView) fBtm.findViewById(R.id.currBible);
         vRightAction = (TextView) fBtm.findViewById(R.id.rightAction);
@@ -370,6 +371,7 @@ public class MainActivity extends Activity {
 
     public void makeBibleMenu() {
         if (nowBible == 0) {
+            vSpeak.setVisibility(View.GONE);
             vLeftAction.setText((blank));
             vRightAction.setText((blank));
             vCurrBible.setText((topTab == TAB_MODE_OLD) ? oldName : newName);
@@ -381,6 +383,7 @@ public class MainActivity extends Activity {
     public void makeBibleMenuNormal() {
         String txt;
         if (nowChapter==0) {
+            vSpeak.setVisibility(View.GONE);
             vAgpBible.setText(blank);
             vLeftAction.setText(blank);
             vCurrBible.setText(fullBibleNames[nowBible]);
@@ -388,6 +391,7 @@ public class MainActivity extends Activity {
             vCevBible.setText(blank);
         }
         else {
+            vSpeak.setVisibility(View.VISIBLE);
             vAgpBible.setText(agpVersion);
             vAgpBible.setBackgroundColor((agpShow)? highLiteMenuColor:normalMenuColor);
             int chapter = nowChapter - 1;
@@ -423,6 +427,15 @@ public class MainActivity extends Activity {
     }
 
     public void assignAllButtonListeners() {
+        vSpeak.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
+                    readBible();
+                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
+                    playStopHymn();
+            }
+        });
         vSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -456,18 +469,18 @@ public class MainActivity extends Activity {
                     bookMarkThis();
             }
         });
-        vCurrBible.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (vCurrBible.getText().toString().equals(blank))
-                    return false;
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
-                    readBible();
-                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
-                    playStopHymn();
-                return false;
-            }
-        });
+//        vCurrBible.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                if (vCurrBible.getText().toString().equals(blank))
+//                    return false;
+//                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
+//                    readBible();
+//                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
+//                    playStopHymn();
+//                return false;
+//            }
+//        });
         vRightAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -558,6 +571,7 @@ public class MainActivity extends Activity {
 
     void readBible() {
         if (isReadingNow) {
+            vSpeak.setImageResource(R.mipmap.speak_on);
             isReadingNow = false;
             bookMarkNow = true;
             Toast.makeText(mContext,"성경읽기를 끝냅니다",Toast.LENGTH_SHORT).show();
@@ -565,6 +579,7 @@ public class MainActivity extends Activity {
             text2Speech.stopRead();
         }
         else {
+            vSpeak.setImageResource(R.mipmap.speak_off);
             isReadingNow = true;
             bookMarkNow = false;
             Toast.makeText(mContext,"성경읽기를 시작합니다",Toast.LENGTH_SHORT).show();
@@ -582,12 +597,14 @@ public class MainActivity extends Activity {
 
     void playStopHymn() {
         if (isReadingNow) {
+            vSpeak.setImageResource(R.mipmap.speak_on);
             isReadingNow = false;
             Toast.makeText(mContext,"찬송부르기를 끝냅니다",Toast.LENGTH_SHORT).show();
             history.push();
             text2Speech.stopRead();
         }
         else {
+            vSpeak.setImageResource(R.mipmap.speak_off);
             isReadingNow = true;
             Toast.makeText(mContext,"찬송 부르기를 시작합니다",Toast.LENGTH_SHORT).show();
             text2Speech.playHymn();
