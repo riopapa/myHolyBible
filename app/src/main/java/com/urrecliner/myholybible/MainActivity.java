@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
         }
         bookMarks = utils.readBookMarks();
         if (bookMarks.size() < 1) {
-            bookMarks.add (new BookMark(43, 3, System.currentTimeMillis(), false));
+            bookMarks.add (new BookMark(43, 3, 16, System.currentTimeMillis(), false));
         }
 
         history.init();
@@ -639,7 +639,7 @@ public class MainActivity extends Activity {
     void bookMarkThis() {
         if (!bookMarkNow)
             return;
-        BookMark bookMark = new com.urrecliner.myholybible.BookMark(nowBible, nowChapter, System.currentTimeMillis(), false);
+        BookMark bookMark = new com.urrecliner.myholybible.BookMark(nowBible, nowChapter, nowVerse, System.currentTimeMillis(), false);
         while (bookMarks.size() > 40)
             bookMarks.remove(bookMarks.size()-1);
         bookMarks.add(0, bookMark);

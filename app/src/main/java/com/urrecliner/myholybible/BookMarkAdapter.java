@@ -99,16 +99,18 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
     private static void jump2BookMark() {
         final BookMark bookMark = bookMarks.get(pos);
         AlertDialog.Builder builder = new AlertDialog.Builder(setActivity);
-        builder.setTitle("Book Mark 처리");
-        String s = fullBibleNames[bookMark.getBible()] + " " + bookMark.getChapter();
+        builder.setTitle("Book Mark");
+        String s = fullBibleNames[bookMark.getBible()] + " " + bookMark.getChapter()+" 장";
+        if (bookMark.getVerse() > 0)
+            s += " "+bookMark.getVerse()+" 절";
         builder.setMessage(s);
-        builder.setPositiveButton(s+"로 이동",
+        builder.setPositiveButton(s+" 로 이동",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         history.push();
                         nowBible = bookMark.getBible();
                         nowChapter = bookMark.getChapter();
-                        nowVerse = 0;
+                        nowVerse = bookMark.getVerse();
                         nowHymn = 0;
                         topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
                         if (makeBible == null)
@@ -136,6 +138,8 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         String s;
         BookMark bookMark = bookMarks.get(pos);
         s = fullBibleNames[bookMark.getBible()] + " " + bookMark.getChapter();
+        if (bookMark.getVerse()> 0)
+            s += ":"+bookMark.getVerse();
         holder.tvBibleChapter.setText(s);
         s = sdfDate.format(bookMark.getWhen());
         holder.tvDateTime.setText(s);

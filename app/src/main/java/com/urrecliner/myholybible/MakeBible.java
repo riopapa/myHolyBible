@@ -38,6 +38,7 @@ import static com.urrecliner.myholybible.Vars.agpShow;
 import static com.urrecliner.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.myholybible.Vars.bibleTexts;
 import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
 import static com.urrecliner.myholybible.Vars.cevShow;
 import static com.urrecliner.myholybible.Vars.dicColorFore;
@@ -78,7 +79,6 @@ import static com.urrecliner.myholybible.Vars.xPixels;
 import static java.lang.Integer.parseInt;
 
 class MakeBible {
-
 
     private final String newLine = "\n";
     private final String new3Line = "\n\n\n";
@@ -148,9 +148,9 @@ class MakeBible {
     }
 
     private ScrollView buildBibleNumber() {
-        int verseMax = nbrOfChapters[nowBible];
-        int verse = 1;
-        TextView tVNbr;
+        int chapterMax = nbrOfChapters[nowBible];
+        int chapter = 1;
+        TextView tVNbr = null;
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
         mainScreen.setBackgroundColor(textColorBack);
@@ -167,14 +167,14 @@ class MakeBible {
         tV.setTextColor(0);
         tV.setGravity(Gravity.CENTER);
         linearlayout.addView(tV);
-        for(int i = 0; i<31;i++) {
+        for(int i = 0; i<50;i++) {
             LinearLayout rowLayout = new LinearLayout(mContext);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             linearlayout.addView(rowLayout);
             for(int j = 0; j < nbrColumn; j++) {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 tVNbr = new TextView(mContext);
-                String text = ""+verse;
+                String text = ""+chapter;
                 tVNbr.setText(text);
                 tVNbr.setTextColor(numberColorFore);
                 tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -182,7 +182,7 @@ class MakeBible {
                 tVNbr.setWidth(buttonWidth);
                 tVNbr.setGravity(Gravity.CENTER_HORIZONTAL);
                 tVNbr.setPadding(0,16,0,16);
-                tVNbr.setId(verse);
+                tVNbr.setId(chapter);
                 tVNbr.setTextSize(textSizeBibleNumber);
                 tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 columnLayout.addView(tVNbr);
@@ -195,13 +195,16 @@ class MakeBible {
                     }
                 });
                 rowLayout.addView(columnLayout);
-                verse++;
-                if (verse > verseMax)
+                chapter++;
+                if (chapter > chapterMax)
                     break;
             }
-            if (verse > verseMax)
+            if (chapter > chapterMax)
                 break;
         }
+        tV = new TextView(mContext);
+        tV.setText("\n\n\n\n");
+        linearlayout.addView(tV);
         return scrollView;
     }
 
@@ -310,8 +313,8 @@ class MakeBible {
             ss.setSpan(new keywordSpan(keywords[i], keywordV[i]), keywordF[i], keywordT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < idxVerse; i++) {
+            ss.setSpan(new verseSpan(nowBible, nowChapter, i+1), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(verseColorFore), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(new StyleSpan(BOLD), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         for (int i = 0; i < idxPara; i++) {
             ss.setSpan(new ForegroundColorSpan(paraColorFore), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -495,6 +498,27 @@ class MakeBible {
 //        }
 //        return true;
 //    }
+
+
+    public class verseSpan extends ClickableSpan {
+
+        int bible, chapter, verse;
+        verseSpan(int bible, int chapter, int verse) { this.bible = bible; this.chapter = chapter; this.verse = verse;}
+
+        Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setTypeface(boldface);
+            ds.setUnderlineText(false);
+        }
+
+        @Override
+        public void onClick(View widget) {
+            bookMarks.add(0, new BookMark(bible, chapter, verse, System.currentTimeMillis(), false));
+            utils.savePrefers("bookMark", bookMarks);
+            Toast.makeText(mContext, fullBibleNames[bible]+" "+chapter+" 장"+verse+" 절이\n북마크 되었습니다",Toast.LENGTH_LONG).show();
+        }
+    }
 
     public class keywordSpan extends ClickableSpan {
 
