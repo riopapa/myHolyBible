@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -181,24 +182,24 @@ public class MainActivity extends Activity {
         setColors();
 
         assignAllButtonListeners();
-//        vSetting.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                int width = vSetting.getWidth();
-//                int height = vNewBible.getHeight();
-//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
-//                vSetting.setLayoutParams(layoutParams);
-//            }
-//        });
-//        vSearch.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                int width = vSearch.getWidth();
-//                int height = vNewBible.getHeight();
-//                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
-//                vSearch.setLayoutParams(layoutParams);
-//            }
-//        });
+        vSetting.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = vSetting.getWidth();
+                int height = vNewBible.getHeight();
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+                vSetting.setLayoutParams(layoutParams);
+            }
+        });
+        vSpeak.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = vSpeak.getWidth();
+                int height = vLeftAction.getHeight();
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+                vSpeak.setLayoutParams(layoutParams);
+            }
+        });
 
         zoomInOutListener = new ZoomInOutListener(MainActivity.this) {
 

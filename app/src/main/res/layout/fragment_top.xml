@@ -10,8 +10,6 @@
         android:layout_width="40dp"
         android:layout_height="32dp"
         style="@style/exitButton"
-        android:scaleX="1"
-        android:scaleY="1"
         android:layout_marginStart="0sp"
         android:contentDescription="@string/setting"
         android:src="@mipmap/icon_setting"
