@@ -35,6 +35,7 @@ import static com.urrecliner.myholybible.Vars.blackMode;
 import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
 import static com.urrecliner.myholybible.Vars.bookMarkView;
 import static com.urrecliner.myholybible.Vars.editor;
+import static com.urrecliner.myholybible.Vars.hymnAccompany;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.myholybible.Vars.mContext;
@@ -57,7 +58,7 @@ import static com.urrecliner.myholybible.Vars.utils;
 public class SetActivity extends Activity {
 
     TextView tv;
-    CheckBox cbAlwaysOn, cbBlackMode;
+    CheckBox cbAlwaysOn, cbBlackMode, cbAccompany;
     String txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -393,19 +394,42 @@ public class SetActivity extends Activity {
                 mainActivity.setColors();
             }
         });
+
+
+        cbAccompany = (CheckBox) findViewById(R.id.accompany_play);
+        tv = (TextView) findViewById(R.id.accompany_text);
+        tv.setText((hymnAccompany) ? "찬송가를 반주로":"찬송가를 연주로");
+        cbAccompany.setChecked(false);
+        cbAccompany.setOnClickListener(new View.OnClickListener() {
+            boolean isChecked;
+            @Override
+            public void onClick(View v) {
+                isChecked = cbAccompany.isChecked();
+                if (hymnAccompany) {
+                    hymnAccompany = false;
+                }
+                else
+                    hymnAccompany = true;
+                tv = (TextView) findViewById(R.id.accompany_text);
+                tv.setText((hymnAccompany) ? "찬송가를 반주로":"찬송가를 연주로");
+                tv.invalidate();
+                cbAccompany.setChecked(false);
+                editor.putBoolean("hymnAccompany", hymnAccompany).apply();
+            }
+        });
     }
 
-    // 0.6f < bibleSpeed < (0.6 + 0.8) f     <==  0 <seekBar < 8
+    // 0.5f  < bibleSpeed < (0.5 + 1.0)f  <==  0 <seekBar < 10
     private void buildSetPlayHymn() {
         int progress;
         final SeekBar speedBar = (SeekBar) findViewById(R.id.hymnSpeed);
-        progress = (int) (hymnSpeed * 10) - 6;
+        progress = (int) (hymnSpeed * 10) - 5;
         speedBar.setProgress(progress);
         speedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progress = seekBar.getProgress();
-                hymnSpeed =  (float) (progress+6) / 10f;
+                hymnSpeed =  (float) (progress+5) / 10f;
                 editor.putFloat("hymnSpeed", hymnSpeed).apply();
             }
             @Override

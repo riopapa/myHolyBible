@@ -18,6 +18,7 @@ import static com.urrecliner.myholybible.Vars.biblePitch;
 import static com.urrecliner.myholybible.Vars.bibleSpeed;
 import static com.urrecliner.myholybible.Vars.bibleTexts;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
+import static com.urrecliner.myholybible.Vars.hymnAccompany;
 import static com.urrecliner.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.myholybible.Vars.isReadingNow;
 import static com.urrecliner.myholybible.Vars.mContext;
@@ -146,10 +147,8 @@ class Text2Speech {
     }
 
     void playHymn() {
-
-        if (mediaPlayer == null)
-            mediaPlayer = new MediaPlayer();
-        String fileName = packageFolder.getAbsolutePath()+"/hymn_mp3/"+nowHymn+".mp3z";
+        mediaPlayer = new MediaPlayer();
+        String fileName = packageFolder.getAbsolutePath()+((hymnAccompany)? "/hymn_mp3/":"/hymn_play/")+nowHymn+".mp3z";
         File file = new File(fileName);
         FileDescriptor fd;
         if (file.exists()) {
@@ -158,6 +157,7 @@ class Text2Speech {
                 fd = fs.getFD();
                 mediaPlayer.setDataSource(fd);
                 fs.close();
+                fs = null;
                 mediaPlayer.setLooping(false);
                 mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(hymnSpeed));
                 mediaPlayer.prepare();
@@ -168,7 +168,14 @@ class Text2Speech {
                 public void onCompletion(MediaPlayer mp) {
                     mediaPlayer.stop();
                     mediaPlayer.release();
-                    mediaPlayer = null;
+                    if (isReadingNow) {
+                        mainActivity.handleHymnRight();
+                        new Timer().schedule(new TimerTask() {
+                            public void run() {
+                                playHymn();
+                            }
+                        }, 2000);
+                    }
                 }
             });
             mediaPlayer.start();

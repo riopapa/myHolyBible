@@ -16,9 +16,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
+import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,6 +57,7 @@ import static com.urrecliner.myholybible.Vars.editor;
 import static com.urrecliner.myholybible.Vars.fullBibleNames;
 import static com.urrecliner.myholybible.Vars.goBacks;
 import static com.urrecliner.myholybible.Vars.history;
+import static com.urrecliner.myholybible.Vars.hymnAccompany;
 import static com.urrecliner.myholybible.Vars.hymnColorFore;
 import static com.urrecliner.myholybible.Vars.hymnColorImage;
 import static com.urrecliner.myholybible.Vars.hymnColorTitle;
@@ -64,6 +67,7 @@ import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnSpeed;
 import static com.urrecliner.myholybible.Vars.hymnTitles;
 import static com.urrecliner.myholybible.Vars.isReadingNow;
+import static com.urrecliner.myholybible.Vars.isTablet;
 import static com.urrecliner.myholybible.Vars.mActivity;
 import static com.urrecliner.myholybible.Vars.mBody;
 import static com.urrecliner.myholybible.Vars.mContext;
@@ -175,6 +179,8 @@ public class MainActivity extends Activity {
         xPixels = dm.widthPixels;
         yPixels = dm.heightPixels;
 
+        TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        isTablet = Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE;
         if (alwaysOn)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
@@ -190,6 +196,19 @@ public class MainActivity extends Activity {
                 int height = vNewBible.getHeight();
                 ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
                 vSetting.setLayoutParams(layoutParams);
+                if (isTablet) {
+                    height = height*11/10;
+                    layoutParams = new ConstraintLayout.LayoutParams(width, height);
+                    vSetting.setLayoutParams(layoutParams);
+                    vOldBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vNewBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vHymn.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vAgpBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vCevBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vCurrBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vLeftAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                    vRightAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                }
             }
         });
         vSpeak.post(new Runnable() {
@@ -315,17 +334,18 @@ public class MainActivity extends Activity {
 
     private void getSharedValues() {
         textSizeBible66 = sharedPref.getInt("textSizeBible66", 20);
-        textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 20);
-        textSizeBibleRefer = sharedPref.getInt("textSizeBibleRefer", 26);
+        textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 60);
+        textSizeBibleRefer = sharedPref.getInt("textSizeBibleRefer", 40);
         textSizeHymnBody = sharedPref.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 22);
-        textSizeSpace = sharedPref.getInt("textSizeSpace", 15);
+        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 62);
+        textSizeSpace = sharedPref.getInt("textSizeSpace", 25);
         hymnImageFirst = sharedPref.getBoolean("hymnImageFirst", true);
         blackMode = sharedPref.getBoolean("blackMode", false);
         hymnShowWhat = sharedPref.getInt("hymnShowWhat", 0);
         alwaysOn = sharedPref.getBoolean("alwaysOn",true);
         bibleSpeed = sharedPref.getFloat("bibleSpeed", 0.8f);
         biblePitch = sharedPref.getFloat("biblePitch",1.0f);
+        hymnAccompany = sharedPref.getBoolean("hymnAccompany",true);
         hymnSpeed = sharedPref.getFloat("hymnSpeed", 0.8f);
         agpShow = sharedPref.getBoolean("agpShow", false);
         cevShow = sharedPref.getBoolean("cevShow", false);
@@ -349,7 +369,6 @@ public class MainActivity extends Activity {
         verseColorFore = sharedPref.getInt("verseColorFore", ContextCompat.getColor(mContext, R.color.verseColorFore));
         verseColorFore = sharedPref.getInt("verseColorFore", ContextCompat.getColor(mContext, R.color.verseColorFore));
         referColorFore = sharedPref.getInt("referColorFore", ContextCompat.getColor(mContext, R.color.referColorFore));
-
 
         bibleColorFore = ContextCompat.getColor(mContext, R.color.bibleColorFore);
         verseColorFore = ContextCompat.getColor(mContext, R.color.verseColorFore);
@@ -694,6 +713,11 @@ public class MainActivity extends Activity {
         nowVerse = 0;
         makeBible.makeBibleBody();
     }
+    final Handler goHymnRightHandler = new Handler() {
+        public void handleMessage(Message msg) { goHymnRight(); }};
+    public void handleHymnRight() {
+        goHymnRightHandler.sendEmptyMessage(0);
+    }
 
     public void goHymnRight() {
         nowHymn++;
@@ -702,16 +726,19 @@ public class MainActivity extends Activity {
 
     public void makeHymnMenu() {
         if (nowHymn == 0) {
+            vSpeak.setVisibility(View.GONE);
             vLeftAction.setText(blank);
             vRightAction.setText(blank);
             vCurrBible.setText(hymnName);
         }
         else if (nowHymn < 0) {
+            vSpeak.setVisibility(View.GONE);
             vLeftAction.setText(blank);
             vRightAction.setText(blank);
             vCurrBible.setText(hymnTitles[sortedNumbers[-nowHymn - 1]].substring(0,8));
         }
         else {
+            vSpeak.setVisibility(View.VISIBLE);
             vLeftAction.setText((nowHymn > 1) ? "" + (nowHymn - 1):blank);
             vCurrBible.setText(hymnTitles[nowHymn]);
             vRightAction.setText((nowHymn < 645) ? "" + (nowHymn + 1):blank);

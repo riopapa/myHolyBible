@@ -29,6 +29,7 @@ import static com.urrecliner.myholybible.Vars.hymnColorImage;
 import static com.urrecliner.myholybible.Vars.hymnColorTitle;
 import static com.urrecliner.myholybible.Vars.hymnShowWhat;
 import static com.urrecliner.myholybible.Vars.hymnTitles;
+import static com.urrecliner.myholybible.Vars.isTablet;
 import static com.urrecliner.myholybible.Vars.mActivity;
 import static com.urrecliner.myholybible.Vars.mBody;
 import static com.urrecliner.myholybible.Vars.mContext;
@@ -54,7 +55,8 @@ class MakeHymn {
     private TextView tVTitle;
     private String hymnTitle = "";
     private ScrollView scrollView;
-    private int [] ids = {7,8,9,4,5,6,1,2,3,0,100,-1,200,-1,-1};
+    final static int BTN_CLEAR = 100, BTN_GO = 200;
+    private int [] ids = {7,8,9,4,5,6,1,2,3,0,BTN_CLEAR,-1,BTN_GO,-1,-1};
 
     void makeHymnKeypad() {
 
@@ -80,7 +82,7 @@ class MakeHymn {
         else
             hymnTitle = "";
         tVTitle.setText(hymnTitle);
-        tVTitle.setTextSize(textSizeHymnKeypad);
+        tVTitle.setTextSize((isTablet)? textSizeHymnKeypad*14/10:textSizeHymnKeypad);
         tVTitle.setTextColor(hymnColorTitle);
         tVTitle.setGravity(Gravity.CENTER);
         tVTitle.setWidth(2000);
@@ -96,27 +98,30 @@ class MakeHymn {
                 if (id == -1)
                     break;
                 String buttonText;
+                int buttonHeight = (isTablet) ? 140:80;
                 int buttonWidth;
                 switch (id) {
-                    case 100:
-                        buttonWidth = 300;
+                    case BTN_CLEAR:
+                        buttonWidth = (isTablet) ? 300:260;
                         buttonText = "Clear";
                         break;
-                    case 200:
-                        buttonWidth = 400;
+                    case BTN_GO:
+                        buttonWidth = (isTablet) ? 400:300;
                         buttonText = "Go";
                         break;
                     default:
                         buttonText = "" + id;
-                        buttonWidth = 100;
+                        buttonWidth = (isTablet)? 150:80;
                 }
+
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
                 b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark: R.drawable.button_number);
-                b.setTextSize(textSizeHymnKeypad);
+                b.setTextSize((isTablet)? textSizeHymnKeypad*14/10:textSizeHymnKeypad);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setWidth(buttonWidth);
+                b.setHeight(buttonHeight);
                 b.setText(buttonText);
                 b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);

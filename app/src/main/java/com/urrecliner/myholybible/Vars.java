@@ -66,6 +66,7 @@ public class Vars {
     static ViewGroup mBody; // assigned to Fragment_Body
     static ViewGroup mainScreen;
     static String nowDic;
+    static boolean isTablet;
 
     static int textSizeBibleNumber = 20;
     static int textSizeHymnTitle = 20;
@@ -101,6 +102,7 @@ public class Vars {
     static float bibleSpeed = 0.8f;
     static float biblePitch = 1.0f;
     static float hymnSpeed = 0.9f;
+    static boolean hymnAccompany = true;
     static boolean searchNext = false;
 
     static String [] bibleTexts;
