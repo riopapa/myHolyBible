@@ -46,8 +46,11 @@ public class SearchActivity extends Activity {
         fromView.setText(s);
         searchResults = null;
         final TextView textView = (TextView) findViewById(R.id.search_text);
-        if (searchText != null)
+        if (searchText != null) {
             textView.setText(searchText);
+            textView.setSelectAllOnFocus(true);
+            textView.requestFocus();
+        }
         ImageView imageView = (ImageView) findViewById(R.id.search);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +61,7 @@ public class SearchActivity extends Activity {
                     recyclerView = (RecyclerView) findViewById(R.id.searched_list);
                     SearchAdapter searchAdapter = new SearchAdapter();
                     recyclerView.setAdapter(searchAdapter);
+                    textView.requestFocus();
                 }
             }
         });
@@ -71,6 +75,7 @@ public class SearchActivity extends Activity {
                     recyclerView = (RecyclerView) findViewById(R.id.searched_list);
                     SearchAdapter searchAdapter = new SearchAdapter();
                     recyclerView.setAdapter(searchAdapter);
+                    textView.requestFocus();
                 }
             }
         });
@@ -80,6 +85,7 @@ public class SearchActivity extends Activity {
             public void onClick(View v) {
                 tv = (TextView) findViewById(R.id.search_text);
                 tv.setText("");
+                tv.setFocusable(true);
             }
         });
         if (searchNext) {
@@ -88,7 +94,9 @@ public class SearchActivity extends Activity {
             recyclerView = (RecyclerView) findViewById(R.id.searched_list);
             SearchAdapter searchAdapter = new SearchAdapter();
             recyclerView.setAdapter(searchAdapter);
+            textView.requestFocus();
         }
+
     }
 
     String[] bibleVerses;

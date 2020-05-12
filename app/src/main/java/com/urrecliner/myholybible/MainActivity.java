@@ -18,6 +18,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -202,49 +203,68 @@ public class MainActivity extends Activity {
         });
 
         zoomInOutListener = new ZoomInOutListener(MainActivity.this) {
-
+            int zoomCnt = 1000, yRatio;
+            boolean shouldSave = true;
             @Override
             public void onZoomOut() {
-                saveYPositionRatio();
-                textSizeBibleBody++;
-                textSizeBibleRefer++;
-                textSizeKeyWord++;
-                textSizeHymnBody++;
-                if (topTab < TAB_MODE_HYMN)
-                    makeBible.makeBibleBody();
-                else if (topTab == TAB_MODE_HYMN)
-                    makeHymn.makeHymnBody();
-                nowScrollView.post(new Runnable() {
-                    public void run() {
-                        nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
-                    }
-                });
+                zoomCnt++;
+                if (zoomCnt%3 == 0 && textSizeBibleBody < 36) {
+                    if (shouldSave)
+                        yRatio = saveYPositionRatio();
+                    shouldSave = false;
+                    textSizeBibleBody++;
+                    textSizeBibleRefer++;
+                    textSizeKeyWord++;
+                    textSizeHymnBody++;
+                    if (topTab < TAB_MODE_HYMN)
+                        makeBible.makeBibleBody();
+                    else if (topTab == TAB_MODE_HYMN)
+                        makeHymn.makeHymnBody();
+                    nowScrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Timer().schedule(new TimerTask() {
+                                public void run() {
+                                    nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                                    shouldSave = true;
+                                }
+                            }, 300);
+                        }
+                    });
+                }
             }
 
             @Override
             public void onZoomIn() {
-                saveYPositionRatio();
-                textSizeBibleBody--;
-                textSizeBibleRefer--;
-                textSizeKeyWord--;
-                textSizeHymnBody--;
-                if (topTab < TAB_MODE_HYMN)
-                    makeBible.makeBibleBody();
-                else if (topTab == TAB_MODE_HYMN)
-                    makeHymn.makeHymnBody();
-                nowScrollView.post(new Runnable() {
-                    public void run() {
-                        nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
-                    }
-                });
-            }
-            int yRatio, totalHeight;
-
-            void saveYPositionRatio() {
-                totalHeight = nowScrollView.getChildAt(0).getHeight();
-                if (totalHeight != 0) {
-                    yRatio = nowScrollView.getHeight() * 1000 / totalHeight;
+                zoomCnt--;
+                if (zoomCnt%3 == 0 && textSizeBibleBody > 15) {
+                    if (shouldSave)
+                        yRatio = saveYPositionRatio();
+                    shouldSave = false;
+                    textSizeBibleBody--;
+                    textSizeBibleRefer--;
+                    textSizeKeyWord--;
+                    textSizeHymnBody--;
+                    if (topTab < TAB_MODE_HYMN)
+                        makeBible.makeBibleBody();
+                    else if (topTab == TAB_MODE_HYMN)
+                        makeHymn.makeHymnBody();
+                    nowScrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Timer().schedule(new TimerTask() {
+                                public void run() {
+                                    nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                                    shouldSave = true;
+                                }
+                            }, 300);
+                        }
+                    });
                 }
+            }
+            int saveYPositionRatio() {
+                int totalHeight = nowScrollView.getChildAt(0).getHeight();
+                return (totalHeight != 0) ? (nowScrollView.getScrollY() * 1000 / totalHeight):0;
             }
 
 //
