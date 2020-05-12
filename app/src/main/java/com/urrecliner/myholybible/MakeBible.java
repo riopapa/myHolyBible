@@ -217,9 +217,12 @@ class MakeBible {
     private int idxKeyword;
 
     private int VERSE_SIZE = 180; // max verse number is 176
-    private int []verseF = new int[VERSE_SIZE];
-    private int []verseT = new int[VERSE_SIZE];
-    private int idxVerse;
+    private int [] textF = new int[VERSE_SIZE];           // ..F from byte pointer
+    private int [] textT = new int[VERSE_SIZE];           // ..F from byte pointer
+    private String [] texts = new String[VERSE_SIZE];
+    private int [] verseF = new int[VERSE_SIZE];
+    private int [] verseT = new int[VERSE_SIZE];
+    private int idxText, idxVerse;
 
     private int [] crossF = new int[TABLE_SIZE];
     private int [] crossT = new int[TABLE_SIZE];
@@ -259,6 +262,7 @@ class MakeBible {
 //            Toast.makeText(mContext, "Bible source not found " + fullBibleNames[nowBible] + " " + nowChapter,Toast.LENGTH_LONG).show();
             return;
         }
+        idxText = 0;
         idxVerse = 0;
         idxRefer = 0;
         idxKeyword = 0;
@@ -271,7 +275,7 @@ class MakeBible {
         linearlayout.setGravity(Gravity.START);
         scrollView.addView(linearlayout);
         final TextView tV = new TextView(mContext);
-        tV.setTextSize(textSizeBibleBody);
+        tV.setTextSize(11);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
         tV.setTextColor(bibleColorFore);
@@ -309,6 +313,9 @@ class MakeBible {
 
     private SpannableString settleSpannableString() {
         SpannableString ss = new SpannableString(bodyText);
+        for (int i = 0; i < idxText; i++) {
+            ss.setSpan(new AbsoluteSizeSpan(textSizeBibleBody), textF[i], textT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         for (int i = 0; i < idxKeyword; i++) {
             ss.setSpan(new keywordSpan(keywords[i], keywordV[i]), keywordF[i], keywordT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -316,8 +323,10 @@ class MakeBible {
             ss.setSpan(new verseSpan(nowBible, nowChapter, i+1), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new ForegroundColorSpan(verseColorFore), verseF[i], verseT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        int sz = textSizeBibleBody*11/10;
         for (int i = 0; i < idxPara; i++) {
             ss.setSpan(new ForegroundColorSpan(paraColorFore), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new AbsoluteSizeSpan(sz), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //            ss.setSpan(new UnderlineSpan(), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ss.setSpan(new StyleSpan(BOLD), paraF[i], paraT[i], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
@@ -395,6 +404,7 @@ class MakeBible {
                 if (nowVerse > 0 && line == (nowVerse-1))
                     highLightF = ptrBody;
                 str = " " + verseString + " ";
+                textF[idxText] = ptrBody;
                 verseF[idxVerse] = ptrBody;
                 verseT[idxVerse] = ptrBody + str.length();
                 idxVerse++;
@@ -438,6 +448,8 @@ class MakeBible {
                     idxCev++;
                     ptrBody += cevText.length();
                 }
+                textT[idxText] = ptrBody;
+                idxText++;
                 ptrBody++;
                 bodyText.append(newLine);
                 spaceF[idxSpace] = ptrBody;
@@ -499,7 +511,6 @@ class MakeBible {
 //        return true;
 //    }
 
-
     public class verseSpan extends ClickableSpan {
 
         int bible, chapter, verse;
@@ -527,12 +538,12 @@ class MakeBible {
         keywordSpan(String key, int verse) { this.key = key; this.verse = verse;}
 
         Typeface boldface = Typeface.create(Typeface.DEFAULT, BOLD);
-        Float dicTextSize = textSizeKeyWord * 2.6f;
+//        Float dicTextSize = textSizeKeyWord;
         @Override
         public void updateDrawState(TextPaint ds) {
             ds.setColor(dicColorFore);
             ds.setTypeface(boldface);
-            ds.setTextSize(dicTextSize);
+            ds.setTextSize(textSizeKeyWord);
         }
 
         @Override
@@ -551,7 +562,7 @@ class MakeBible {
         @Override
         public void updateDrawState(TextPaint ds) {
             ds.setColor(referColorFore);
-            ds.setTextSize(textSizeBibleRefer+textSizeBibleRefer);  // double size
+            ds.setTextSize(textSizeBibleRefer);  // double size
             ds.setUnderlineText(false);    // this remove the underline
         }
 
@@ -600,7 +611,7 @@ class MakeBible {
                         break;
                     case "~": { // contains subject name
                         TextView tVLine = new TextView(mContext);
-                        tVLine.setTextSize(textSizeBibleBody + 3);
+//                        tVLine.setTextSize(textSizeBibleBody + 3);
                         tVLine.setTextColor(bibleColorFore);
                         tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                         tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -611,7 +622,7 @@ class MakeBible {
                     }
                     default: {
                         TextView tVLine = new TextView(mContext);
-                        tVLine.setTextSize(textSizeBibleBody);
+//                        tVLine.setTextSize(textSizeBibleBody);
                         tVLine.setTextColor(bibleColorFore);
                         tVLine.setGravity(Gravity.START);
                         tVLine.setWidth(xPixels);

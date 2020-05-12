@@ -208,7 +208,7 @@ public class MainActivity extends Activity {
             @Override
             public void onZoomOut() {
                 zoomCnt++;
-                if (zoomCnt%3 == 0 && textSizeBibleBody < 36) {
+                if (zoomCnt%3 == 0 && textSizeBibleBody < 100) {
                     if (shouldSave)
                         yRatio = saveYPositionRatio();
                     shouldSave = false;
@@ -237,7 +237,7 @@ public class MainActivity extends Activity {
             @Override
             public void onZoomIn() {
                 zoomCnt--;
-                if (zoomCnt%3 == 0 && textSizeBibleBody > 15) {
+                if (zoomCnt%3 == 0 && textSizeBibleBody > 40) {
                     if (shouldSave)
                         yRatio = saveYPositionRatio();
                     shouldSave = false;
