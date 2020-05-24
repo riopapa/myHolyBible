@@ -98,11 +98,11 @@ class MakeHymn {
                 if (id == -1)
                     break;
                 String buttonText;
-                int buttonHeight = (isTablet) ? 140:80;
+                int buttonHeight = (isTablet) ? 160:140;
                 int buttonWidth;
                 switch (id) {
                     case BTN_CLEAR:
-                        buttonWidth = (isTablet) ? 300:260;
+                        buttonWidth = (isTablet) ? 320:320;
                         buttonText = "Clear";
                         break;
                     case BTN_GO:

@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -19,6 +20,7 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -180,7 +182,10 @@ public class MainActivity extends Activity {
         yPixels = dm.heightPixels;
 
         TelephonyManager manager = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
-        isTablet = Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE;
+        if (Build.MODEL.equals("Lenovo TB-8704F"))
+            isTablet = false;
+        else
+            isTablet = Objects.requireNonNull(manager).getPhoneType() == TelephonyManager.PHONE_TYPE_NONE;
         if (alwaysOn)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         else
