@@ -20,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,7 +48,7 @@ import static com.urrecliner.myholybible.Vars.alwaysOn;
 import static com.urrecliner.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.myholybible.Vars.biblePitch;
 import static com.urrecliner.myholybible.Vars.bibleSpeed;
-import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.darkMode;
 import static com.urrecliner.myholybible.Vars.blank;
 import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
@@ -338,21 +337,21 @@ public class MainActivity extends Activity {
     }
 
     private void getSharedValues() {
-        textSizeBible66 = sharedPref.getInt("textSizeBible66", 20);
-        textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 60);
+        textSizeBible66 = sharedPref.getInt("textSizeBible66", 18);
+        textSizeBibleBody = sharedPref.getInt("textSizeBibleBody", 70);
         textSizeBibleRefer = sharedPref.getInt("textSizeBibleRefer", 40);
         textSizeHymnBody = sharedPref.getInt("textSizeHymnBody", 20);
-        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 62);
-        textSizeSpace = sharedPref.getInt("textSizeSpace", 25);
+        textSizeKeyWord = sharedPref.getInt("textSizeKeyWord", 70);
+        textSizeSpace = sharedPref.getInt("textSizeSpace", 15);
         hymnImageFirst = sharedPref.getBoolean("hymnImageFirst", true);
-        blackMode = sharedPref.getBoolean("blackMode", false);
+        darkMode = sharedPref.getBoolean("darkMode", true);
         hymnShowWhat = sharedPref.getInt("hymnShowWhat", 0);
         alwaysOn = sharedPref.getBoolean("alwaysOn",true);
         bibleSpeed = sharedPref.getFloat("bibleSpeed", 0.8f);
         biblePitch = sharedPref.getFloat("biblePitch",1.0f);
         hymnAccompany = sharedPref.getBoolean("hymnAccompany",true);
         hymnSpeed = sharedPref.getFloat("hymnSpeed", 0.8f);
-        agpShow = sharedPref.getBoolean("agpShow", false);
+        agpShow = sharedPref.getBoolean("agpShow", true);
         cevShow = sharedPref.getBoolean("cevShow", false);
         searchDepth = sharedPref.getInt("searchDepth", 20);
     }
@@ -387,7 +386,7 @@ public class MainActivity extends Activity {
         hymnColorFore = ContextCompat.getColor(mContext,R.color.hymnColorFore);
         hymnColorTitle = ContextCompat.getColor(mContext,R.color.hymnColorTitle);
         hymnColorImage = ContextCompat.getColor(mContext,R.color.hymnImageBack);
-        if (blackMode) {
+        if (darkMode) {
             bibleColorFore ^= 0xffffff; verseColorFore ^= 0xffffff; paraColorFore ^= 0xfffffff;
             referColorFore ^= 0xffffff; numberColorFore ^= 0xffffff; textColorBack ^= 0xffffff;
             cevColorFore ^= 0xffffff; agpColorFore ^= 0xffffff; dicColorFore ^= 0xffffff;

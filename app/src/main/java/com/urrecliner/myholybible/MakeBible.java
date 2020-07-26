@@ -37,7 +37,7 @@ import static com.urrecliner.myholybible.Vars.agpColorFore;
 import static com.urrecliner.myholybible.Vars.agpShow;
 import static com.urrecliner.myholybible.Vars.bibleColorFore;
 import static com.urrecliner.myholybible.Vars.bibleTexts;
-import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.darkMode;
 import static com.urrecliner.myholybible.Vars.bookMarks;
 import static com.urrecliner.myholybible.Vars.cevColorFore;
 import static com.urrecliner.myholybible.Vars.cevShow;
@@ -108,12 +108,12 @@ class MakeBible {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setOrientation(LinearLayout.VERTICAL);
                 b = new Button(mContext);
-                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark:R.drawable.button_bible);
+                b.setBackgroundResource((darkMode)? R.drawable.button_bible_dark:R.drawable.button_bible);
                 b.setText(fullBibleNames[start]);
                 b.setId(start);
                 b.setWidth(buttonWidth);
                 b.setTextSize(textSizeBible66);
-                b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
+                b.setTextColor((darkMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 columnLayout.addView(b);
                 b.setOnClickListener(new View.OnClickListener() {
@@ -345,7 +345,7 @@ class MakeBible {
             ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         if (highLightF > 0) {
-            int color = (blackMode) ? 0x77888888 : 0xffcccccc;
+            int color = (darkMode) ? 0x77888888 : 0xffcccccc;
             ss.setSpan(new BackgroundColorSpan(color), highLightF, highLightT, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return ss;

@@ -22,7 +22,7 @@ import static com.urrecliner.myholybible.Vars.LYRIC_THEN_SHEET;
 import static com.urrecliner.myholybible.Vars.SHEET_ONLY;
 import static com.urrecliner.myholybible.Vars.SHEET_THEN_LYRIC;
 import static com.urrecliner.myholybible.Vars.bibleColorFore;
-import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.darkMode;
 import static com.urrecliner.myholybible.Vars.history;
 import static com.urrecliner.myholybible.Vars.hymnColorFore;
 import static com.urrecliner.myholybible.Vars.hymnColorImage;
@@ -117,13 +117,13 @@ class MakeHymn {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
-                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark: R.drawable.button_number);
+                b.setBackgroundResource((darkMode)? R.drawable.button_bible_dark: R.drawable.button_number);
                 b.setTextSize((isTablet)? textSizeHymnKeypad*14/10:textSizeHymnKeypad);
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 b.setWidth(buttonWidth);
                 b.setHeight(buttonHeight);
                 b.setText(buttonText);
-                b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
+                b.setTextColor((darkMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId(id);
                 if (id < 10) {
@@ -177,12 +177,12 @@ class MakeHymn {
                 LinearLayout columnLayout = new LinearLayout(mContext);
                 columnLayout.setGravity(Gravity.CENTER_HORIZONTAL);
                 b = new Button(mContext);
-                b.setBackgroundResource((blackMode)? R.drawable.button_bible_dark: R.drawable.button_number);
+                b.setBackgroundResource((darkMode)? R.drawable.button_bible_dark: R.drawable.button_number);
                 b.setTextSize(textSizeHymnBody*9/10);
                 b.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
                 b.setWidth(xPixels/2 - 16);
                 b.setText(text);
-                b.setTextColor((blackMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
+                b.setTextColor((darkMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId((row+row+col)*41);    // 81
                 b.setOnClickListener(new View.OnClickListener() {

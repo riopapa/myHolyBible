@@ -31,7 +31,7 @@ import static com.urrecliner.myholybible.Vars.TAB_MODE_HYMN;
 import static com.urrecliner.myholybible.Vars.alwaysOn;
 import static com.urrecliner.myholybible.Vars.biblePitch;
 import static com.urrecliner.myholybible.Vars.bibleSpeed;
-import static com.urrecliner.myholybible.Vars.blackMode;
+import static com.urrecliner.myholybible.Vars.darkMode;
 import static com.urrecliner.myholybible.Vars.bookMarkAdapter;
 import static com.urrecliner.myholybible.Vars.bookMarkView;
 import static com.urrecliner.myholybible.Vars.editor;
@@ -312,20 +312,20 @@ public class SetActivity extends Activity {
     }
 
     private void buildSetHymn() {
-        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup1);
-        RadioButton radioBtn;
+        RadioGroup radioGroup1 = (RadioGroup)findViewById(R.id.radioGroup1);
+        RadioButton radioButton1;
         switch(hymnShowWhat) {
             case SHEET_THEN_LYRIC:
-                radioBtn = (RadioButton) findViewById(R.id.sheet_lyric); radioBtn.setChecked(true); break;
+                radioButton1 = (RadioButton) findViewById(R.id.sheet_lyric); radioButton1.setChecked(true); break;
             case LYRIC_THEN_SHEET:
-                radioBtn = (RadioButton) findViewById(R.id.lyric_sheet); radioBtn.setChecked(true); break;
+                radioButton1 = (RadioButton) findViewById(R.id.lyric_sheet); radioButton1.setChecked(true); break;
             case SHEET_ONLY:
-                radioBtn = (RadioButton) findViewById(R.id.sheet_only); radioBtn.setChecked(true); break;
+                radioButton1 = (RadioButton) findViewById(R.id.sheet_only); radioButton1.setChecked(true); break;
             case LYRIC_ONLY:
-                radioBtn = (RadioButton) findViewById(R.id.lyric_only); radioBtn.setChecked(true); break;
+                radioButton1 = (RadioButton) findViewById(R.id.lyric_only); radioButton1.setChecked(true); break;
         }
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -385,38 +385,35 @@ public class SetActivity extends Activity {
         });
 
         cbBlackMode = (CheckBox) findViewById(R.id.black_back);
-        cbBlackMode.setChecked(blackMode);
+        cbBlackMode.setChecked(darkMode);
         cbBlackMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                blackMode = cbBlackMode.isChecked();
-                editor.putBoolean("blackMode", blackMode).apply();
+                darkMode = cbBlackMode.isChecked();
+                editor.putBoolean("darkMode", darkMode).apply();
                 mainActivity.setColors();
             }
         });
 
+        RadioGroup radioGroup2 = (RadioGroup)findViewById(R.id.radioGroup2);
+        RadioButton radioButton2;
+        radioButton2 = (hymnAccompany) ? (RadioButton) findViewById(R.id.hymnMusic):(RadioButton) findViewById(R.id.hymnChoir);
+        radioButton2.setChecked(true);
 
-        cbAccompany = (CheckBox) findViewById(R.id.accompany_play);
-        tv = (TextView) findViewById(R.id.accompany_text);
-        tv.setText((hymnAccompany) ? "찬송가를 반주로":"찬송가를 연주로");
-        cbAccompany.setChecked(false);
-        cbAccompany.setOnClickListener(new View.OnClickListener() {
-            boolean isChecked;
+        radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
             @Override
-            public void onClick(View v) {
-                isChecked = cbAccompany.isChecked();
-                if (hymnAccompany) {
-                    hymnAccompany = false;
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.hymnChoir:
+                        hymnAccompany = false; break;
+                    case R.id.hymnMusic:
+                        hymnAccompany = true; break;
                 }
-                else
-                    hymnAccompany = true;
-                tv = (TextView) findViewById(R.id.accompany_text);
-                tv.setText((hymnAccompany) ? "찬송가를 반주로":"찬송가를 연주로");
-                tv.invalidate();
-                cbAccompany.setChecked(false);
                 editor.putBoolean("hymnAccompany", hymnAccompany).apply();
             }
         });
+
     }
 
     // 0.5f  < bibleSpeed < (0.5 + 1.0)f  <==  0 <seekBar < 10

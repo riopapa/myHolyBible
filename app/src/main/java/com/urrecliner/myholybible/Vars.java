@@ -44,7 +44,7 @@ public class Vars {
 
     static int nowBible = 0, nowChapter = 1, nowVerse = 0, nowHymn = 0, maxVerse = 0;
     static int xPixels, yPixels;
-    static boolean blackMode;
+    static boolean darkMode;
 
     static String oldName = "구 약";
     static String newName = "신 약";

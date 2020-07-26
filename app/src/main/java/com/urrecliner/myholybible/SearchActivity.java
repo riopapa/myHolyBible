@@ -39,7 +39,7 @@ public class SearchActivity extends Activity {
         setContentView(R.layout.search_activity);
 
         searchActivity = this;
-        utils.log(logID, "searchNext "+searchNext);
+//        utils.log(logID, "searchNext "+searchNext);
 
         TextView fromView = (TextView) findViewById(R.id.search_from);
         String s = shortBibleNames[nowBible]+" "+nowChapter+":1~";
