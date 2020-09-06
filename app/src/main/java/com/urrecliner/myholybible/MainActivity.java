@@ -163,7 +163,7 @@ public class MainActivity extends Activity {
         vHymn = (TextView) fTop.findViewById(R.id.hymn);
         vAgpBible = (TextView) fTop.findViewById(R.id.agpBible);
         vCevBible = (TextView) findViewById(R.id.cevBible);
-        vSearch = (ImageView) fTop.findViewById(R.id.search);
+        vSearch = (ImageView) fTop.findViewById(R.id.quickSearch);
 
         vSpeak = (ImageView) fBtm.findViewById(R.id.speak);
         vLeftAction = (TextView) fBtm.findViewById(R.id.leftAction);
@@ -857,6 +857,7 @@ public class MainActivity extends Activity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         return super.onKeyUp(keyCode, event);
     }
+
 
     final long BACK_DELAY = 1000;
     @Override

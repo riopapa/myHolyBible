@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,8 +31,9 @@ import static com.urrecliner.myholybible.Vars.utils;
 public class SearchActivity extends Activity {
 
     RecyclerView recyclerView;
-    TextView tv;
-    final String logID = "search";
+    TextView clearView, fromView, wordsView;
+    ImageView quickView, nextView;
+//    final String logID = "search";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,64 +44,80 @@ public class SearchActivity extends Activity {
         searchActivity = this;
 //        utils.log(logID, "searchNext "+searchNext);
 
-        TextView fromView = (TextView) findViewById(R.id.search_from);
+        fromView = (TextView) findViewById(R.id.searchStartVerse);
         String s = shortBibleNames[nowBible]+" "+nowChapter+":1~";
         fromView.setText(s);
         searchResults = null;
-        final TextView textView = (TextView) findViewById(R.id.search_text);
+        wordsView = (TextView) findViewById(R.id.searchText);
         if (searchText != null) {
-            textView.setText(searchText);
-            textView.setSelectAllOnFocus(true);
-            textView.requestFocus();
+            wordsView.setText(searchText);
+            wordsView.setSelectAllOnFocus(true);
+            wordsView.requestFocus();
         }
-        ImageView imageView = (ImageView) findViewById(R.id.search);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        View.OnKeyListener keyListenerEnter = new View.OnKeyListener(){
             @Override
-            public void onClick(View v) {
-                if (topTab < TAB_MODE_HYMN) {
-                    searchText = textView.getText().toString();
-                    search_Bible(searchText);
-                    recyclerView = (RecyclerView) findViewById(R.id.searched_list);
-                    SearchAdapter searchAdapter = new SearchAdapter();
-                    recyclerView.setAdapter(searchAdapter);
-                    textView.requestFocus();
-                }
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER)       // response to 다음 on keyboard
+                    searchQuick();
+                return false;
             }
+        };
+        wordsView.setOnKeyListener(keyListenerEnter);
+
+        quickView = (ImageView) findViewById(R.id.quickSearch);
+        quickView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchQuick();
+            }
+
         });
-        imageView = (ImageView) findViewById(R.id.searchNext);
-        imageView.setOnClickListener(new View.OnClickListener() {
+
+        nextView = (ImageView) findViewById(R.id.searchNext);
+        nextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (topTab < TAB_MODE_HYMN) {
-                    searchText = textView.getText().toString();
+                    searchText = wordsView.getText().toString();
                     search_BibleNext();
-                    recyclerView = (RecyclerView) findViewById(R.id.searched_list);
+                    recyclerView = (RecyclerView) findViewById(R.id.searchedList);
                     SearchAdapter searchAdapter = new SearchAdapter();
                     recyclerView.setAdapter(searchAdapter);
-                    textView.requestFocus();
+                    wordsView.requestFocus();
                 }
             }
         });
-        tv = (TextView) findViewById(R.id.search_clear);
-        tv.setOnClickListener(new View.OnClickListener() {
+        clearView = (TextView) findViewById(R.id.search_clear);
+        clearView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tv = (TextView) findViewById(R.id.search_text);
-                tv.setText("");
-                tv.setFocusable(true);
+                clearView = (TextView) findViewById(R.id.searchText);
+                clearView.setText("");
+                clearView.setFocusable(true);
             }
         });
         if (searchNext) {
             searchNext = false;
             search_Bible(searchText);
-            recyclerView = (RecyclerView) findViewById(R.id.searched_list);
+            recyclerView = (RecyclerView) findViewById(R.id.searchedList);
             SearchAdapter searchAdapter = new SearchAdapter();
             recyclerView.setAdapter(searchAdapter);
-            textView.requestFocus();
+            wordsView.requestFocus();
         }
 
     }
 
+    void searchQuick() {
+        if (topTab < TAB_MODE_HYMN) {
+            searchText = wordsView.getText().toString();
+            search_Bible(searchText);
+            recyclerView = (RecyclerView) findViewById(R.id.searchedList);
+            SearchAdapter searchAdapter = new SearchAdapter();
+            recyclerView.setAdapter(searchAdapter);
+            wordsView.requestFocus();
+        }
+
+    }
     String[] bibleVerses;
     void search_Bible(String text) {
         int bible = nowBible;
@@ -154,5 +173,20 @@ public class SearchActivity extends Activity {
         Intent i = new Intent(this, SearchActivity.class);
         startActivity(i);
     }
+//
+//    @Override
+//    public boolean onKeyDown(final int keyCode, KeyEvent event) {
+//
+//        Log.w("key", keyCode + " Pressed ///");
+//        switch (keyCode) {
+//            case KeyEvent.KEYCODE_TAB:
+//                searchQuick();
+//                break;
+//            default:
+//                Log.w("key", keyCode + " Pressed");
+//                break;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 }

@@ -42,7 +42,7 @@
                 android:src="@mipmap/search_next" />
 
             <TextView
-                android:id="@+id/search_from"
+                android:id="@+id/searchStartVerse"
                 android:layout_width="0dp"
                 android:layout_weight="5"
                 android:gravity="center_horizontal"
@@ -62,7 +62,7 @@
                 android:layout_gravity="center"
                 android:textSize="12sp" />
             <EditText
-                android:id="@+id/search_text"
+                android:id="@+id/searchText"
                 android:layout_width="0dp"
                 android:layout_weight="8"
                 android:inputType="text"
@@ -75,7 +75,7 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/search"
+                android:id="@+id/quickSearch"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:padding="4dp"
@@ -88,7 +88,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/searched_list"
+            android:id="@+id/searchedList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"
