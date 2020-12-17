@@ -275,7 +275,7 @@ class MakeBible {
         linearlayout.setGravity(Gravity.START);
         scrollView.addView(linearlayout);
         final TextView tV = new TextView(mContext);
-        tV.setTextSize(11);
+        tV.setTextSize(13);
         tV.setGravity(Gravity.START);
         tV.setWidth(xPixels);
         tV.setTextColor(bibleColorFore);

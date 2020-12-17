@@ -16,6 +16,7 @@ import static com.urrecliner.myholybible.Vars.nowVerse;
 import static com.urrecliner.myholybible.Vars.searchActivity;
 import static com.urrecliner.myholybible.Vars.searchResults;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
+import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.myholybible.Vars.topTab;
 
 class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
@@ -34,13 +35,13 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvBible, tvChapter, tvText;
+        TextView tvBible, tvVerse, tvText;
         ViewHolder(final View itemView) {
             super(itemView);
 
-            tvBible = (TextView) itemView.findViewById(R.id.result_Bible);
-            tvChapter = (TextView) itemView.findViewById(R.id.result_Chapter);
+            tvVerse = (TextView) itemView.findViewById(R.id.result_Verse);
             tvText = (TextView) itemView.findViewById(R.id.result_Text);
+            tvText.setTextSize(textSizeBibleBody*2/7);
 
             View view = itemView.findViewById(R.id.search_item);
             view.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +77,9 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
     public void onBindViewHolder(final ViewHolder holder, final int pos) {
 
         SearchResult searchResult = searchResults.get(pos);
-        holder.tvBible.setText(shortBibleNames[searchResult.getBible()]);
-        String s = searchResult.getChapter()+":"+searchResult.getVerse();
-        holder.tvChapter.setText(s);
+//        holder.tvBible.setText(shortBibleNames[searchResult.getBible()]);
+        String s = shortBibleNames[searchResult.getBible()]+"\n"+searchResult.getChapter()+":"+searchResult.getVerse();
+        holder.tvVerse.setText(s);
         holder.tvText.setText(searchResult.getText());
 
     }
