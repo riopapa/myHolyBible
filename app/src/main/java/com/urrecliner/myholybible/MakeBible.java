@@ -345,7 +345,7 @@ class MakeBible {
             ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         if (highLightF > 0) {
-            int color = (darkMode) ? 0x77888888 : 0xffcccccc;
+            int color = (darkMode) ? 0xaa888888 : 0xffaaaaaa;
             ss.setSpan(new BackgroundColorSpan(color), highLightF, highLightT, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return ss;
