@@ -23,7 +23,7 @@ import static com.urrecliner.myholybible.Vars.sharedPref;
 
 class Utils {
 
-    private MainActivity mActivity;
+    private final MainActivity mActivity;
 
     Utils(MainActivity activity) { mActivity = activity; }
 
@@ -109,7 +109,7 @@ class Utils {
 
     ArrayList<String> readRawTextFile(Context ctx, int resId)
     {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         InputStream inputStream = ctx.getResources().openRawResource(resId);
         BufferedReader reader = null;
         try {

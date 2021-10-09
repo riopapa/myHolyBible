@@ -7,7 +7,7 @@ import android.view.View;
 
 public class ZoomInOutListener implements View.OnTouchListener {
 
-    private ScaleGestureDetector scaleGestureDetector;
+    private final ScaleGestureDetector scaleGestureDetector;
 
     ZoomInOutListener(Context c) {
 

@@ -1,11 +1,11 @@
 package com.urrecliner.myholybible;
 
 class BookMark {
-    private int bible;
-    private int chapter;
-    private int verse;
+    private final int bible;
+    private final int chapter;
+    private final int verse;
     private boolean save;
-    private long when;
+    private final long when;
 
     BookMark(int bible, int chapter, int verse, long when, boolean save) {
         this.bible = bible;

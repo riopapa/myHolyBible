@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -58,7 +57,7 @@ import static com.urrecliner.myholybible.Vars.utils;
 public class SetActivity extends Activity {
 
     TextView tv;
-    CheckBox cbAlwaysOn, cbBlackMode, cbAccompany;
+    CheckBox cbAlwaysOn, cbBlackMode;
     String txt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,196 +78,152 @@ public class SetActivity extends Activity {
         txt = "" + textSizeBible66;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.bibleName_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBible66--;
-                tv = (TextView) findViewById(R.id.bibleName_size);
-                String t = "" + textSizeBible66;
-                tv.setText(t);
-                editor.putInt("textSizeBible66", textSizeBible66).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBible66--;
+            tv = (TextView) findViewById(R.id.bibleName_size);
+            String t = "" + textSizeBible66;
+            tv.setText(t);
+            editor.putInt("textSizeBible66", textSizeBible66).apply();
         });
         tv = (TextView) findViewById(R.id.bibleName_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBible66++;
-                tv = (TextView) findViewById(R.id.bibleName_size);
-                String t = "" + textSizeBible66;
-                tv.setText(t);
-                editor.putInt("textSizeBible66", textSizeBible66).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBible66++;
+            tv = (TextView) findViewById(R.id.bibleName_size);
+            String t = "" + textSizeBible66;
+            tv.setText(t);
+            editor.putInt("textSizeBible66", textSizeBible66).apply();
         });
 
         tv = (TextView) findViewById(R.id.scripture_size);
         txt = "" + textSizeBibleBody;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.scripture_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBibleBody--;
-                tv = (TextView) findViewById(R.id.scripture_size);
-                String t = "" + textSizeBibleBody;
-                tv.setText(t);
-                tv.setText(t);
-                editor.putInt("textSizeBibleBody", textSizeBibleBody).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBibleBody--;
+            tv = (TextView) findViewById(R.id.scripture_size);
+            String t = "" + textSizeBibleBody;
+            tv.setText(t);
+            tv.setText(t);
+            editor.putInt("textSizeBibleBody", textSizeBibleBody).apply();
         });
         tv = (TextView) findViewById(R.id.scripture_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBibleBody++;
-                tv = (TextView) findViewById(R.id.scripture_size);
-                String t = "" + textSizeBibleBody;
-                tv.setText(t);
-                editor.putInt("textSizeBibleBody", textSizeBibleBody).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBibleBody++;
+            tv = (TextView) findViewById(R.id.scripture_size);
+            String t = "" + textSizeBibleBody;
+            tv.setText(t);
+            editor.putInt("textSizeBibleBody", textSizeBibleBody).apply();
         });
 
         tv = (TextView) findViewById(R.id.dic_size);
         txt = "" + textSizeKeyWord;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.dic_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeKeyWord--;
-                tv = (TextView) findViewById(R.id.dic_size);
-                String t = "" + textSizeKeyWord;
-                tv.setText(t);
-                editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeKeyWord--;
+            tv = (TextView) findViewById(R.id.dic_size);
+            String t = "" + textSizeKeyWord;
+            tv.setText(t);
+            editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
         });
         tv = (TextView) findViewById(R.id.dic_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeKeyWord++;
-                tv = (TextView) findViewById(R.id.dic_size);
-                String t = "" + textSizeKeyWord;
-                tv.setText(t);
-                editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeKeyWord++;
+            tv = (TextView) findViewById(R.id.dic_size);
+            String t = "" + textSizeKeyWord;
+            tv.setText(t);
+            editor.putInt("textSizeKeyWord", textSizeKeyWord).apply();
         });
 
         tv = (TextView) findViewById(R.id.ref_size);
         txt = "" + textSizeBibleRefer;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.ref_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBibleRefer--;
-                tv = (TextView) findViewById(R.id.ref_size);
-                String t = "" + textSizeBibleRefer;
-                tv.setText(t);
-                editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBibleRefer--;
+            tv = (TextView) findViewById(R.id.ref_size);
+            String t = "" + textSizeBibleRefer;
+            tv.setText(t);
+            editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
         });
         tv = (TextView) findViewById(R.id.ref_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeBibleRefer++;
-                tv = (TextView) findViewById(R.id.ref_size);
-                String t = "" + textSizeBibleRefer;
-                tv.setText(t);
-                editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeBibleRefer++;
+            tv = (TextView) findViewById(R.id.ref_size);
+            String t = "" + textSizeBibleRefer;
+            tv.setText(t);
+            editor.putInt("textSizeBibleRefer", textSizeBibleRefer).apply();
         });
 
         tv = (TextView) findViewById(R.id.verse_space_size);
         txt = "" + textSizeSpace;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.verse_space_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeSpace--;
-                tv = (TextView) findViewById(R.id.verse_space_size);
-                String t = "" + textSizeSpace;
-                tv.setText(t);
-                editor.putInt("textSizeSpace", textSizeSpace).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeSpace--;
+            tv = (TextView) findViewById(R.id.verse_space_size);
+            String t = "" + textSizeSpace;
+            tv.setText(t);
+            editor.putInt("textSizeSpace", textSizeSpace).apply();
         });
         tv = (TextView) findViewById(R.id.verse_space_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeSpace++;
-                tv = (TextView) findViewById(R.id.verse_space_size);
-                String t = "" + textSizeSpace;
-                tv.setText(t);
-                editor.putInt("textSizeSpace", textSizeSpace).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeSpace++;
+            tv = (TextView) findViewById(R.id.verse_space_size);
+            String t = "" + textSizeSpace;
+            tv.setText(t);
+            editor.putInt("textSizeSpace", textSizeSpace).apply();
         });
 
         tv = (TextView) findViewById(R.id.depth_size);
         txt = "" + searchDepth;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.depth_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchDepth--;
-                tv = (TextView) findViewById(R.id.depth_size);
-                String t = "" + searchDepth;
-                tv.setText(t);
-                editor.putInt("searchDepth", searchDepth).apply();
-            }
+        tv.setOnClickListener(v -> {
+            searchDepth--;
+            tv = (TextView) findViewById(R.id.depth_size);
+            String t = "" + searchDepth;
+            tv.setText(t);
+            editor.putInt("searchDepth", searchDepth).apply();
         });
         tv = (TextView) findViewById(R.id.depth_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchDepth++;
-                tv = (TextView) findViewById(R.id.depth_size);
-                String t = "" + searchDepth;
-                tv.setText(t);
-                editor.putInt("searchDepth", searchDepth).apply();
-            }
+        tv.setOnClickListener(v -> {
+            searchDepth++;
+            tv = (TextView) findViewById(R.id.depth_size);
+            String t = "" + searchDepth;
+            tv.setText(t);
+            editor.putInt("searchDepth", searchDepth).apply();
         });
 
         tv = (TextView) findViewById(R.id.build_time);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TableLayout tableLayout = (TableLayout) findViewById(R.id.table);
-                TableRow tr;
-                TableRow.LayoutParams params;
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        tv.setOnClickListener(v -> {
+            TableLayout tableLayout = (TableLayout) findViewById(R.id.table);
+            TableRow tr;
+            TableRow.LayoutParams params;
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                ArrayList<String> histories = utils.readRawTextFile(mContext, R.raw.history);
-                for (String s: histories) {
-                    String [] oneLines = s.split(";");
-                    tr = new TableRow(mContext);
-                    LinearLayout oneLine = (LinearLayout) inflater.inflate(
-                            R.layout.history_table, null);
-                    TextView tv = (TextView) oneLine.findViewById(R.id.date);
-                    if (oneLines[1].equals("b"))
-                        tv.setTypeface(null, Typeface.BOLD);
-                    tv.setText(oneLines[0]);
-                    tv = (TextView) oneLine.findViewById(R.id.updates);
-                    if (oneLines[1].equals("b"))
-                        tv.setTypeface(null, Typeface.BOLD);
-                    tv.setText(oneLines[2].replace("||", "\n"));
-                    params = new TableRow.LayoutParams(
-                            TableRow.LayoutParams.MATCH_PARENT,
-                            TableRow.LayoutParams.MATCH_PARENT, 1f);
-                    tr.addView(oneLine, params);
-                    tableLayout.addView(tr);
-                }
-                final ScrollView sv = (ScrollView) findViewById(R.id.setScrollView);
-                sv.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        sv.scrollTo(0, 500);
-                    }
-                });
+            ArrayList<String> histories = utils.readRawTextFile(mContext, R.raw.history);
+            for (String s: histories) {
+                String [] oneLines = s.split(";");
+                tr = new TableRow(mContext);
+                LinearLayout oneLine = (LinearLayout) inflater.inflate(
+                        R.layout.history_table, null);
+                TextView tv = (TextView) oneLine.findViewById(R.id.date);
+                if (oneLines[1].equals("b"))
+                    tv.setTypeface(null, Typeface.BOLD);
+                tv.setText(oneLines[0]);
+                tv = (TextView) oneLine.findViewById(R.id.updates);
+                if (oneLines[1].equals("b"))
+                    tv.setTypeface(null, Typeface.BOLD);
+                tv.setText(oneLines[2].replace("||", "\n"));
+                params = new TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.MATCH_PARENT, 1f);
+                tr.addView(oneLine, params);
+                tableLayout.addView(tr);
             }
+            final ScrollView sv = (ScrollView) findViewById(R.id.setScrollView);
+            sv.post(() -> sv.scrollTo(0, 500));
         });
     }
 
@@ -325,74 +280,56 @@ public class SetActivity extends Activity {
                 radioButton1 = (RadioButton) findViewById(R.id.lyric_only); radioButton1.setChecked(true); break;
         }
 
-        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.sheet_lyric:
-                        hymnShowWhat = SHEET_THEN_LYRIC; break;
-                    case R.id.lyric_sheet:
-                        hymnShowWhat = LYRIC_THEN_SHEET; break;
-                    case R.id.sheet_only:
-                        hymnShowWhat = SHEET_ONLY; break;
-                    case R.id.lyric_only:
-                        hymnShowWhat = LYRIC_ONLY; break;
-                }
-                editor.putInt("hymnShowWhat", hymnShowWhat).apply();
-            }
+        radioGroup1.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.sheet_lyric)
+                hymnShowWhat = SHEET_THEN_LYRIC;
+            else if (checkedId == R.id.lyric_sheet)
+                hymnShowWhat = LYRIC_THEN_SHEET;
+            else if (checkedId == R.id.sheet_only)
+                hymnShowWhat = SHEET_ONLY;
+            else if (checkedId == R.id.lyric_only)
+                hymnShowWhat = LYRIC_ONLY;
+            editor.putInt("hymnShowWhat", hymnShowWhat).apply();
         });
 
         tv = (TextView) findViewById(R.id.hymn_lyric_size);
         txt = "" + textSizeHymnBody;
         tv.setText(txt);
         tv = (TextView) findViewById(R.id.hymn_lyric_size_down);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeHymnBody--;
-                tv = (TextView) findViewById(R.id.hymn_lyric_size);
-                String t = "" + textSizeHymnBody;
-                tv.setText(t);
-                editor.putInt("textSizeHymnBody", textSizeHymnBody).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeHymnBody--;
+            tv = (TextView) findViewById(R.id.hymn_lyric_size);
+            String t = "" + textSizeHymnBody;
+            tv.setText(t);
+            editor.putInt("textSizeHymnBody", textSizeHymnBody).apply();
         });
         tv = (TextView) findViewById(R.id.hymn_lyric_size_up);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textSizeHymnBody++;
-                tv = (TextView) findViewById(R.id.hymn_lyric_size);
-                String t = "" + textSizeHymnBody;
-                tv.setText(t);
-                editor.putInt("textSizeHymnBody", textSizeHymnBody).apply();
-            }
+        tv.setOnClickListener(v -> {
+            textSizeHymnBody++;
+            tv = (TextView) findViewById(R.id.hymn_lyric_size);
+            String t = "" + textSizeHymnBody;
+            tv.setText(t);
+            editor.putInt("textSizeHymnBody", textSizeHymnBody).apply();
         });
 
         cbAlwaysOn = (CheckBox) findViewById(R.id.keep_screen_check);
         cbAlwaysOn.setChecked(alwaysOn);
-        cbAlwaysOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alwaysOn = cbAlwaysOn.isChecked();
-                editor.putBoolean("alwaysOn", alwaysOn).apply();
+        cbAlwaysOn.setOnClickListener(v -> {
+            alwaysOn = cbAlwaysOn.isChecked();
+            editor.putBoolean("alwaysOn", alwaysOn).apply();
 
-                if (alwaysOn)
-                    mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                else
-                    mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            }
+            if (alwaysOn)
+                mainActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            else
+                mainActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         });
 
         cbBlackMode = (CheckBox) findViewById(R.id.black_back);
         cbBlackMode.setChecked(darkMode);
-        cbBlackMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                darkMode = cbBlackMode.isChecked();
-                editor.putBoolean("darkMode", darkMode).apply();
-                mainActivity.setColors();
-            }
+        cbBlackMode.setOnClickListener(v -> {
+            darkMode = cbBlackMode.isChecked();
+            editor.putBoolean("darkMode", darkMode).apply();
+            mainActivity.setColors();
         });
 
         RadioGroup radioGroup2 = (RadioGroup)findViewById(R.id.radioGroup2);
@@ -400,18 +337,12 @@ public class SetActivity extends Activity {
         radioButton2 = (hymnAccompany) ? (RadioButton) findViewById(R.id.hymnMusic):(RadioButton) findViewById(R.id.hymnChoir);
         radioButton2.setChecked(true);
 
-        radioGroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.hymnChoir:
-                        hymnAccompany = false; break;
-                    case R.id.hymnMusic:
-                        hymnAccompany = true; break;
-                }
-                editor.putBoolean("hymnAccompany", hymnAccompany).apply();
-            }
+        radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.hymnChoir)
+                    hymnAccompany = false;
+            else if (checkedId == R.id.hymnMusic)
+                    hymnAccompany = true;
+            editor.putBoolean("hymnAccompany", hymnAccompany).apply();
         });
 
     }

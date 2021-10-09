@@ -1,7 +1,7 @@
 package com.urrecliner.myholybible;
 
-import android.content.DialogInterface;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +36,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
         return bookMarks.size();
     }
 
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.book_mark, parent, false);
         return new ViewHolder(view);
@@ -54,36 +55,24 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             tvBibleChapter = (TextView) itemView.findViewById(R.id.bibleChapter);
             tvDateTime = (TextView) itemView.findViewById(R.id.dateTime);
 
-            tvBibleChapter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    pos = getAdapterPosition();
-                    jump2BookMark();
-                }
+            tvBibleChapter.setOnClickListener(view -> {
+                pos = getAdapterPosition();
+                jump2BookMark();
             });
-            tvBibleChapter.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    pos = getAdapterPosition();
-                    saveOrNot();
-                    return true;
-                }
+            tvBibleChapter.setOnLongClickListener(view -> {
+                pos = getAdapterPosition();
+                saveOrNot();
+                return true;
             });
 
-            tvDateTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    pos = getAdapterPosition();
-                    jump2BookMark();
-                }
+            tvDateTime.setOnClickListener(view -> {
+                pos = getAdapterPosition();
+                jump2BookMark();
             });
-            tvDateTime.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    pos = getAdapterPosition();
-                    saveOrNot();
-                    return true;
-                }
+            tvDateTime.setOnLongClickListener(view -> {
+                pos = getAdapterPosition();
+                saveOrNot();
+                return true;
             });
         }
     }
@@ -105,34 +94,30 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.ViewHo
             s += " "+bookMark.getVerse()+" 절";
         builder.setMessage(s);
         builder.setPositiveButton(s+" 로 이동",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        history.push();
-                        nowBible = bookMark.getBible();
-                        nowChapter = bookMark.getChapter();
-                        nowVerse = bookMark.getVerse();
-                        nowHymn = 0;
-                        topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
-                        if (makeBible == null)
-                            makeBible = new MakeBible();
-                        makeBible.makeBibleBody();
-                        setActivity.finish();
-                        setActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
-                    }
+                (dialog, which) -> {
+                    history.push();
+                    nowBible = bookMark.getBible();
+                    nowChapter = bookMark.getChapter();
+                    nowVerse = bookMark.getVerse();
+                    nowHymn = 0;
+                    topTab = (nowBible < 40) ? TAB_MODE_OLD : TAB_MODE_NEW;
+                    if (makeBible == null)
+                        makeBible = new MakeBible();
+                    makeBible.makeBibleBody();
+                    setActivity.finish();
+                    setActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
                 });
         builder.setNegativeButton("삭제",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        bookMarks.remove(pos);
-                        bookMarkAdapter.notifyItemRemoved(pos);
-                    }
+                (dialog, which) -> {
+                    bookMarks.remove(pos);
+                    bookMarkAdapter.notifyItemRemoved(pos);
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int pos) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int pos) {
 
         final SimpleDateFormat sdfDate = new SimpleDateFormat("yy/MM/dd HH:mm", Locale.US);
         String s;

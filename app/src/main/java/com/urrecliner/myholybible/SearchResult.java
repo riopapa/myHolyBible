@@ -1,8 +1,10 @@
 package com.urrecliner.myholybible;
 
 class SearchResult {
-    private int bible, chapter, verse;
-    private String text;
+    private final int bible;
+    private final int chapter;
+    private final int verse;
+    private final String text;
 
     SearchResult(int bible, int chapter, int verse, String text) {
         this.bible = bible;

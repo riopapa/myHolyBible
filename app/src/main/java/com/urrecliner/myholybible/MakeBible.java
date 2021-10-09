@@ -3,6 +3,8 @@ package com.urrecliner.myholybible;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -116,14 +118,11 @@ class MakeBible {
                 b.setTextColor((darkMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 b.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 columnLayout.addView(b);
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        nowBible = v.getId();
-                        mBody.removeAllViewsInLayout();
-                        mBody.addView(buildBibleNumber());
-                        mainActivity.makeTopBottomMenu();
-                    }
+                b.setOnClickListener(v -> {
+                    nowBible = v.getId();
+                    mBody.removeAllViewsInLayout();
+                    mBody.addView(buildBibleNumber());
+                    mainActivity.makeTopBottomMenu();
                 });
                 rowLayout.addView(columnLayout);
                 start++;
@@ -150,7 +149,7 @@ class MakeBible {
     private ScrollView buildBibleNumber() {
         int chapterMax = nbrOfChapters[nowBible];
         int chapter = 1;
-        TextView tVNbr = null;
+        TextView tVNbr;
         scrollView = new ScrollView(mContext);
         scrollView.setBackgroundColor(textColorBack);
         mainScreen.setBackgroundColor(textColorBack);
@@ -186,13 +185,10 @@ class MakeBible {
                 tVNbr.setTextSize(textSizeBibleNumber);
                 tVNbr.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 columnLayout.addView(tVNbr);
-                tVNbr.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        nowChapter = v.getId();
-                        nowVerse = 0;
-                        makeBibleBody();
-                    }
+                tVNbr.setOnClickListener(v -> {
+                    nowChapter = v.getId();
+                    nowVerse = 0;
+                    makeBibleBody();
                 });
                 rowLayout.addView(columnLayout);
                 chapter++;
@@ -208,42 +204,41 @@ class MakeBible {
         return scrollView;
     }
 
-    private int TABLE_SIZE = 500;
+    private final int TABLE_SIZE = 500;
 
-    private int [] keywordF = new int[TABLE_SIZE];           // ..F from byte pointer
-    private int [] keywordT = new int[TABLE_SIZE];           // ..T to byte pointer
-    private int [] keywordV = new int[TABLE_SIZE];           // ..V now Verse
-    private String [] keywords = new String[TABLE_SIZE];
+    private final int [] keywordF = new int[TABLE_SIZE];           // ..F from byte pointer
+    private final int [] keywordT = new int[TABLE_SIZE];           // ..T to byte pointer
+    private final int [] keywordV = new int[TABLE_SIZE];           // ..V now Verse
+    private final String [] keywords = new String[TABLE_SIZE];
     private int idxKeyword;
 
-    private int VERSE_SIZE = 180; // max verse number is 176
-    private int [] textF = new int[VERSE_SIZE];           // ..F from byte pointer
-    private int [] textT = new int[VERSE_SIZE];           // ..F from byte pointer
-    private String [] texts = new String[VERSE_SIZE];
-    private int [] verseF = new int[VERSE_SIZE];
-    private int [] verseT = new int[VERSE_SIZE];
+    private final int VERSE_SIZE = 180; // max verse number is 176
+    private final int [] textF = new int[VERSE_SIZE];           // ..F from byte pointer
+    private final int [] textT = new int[VERSE_SIZE];           // ..F from byte pointer
+    private final int [] verseF = new int[VERSE_SIZE];
+    private final int [] verseT = new int[VERSE_SIZE];
     private int idxText, idxVerse;
 
-    private int [] crossF = new int[TABLE_SIZE];
-    private int [] crossT = new int[TABLE_SIZE];
-    private int [] crossV = new int[TABLE_SIZE];
-    private String [] crossS = new String[TABLE_SIZE];
+    private final int [] crossF = new int[TABLE_SIZE];
+    private final int [] crossT = new int[TABLE_SIZE];
+    private final int [] crossV = new int[TABLE_SIZE];
+    private final String [] crossS = new String[TABLE_SIZE];
     private int idxRefer;
 
-    private int [] paraF = new int[30];
-    private int [] paraT = new int[30];
+    private final int [] paraF = new int[30];
+    private final int [] paraT = new int[30];
     private int idxPara;
 
-    private int [] agpF = new int[VERSE_SIZE];
-    private int [] agpT = new int[VERSE_SIZE];
+    private final int [] agpF = new int[VERSE_SIZE];
+    private final int [] agpT = new int[VERSE_SIZE];
     private int idxAgp;
 
-    private int [] cevF = new int[VERSE_SIZE];
-    private int [] cevT = new int[VERSE_SIZE];
+    private final int [] cevF = new int[VERSE_SIZE];
+    private final int [] cevT = new int[VERSE_SIZE];
     private int idxCev;
 
-    private int [] spaceF = new int[VERSE_SIZE];
-    private int [] spaceT = new int[VERSE_SIZE];
+    private final int [] spaceF = new int[VERSE_SIZE];
+    private final int [] spaceT = new int[VERSE_SIZE];
     private int idxSpace;
 
     private int versePtr;
@@ -298,16 +293,11 @@ class MakeBible {
         mBody.addView(scrollView);
         nowHymn = 0;
         mainActivity.makeTopBottomMenu();
-        scrollView.post(new Runnable() {
-            @Override
+        scrollView.post(() -> new Timer().schedule(new TimerTask() {
             public void run() {
-                new Timer().schedule(new TimerTask() {
-                    public void run() {
-                        scrollView.scrollTo(0, tV.getBottom() * versePtr / ptrBody);
-                    }
-                }, 200);
+                scrollView.scrollTo(0, tV.getBottom() * versePtr / ptrBody);
             }
-        });
+        }, 200));
         nowScrollView = scrollView;
     }
 
@@ -345,7 +335,7 @@ class MakeBible {
             ss.setSpan(new AbsoluteSizeSpan(textSizeSpace), spaceF[i], spaceT[i], Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         if (highLightF > 0) {
-            int color = (darkMode) ? 0xaa888888 : 0xffaaaaaa;
+            int color = (darkMode) ? ContextCompat.getColor(mContext, R.color.markDark): ContextCompat.getColor(mContext, R.color.markLight);
             ss.setSpan(new BackgroundColorSpan(color), highLightF, highLightT, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         return ss;
@@ -465,7 +455,7 @@ class MakeBible {
         int ptr;
         ptr = workLine.indexOf("_]");
         String keyword = workLine.substring(2, ptr);
-        if (keyword.substring(0, 1).equals("$")) {   // reference
+        if (keyword.charAt(0) == '$') {   // reference
             String bibShort = shortBibleNames[parseInt(keyword.substring(1, 3))];
             String showWord = " (" + bibShort + keyword.substring(4) + ") ";      // $01#12:34 -> (창12:34) 로 표시
             bodyText.append(showWord);
@@ -503,14 +493,6 @@ class MakeBible {
         return ptr;
     }
 
-//    private boolean isNewKeyword(String s, String [] keywords, int iKeyword) {
-//        for (int i = 0 ; i < iKeyword; i++) {
-//            if (s.equals(keywords[i]))
-//                return false;
-//        }
-//        return true;
-//    }
-
     public class verseSpan extends ClickableSpan {
 
         int bible, chapter, verse;
@@ -524,7 +506,7 @@ class MakeBible {
         }
 
         @Override
-        public void onClick(View widget) {
+        public void onClick(@NonNull View widget) {
             bookMarks.add(0, new BookMark(bible, chapter, verse, System.currentTimeMillis(), false));
             utils.savePrefers("bookMark", bookMarks);
             Toast.makeText(mContext, fullBibleNames[bible]+" "+chapter+" 장"+verse+" 절이\n북마크 되었습니다",Toast.LENGTH_LONG).show();
@@ -547,7 +529,7 @@ class MakeBible {
         }
 
         @Override
-        public void onClick(View widget) {
+        public void onClick(@NonNull View widget) {
             nowDic = key;
             nowVerse = verse;
             makeKeyWord();
@@ -567,7 +549,7 @@ class MakeBible {
         }
 
         @Override
-        public void onClick(View widget) {
+        public void onClick(@NonNull View widget) {
             nowDic = key;
             nowVerse = verse;
             makeCrossing();

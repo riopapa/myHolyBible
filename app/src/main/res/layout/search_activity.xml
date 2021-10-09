@@ -62,7 +62,7 @@
                 android:layout_gravity="center"
                 android:textSize="12sp" />
             <EditText
-                android:id="@+id/searchText"
+                android:id="@+id/txtSearch"
                 android:layout_width="0dp"
                 android:layout_weight="8"
                 android:inputType="text"

@@ -12,8 +12,8 @@
     <color name="paraColorFore">#4B0082</color>
     <color name="referColorFore">#4169E1</color>
     <color name="numberColorFore">#191970</color>
-    <color name="cevColorFore">#113388</color>
-    <color name="agpColorFore">#9932CC</color>
+    <color name="cevColorFore">#A4395498</color>
+    <color name="agpColorFore">#A4A740DA</color>
     <color name="dictColorFore">#0000FF</color>
     <color name="hymnColorTitle">#44388C</color>
     <color name="setSolid">#34282C</color>
@@ -22,5 +22,7 @@
     <color name="appInfo">#C2DFFF</color>
     <color name="quitBack">#FBBBB9</color>
     <color name="quitFore">#113388</color>
+    <color name="markDark">#7A5C9F5F</color>
+    <color name="markLight">#50FFB300</color>
 
 </resources>

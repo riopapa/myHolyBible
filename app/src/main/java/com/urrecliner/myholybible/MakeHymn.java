@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,13 +49,13 @@ import static com.urrecliner.myholybible.Vars.xPixels;
 
 class MakeHymn {
 
-    private String new2Line = "\n\n";
+    private final String new2Line = "\n\n";
 
     private TextView tVTitle;
     private String hymnTitle = "";
     private ScrollView scrollView;
     final static int BTN_CLEAR = 100, BTN_GO = 200;
-    private int [] ids = {7,8,9,4,5,6,1,2,3,0,BTN_CLEAR,-1,BTN_GO,-1,-1};
+    private final int [] ids = {7,8,9,4,5,6,1,2,3,0,BTN_CLEAR,-1,BTN_GO,-1,-1};
 
     void makeHymnKeypad() {
 
@@ -127,35 +126,23 @@ class MakeHymn {
                 columnLayout.addView(b);
                 b.setId(id);
                 if (id < 10) {
-                    b.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        int nbr = v.getId();
-                        if (nowHymn *10 + nbr <= 645) {
-                            nowHymn = nowHymn * 10 + nbr;
-                            hymnTitle = nowHymn + " " + hymnTitles[nowHymn];
-                            tVTitle.setText(hymnTitle);
-                        }
-                        }
+                    b.setOnClickListener(v -> {
+                    int nbr = v.getId();
+                    if (nowHymn *10 + nbr <= 645) {
+                        nowHymn = nowHymn * 10 + nbr;
+                        hymnTitle = nowHymn + " " + hymnTitles[nowHymn];
+                        tVTitle.setText(hymnTitle);
+                    }
                     });
                 }
-                else if (id==100) { // code is clear
-                    b.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                else // code is clear
+                    if (id==100) b.setOnClickListener(v -> {
                         nowHymn = 0;
                         hymnTitle = "";
                         tVTitle.setText(hymnTitle);
-                        }
                     });
-                }
                 else {    // code is go
-                    b.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            makeHymnBody();
-                        }
-                    });
+                    b.setOnClickListener(v -> makeHymnBody());
                 }
                 rowLayout.addView(columnLayout);
             }
@@ -185,12 +172,9 @@ class MakeHymn {
                 b.setTextColor((darkMode)? mActivity.getColor(R.color.screenBodyColor) : mActivity.getColor(R.color.bibleColorFore));
                 columnLayout.addView(b);
                 b.setId((row+row+col)*41);    // 81
-                b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                    int nbr = v.getId();
-                    makeSortedHymnList(nbr);
-                    }
+                b.setOnClickListener(v -> {
+                int nbr = v.getId();
+                makeSortedHymnList(nbr);
                 });
                 rowLayout.addView(columnLayout);
             }
@@ -346,12 +330,9 @@ class MakeHymn {
             numberTV.setTextSize(textSizeHymnBody);
             numberTV.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             columnLayout.addView(numberTV);
-            numberTV.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    nowHymn = v.getId();
-                    makeHymnBody();
-                }
+            numberTV.setOnClickListener(v -> {
+                nowHymn = v.getId();
+                makeHymnBody();
             });
             rowLayout.addView(columnLayout);
             start++;

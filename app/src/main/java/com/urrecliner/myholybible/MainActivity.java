@@ -14,7 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
@@ -193,36 +195,30 @@ public class MainActivity extends Activity {
         setColors();
 
         assignAllButtonListeners();
-        vSetting.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = vSetting.getWidth();
-                int height = vNewBible.getHeight();
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+        vSetting.post(() -> {
+            int width = vSetting.getWidth();
+            int height = vNewBible.getHeight();
+            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+            vSetting.setLayoutParams(layoutParams);
+            if (isTablet) {
+                height = height*11/10;
+                layoutParams = new ConstraintLayout.LayoutParams(width, height);
                 vSetting.setLayoutParams(layoutParams);
-                if (isTablet) {
-                    height = height*11/10;
-                    layoutParams = new ConstraintLayout.LayoutParams(width, height);
-                    vSetting.setLayoutParams(layoutParams);
-                    vOldBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vNewBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vHymn.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vAgpBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vCevBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vCurrBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vLeftAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                    vRightAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
-                }
+                vOldBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vNewBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vHymn.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vAgpBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vCevBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vCurrBible.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vLeftAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
+                vRightAction.setTextSize(TypedValue.COMPLEX_UNIT_PX, height);
             }
         });
-        vSpeak.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = vSpeak.getWidth();
-                int height = vLeftAction.getHeight();
-                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
-                vSpeak.setLayoutParams(layoutParams);
-            }
+        vSpeak.post(() -> {
+            int width = vSpeak.getWidth();
+            int height = vLeftAction.getHeight();
+            ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(width, height);
+            vSpeak.setLayoutParams(layoutParams);
         });
 
         zoomInOutListener = new ZoomInOutListener(MainActivity.this) {
@@ -243,17 +239,12 @@ public class MainActivity extends Activity {
                         makeBible.makeBibleBody();
                     else if (topTab == TAB_MODE_HYMN)
                         makeHymn.makeHymnBody();
-                    nowScrollView.post(new Runnable() {
-                        @Override
+                    nowScrollView.post(() -> new Timer().schedule(new TimerTask() {
                         public void run() {
-                            new Timer().schedule(new TimerTask() {
-                                public void run() {
-                                    nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
-                                    shouldSave = true;
-                                }
-                            }, 300);
+                            nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                            shouldSave = true;
                         }
-                    });
+                    }, 300));
                 }
             }
 
@@ -272,53 +263,21 @@ public class MainActivity extends Activity {
                         makeBible.makeBibleBody();
                     else if (topTab == TAB_MODE_HYMN)
                         makeHymn.makeHymnBody();
-                    nowScrollView.post(new Runnable() {
-                        @Override
+                    nowScrollView.post(() -> new Timer().schedule(new TimerTask() {
                         public void run() {
-                            new Timer().schedule(new TimerTask() {
-                                public void run() {
-                                    nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
-                                    shouldSave = true;
-                                }
-                            }, 300);
+                            nowScrollView.scrollTo(0, nowScrollView.getChildAt(0).getHeight() * yRatio / 1000);
+                            shouldSave = true;
                         }
-                    });
+                    }, 300));
                 }
             }
             int saveYPositionRatio() {
                 int totalHeight = nowScrollView.getChildAt(0).getHeight();
                 return (totalHeight != 0) ? (nowScrollView.getScrollY() * 1000 / totalHeight):0;
             }
-
-//
-//            @Override
-//            public void onSwipePrev() {
-//                if (vLeftAction.getText().toString().equals(blank))
-//                    return;
-//                if (topTab < TAB_MODE_HYMN)
-//                    goBibleLeft();
-//                else if (topTab == TAB_MODE_HYMN)
-//                    goHymnLeft();
-//            }
-//
-//            @Override
-//            public void onSwipeNext() {
-//                if (vRightAction.getText().toString().equals(blank))
-//                    return;
-//                if (topTab < TAB_MODE_HYMN)
-//                    goBibleRight();
-//                else if (topTab == TAB_MODE_HYMN)
-//                    goHymnRight();
-//            }
         };
 
         mBody.setOnTouchListener(zoomInOutListener);
-
-//        Display display = getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        windowYUpper = size.y * 6f / 10f;
-//        windowXCenter = size.x / 2f;
 
         if (topTab < TAB_MODE_HYMN) {
             if (nowBible > 0)
@@ -387,10 +346,12 @@ public class MainActivity extends Activity {
         hymnColorTitle = ContextCompat.getColor(mContext,R.color.hymnColorTitle);
         hymnColorImage = ContextCompat.getColor(mContext,R.color.hymnImageBack);
         if (darkMode) {
-            bibleColorFore ^= 0xffffff; verseColorFore ^= 0xffffff; paraColorFore ^= 0xfffffff;
-            referColorFore ^= 0xffffff; numberColorFore ^= 0xffffff; textColorBack ^= 0xffffff;
-            cevColorFore ^= 0xffffff; agpColorFore ^= 0xffffff; dicColorFore ^= 0xffffff;
-            hymnColorFore ^= 0xffffff; hymnColorTitle ^= 0xffff;  // no hymnColorImage
+            final int xorColor = 0x00ffffff;
+            bibleColorFore ^= xorColor; verseColorFore ^= xorColor; paraColorFore ^= xorColor;
+            referColorFore ^= xorColor; numberColorFore ^= xorColor; textColorBack ^= xorColor;
+            dicColorFore ^= xorColor;
+            hymnColorFore ^= xorColor; hymnColorTitle ^= xorColor;  // no hymnColorImage
+            agpColorFore ^= xorColor; cevColorFore ^= xorColor;
         }
     }
 
@@ -471,147 +432,102 @@ public class MainActivity extends Activity {
     }
 
     public void assignAllButtonListeners() {
-        vSpeak.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
-                    readBible();
-                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
-                    playStopHymn();
-            }
+        vSpeak.setOnClickListener(v -> {
+            if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
+                readBible();
+            else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
+                playStopHymn();
         });
-        vSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
+        vSetting.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            history.push();
+            Intent i = new Intent(MainActivity.this, SetActivity.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+        });
+        vLeftAction.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            if (vLeftAction.getText().toString().equals(blank))
+                return;
+            if (topTab < TAB_MODE_HYMN)
+                goBibleLeft();
+            else if (topTab == TAB_MODE_HYMN)
+                goHymnLeft();
+        });
+        vCurrBible.setOnClickListener(v -> {
+            if (vCurrBible.getText().toString().equals(blank))
+                return;
+            if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
+                bookMarkThis();
+        });
+        vRightAction.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            if (vRightAction.getText().toString().equals(blank))
+                return;
+            if (topTab < TAB_MODE_HYMN)
+                goBibleRight();
+            else if (topTab == TAB_MODE_HYMN)
+                goHymnRight();
+        });
+        vOldBible.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            topTab = TAB_MODE_OLD;
+//                nowVerse = getNowTopVerse();
+            nowBible = 0;
+            makeBibleList();
+        });
+        vNewBible.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            topTab = TAB_MODE_NEW;
+//                nowVerse = getNowTopVerse();
+            nowBible = 0;
+            makeBibleList();
+        });
+        vHymn.setOnClickListener(v -> {
+            if (isReadingNow)
+                text2Speech.stopRead();
+            topTab = TAB_MODE_HYMN;
+            nowBible = 0;
+            nowHymn = 0;
+            makeHymn.makeHymnKeypad();
+        });
+        vAgpBible.setOnClickListener(v -> {
+            if (vAgpBible.getText().toString().equals(blank))
+                return;
+            int currVerse = getNowTopVerse();
+            agpShow = !agpShow;
+            editor.putBoolean("agpShow", agpShow).apply();
+            history.pop();
+            nowVerse = currVerse;
+            makeBible.makeBibleBody();
+        });
+        vCevBible.setOnClickListener(v -> {
+            if (vCevBible.getText().toString().equals(blank))
+                return;
+            int currVerse = getNowTopVerse();
+            cevShow = !cevShow;
+            editor.putBoolean("cevShow", cevShow).apply();
+            history.pop();
+            nowVerse = currVerse;
+            makeBible.makeBibleBody();
+        });
+        vSearch.setOnClickListener(v -> {
+            if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0) {
                 history.push();
-                Intent i = new Intent(MainActivity.this, SetActivity.class);
+                Intent i = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(i);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
             }
         });
-        vLeftAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
-                if (vLeftAction.getText().toString().equals(blank))
-                    return;
-                if (topTab < TAB_MODE_HYMN)
-                    goBibleLeft();
-                else if (topTab == TAB_MODE_HYMN)
-                    goHymnLeft();
-            }
-        });
-        vCurrBible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (vCurrBible.getText().toString().equals(blank))
-                    return;
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
-                    bookMarkThis();
-            }
-        });
-//        vCurrBible.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (vCurrBible.getText().toString().equals(blank))
-//                    return false;
-//                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0)
-//                    readBible();
-//                else if (topTab == TAB_MODE_HYMN && nowHymn > 0)
-//                    playStopHymn();
-//                return false;
-//            }
-//        });
-        vRightAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
-                if (vRightAction.getText().toString().equals(blank))
-                    return;
-                if (topTab < TAB_MODE_HYMN)
-                    goBibleRight();
-                else if (topTab == TAB_MODE_HYMN)
-                    goHymnRight();
-            }
-        });
-        vOldBible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
-                topTab = TAB_MODE_OLD;
-//                nowVerse = getNowTopVerse();
-                nowBible = 0;
-                makeBibleList();
-            }
-        });
-        vNewBible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
-                topTab = TAB_MODE_NEW;
-//                nowVerse = getNowTopVerse();
-                nowBible = 0;
-                makeBibleList();
-            }
-        });
-        vHymn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isReadingNow)
-                    text2Speech.stopRead();
-                topTab = TAB_MODE_HYMN;
-                nowBible = 0;
-                nowHymn = 0;
-                makeHymn.makeHymnKeypad();
-            }
-        });
-        vAgpBible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (vAgpBible.getText().toString().equals(blank))
-                    return;
-                int currVerse = getNowTopVerse();
-                agpShow = !agpShow;
-                editor.putBoolean("agpShow", agpShow).apply();
-                history.pop();
-                nowVerse = currVerse;
-                makeBible.makeBibleBody();
-            }
-        });
-        vCevBible.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (vCevBible.getText().toString().equals(blank))
-                    return;
-                int currVerse = getNowTopVerse();
-                cevShow = !cevShow;
-                editor.putBoolean("cevShow", cevShow).apply();
-                history.pop();
-                nowVerse = currVerse;
-                makeBible.makeBibleBody();
-            }
-        });
-        vSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (topTab < TAB_MODE_HYMN && nowBible > 0 && nowChapter > 0) {
-                    history.push();
-                    Intent i = new Intent(MainActivity.this, SearchActivity.class);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
-                }
-            }
-        });
     }
 
-    private final Handler aHandler = new Handler() {
-        public void handleMessage(Message msg) { vCurrBible.setEnabled(true); }};
+    private final Handler aHandler = new Handler(Looper.getMainLooper()) {
+        public void handleMessage(@NonNull Message msg) { vCurrBible.setEnabled(true); }};
 
     void readBible() {
         if (isReadingNow) {
@@ -695,8 +611,8 @@ public class MainActivity extends Activity {
         makeHymn.makeHymnBody();
     }
 
-    final Handler goRightHandler = new Handler() {
-        public void handleMessage(Message msg) { goBibleRight(); }};
+    final Handler goRightHandler = new Handler(Looper.getMainLooper()) {
+        public void handleMessage(@NonNull Message msg) { goBibleRight(); }};
     public void handleBibleRight() {
         goRightHandler.sendEmptyMessage(0);
     }
@@ -717,8 +633,8 @@ public class MainActivity extends Activity {
         nowVerse = 0;
         makeBible.makeBibleBody();
     }
-    final Handler goHymnRightHandler = new Handler() {
-        public void handleMessage(Message msg) { goHymnRight(); }};
+    final Handler goHymnRightHandler = new Handler(Looper.getMainLooper()) {
+        public void handleMessage(@NonNull Message msg) { goHymnRight(); }};
     public void handleHymnRight() {
         goHymnRightHandler.sendEmptyMessage(0);
     }
@@ -805,7 +721,7 @@ public class MainActivity extends Activity {
     }
 
     private ArrayList findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList <String> result = new ArrayList<String>();
+        ArrayList <String> result = new ArrayList<>();
         for (String perm : wanted) if (hasPermission(perm)) result.add(perm);
         return result;
     }
@@ -815,7 +731,7 @@ public class MainActivity extends Activity {
 
 //    @TargetApi(Build.VERSION_CODES.M)
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == ALL_PERMISSIONS_RESULT) {
             for (String perms : permissionsToRequest) {
                 if (hasPermission(perms)) {
@@ -834,13 +750,8 @@ public class MainActivity extends Activity {
     }
     private void showDialog(String msg) {
         showMessageOKCancel(msg,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    requestPermissions(permissionsRejected.toArray(
-                            new String[0]), ALL_PERMISSIONS_RESULT);
-                }
-            });
+                (dialog, which) -> requestPermissions(permissionsRejected.toArray(
+                        new String[0]), ALL_PERMISSIONS_RESULT));
     }
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(mActivity)

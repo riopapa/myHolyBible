@@ -1,5 +1,6 @@
 package com.urrecliner.myholybible;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +22,12 @@ import static com.urrecliner.myholybible.Vars.topTab;
 
 class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
 
-    final String logID = "seachAdapter";
-
     @Override
     public int getItemCount() {
         return  (searchResults == null)? 0:searchResults.size();
     }
 
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_item, parent, false);
         return new ViewHolder(view);
@@ -35,7 +35,7 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvBible, tvVerse, tvText;
+        TextView tvVerse, tvText;
         ViewHolder(final View itemView) {
             super(itemView);
 
@@ -44,12 +44,7 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
             tvText.setTextSize(textSizeBibleBody*2/7);
 
             View view = itemView.findViewById(R.id.search_item);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    jump2Searched(getAdapterPosition());
-                }
-            });
+            view.setOnClickListener(view1 -> jump2Searched(getAdapterPosition()));
         }
 
         private static void jump2Searched(int pos) {

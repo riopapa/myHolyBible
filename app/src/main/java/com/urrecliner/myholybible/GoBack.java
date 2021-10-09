@@ -1,12 +1,12 @@
 package com.urrecliner.myholybible;
 
 public class GoBack {
-    private int topTab;
-    private int bible;
-    private int chapter;
-    private int verse;
-    private int hymn;
-    private String dic;
+    private final int topTab;
+    private final int bible;
+    private final int chapter;
+    private final int verse;
+    private final int hymn;
+    private final String dic;
 
     GoBack(int topTab, int bible, int chapter, int verse, int hymn, String dic) {
         this.topTab = topTab; this.bible = bible; this.chapter = chapter; this.verse = verse; this.hymn = hymn; this.dic = dic;

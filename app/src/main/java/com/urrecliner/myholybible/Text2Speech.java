@@ -3,6 +3,7 @@ package com.urrecliner.myholybible;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnUtteranceCompletedListener;
 import android.widget.Toast;
@@ -10,7 +11,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,7 +41,7 @@ class Text2Speech {
         mTTS = new TextToSpeech(context, ttsInitListener);
     }
     // It's callback
-    private TextToSpeech.OnInitListener ttsInitListener = new TextToSpeech.OnInitListener()
+    private final TextToSpeech.OnInitListener ttsInitListener = new TextToSpeech.OnInitListener()
     {
         @SuppressLint("NewApi")
         @Override
@@ -56,23 +56,18 @@ class Text2Speech {
     };
 
     @SuppressWarnings("deprecation")
-    private OnUtteranceCompletedListener completedListener = new OnUtteranceCompletedListener()
-    {
-        @Override
-        public void onUtteranceCompleted(String utteranceId)
-        {
-            ttsVerseNow++;
-            if (isReadingNow && ttsVerseNow < maxVerse)
-                readVerseByTTS(ttsVerseNow);
-            else if (isReadingNow) {
-                mainActivity.handleBibleRight();
-                new Timer().schedule(new TimerTask() {
-                    public void run() {
-                        ttsVerseNow =0;
-                        readVerseByTTS(ttsVerseNow);
-                    }
-                }, 2000);
-            }
+    private final OnUtteranceCompletedListener completedListener = utteranceId -> {
+        ttsVerseNow++;
+        if (isReadingNow && ttsVerseNow < maxVerse)
+            readVerseByTTS(ttsVerseNow);
+        else if (isReadingNow) {
+            mainActivity.handleBibleRight();
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    ttsVerseNow =0;
+                    readVerseByTTS(ttsVerseNow);
+                }
+            }, 2000);
         }
     };
 
@@ -98,19 +93,17 @@ class Text2Speech {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                    if (isReadingNow) {
-                        mainActivity.handleBibleRight();
-                        new Timer().schedule(new TimerTask() {
-                            public void run() {
-                                readVerse();
-                            }
-                        }, 2000);
-                    }
+            mediaPlayer.setOnCompletionListener(mp -> {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+                if (isReadingNow) {
+                    mainActivity.handleBibleRight();
+                    new Timer().schedule(new TimerTask() {
+                        public void run() {
+                            readVerse();
+                        }
+                    }, 2000);
                 }
             });
             mediaPlayer.start();
@@ -124,7 +117,7 @@ class Text2Speech {
         String para = null;
         ttsVerseNow = v;
         text = bibleTexts[v].substring(0, bibleTexts[v].indexOf("`a"));
-        if (text.substring(0,0).equals("{")) {
+        if (text.charAt(0) == '{') {
             para = text.substring(1,(text.indexOf("}")-1));
             text = text.substring(text.indexOf("}"+1));
         }
@@ -137,9 +130,13 @@ class Text2Speech {
             text = fullBibleNames[nowBible] + ". " + nowChapter + " " + ((nowBible == 19) ? "편" : "장") + " 말씀입니다.." + text;
         }
         try {
-            HashMap<String, String> map = new HashMap<>();
-            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
-            mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "MessageId");
+//            mTTS.speak(text, TextToSpeech.QUEUE_FLUSH, map);
+            Bundle params = new Bundle();
+            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1f); // change the 0.5f to any value from 0f-1f (1f is default)
+            mTTS.speak(text, TextToSpeech.QUEUE_ADD, params, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID);
+
         } catch (Exception e) {
             String logId = "tts";
             utils.log(logId, "ttsSpeak\n" + e.toString());
@@ -157,25 +154,22 @@ class Text2Speech {
                 fd = fs.getFD();
                 mediaPlayer.setDataSource(fd);
                 fs.close();
-                fs = null;
                 mediaPlayer.setLooping(false);
                 mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(hymnSpeed));
                 mediaPlayer.prepare();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                public void onCompletion(MediaPlayer mp) {
-                    mediaPlayer.stop();
-                    mediaPlayer.release();
-                    if (isReadingNow) {
-                        mainActivity.handleHymnRight();
-                        new Timer().schedule(new TimerTask() {
-                            public void run() {
-                                playHymn();
-                            }
-                        }, 2000);
-                    }
+            mediaPlayer.setOnCompletionListener(mp -> {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                if (isReadingNow) {
+                    mainActivity.handleHymnRight();
+                    new Timer().schedule(new TimerTask() {
+                        public void run() {
+                            playHymn();
+                        }
+                    }, 2000);
                 }
             });
             mediaPlayer.start();
