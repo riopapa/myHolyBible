@@ -288,6 +288,8 @@ class MakeBible {
 
         history.push();
         tV.setText(ss);
+        tV.setLineSpacing(1.2f, 1.2f);
+
         tV.setMovementMethod(LinkMovementMethod.getInstance());
         mBody.removeAllViewsInLayout();
         mBody.addView(scrollView);
@@ -341,6 +343,7 @@ class MakeBible {
         return ss;
     }
 
+    final String spacing = "\u00A0"; // to prevent word wrap
     private void makeBibleAllVerses() {
         maxVerse  = bibleTexts.length;
         versePtr = 0;
@@ -349,17 +352,18 @@ class MakeBible {
             if (line == (nowVerse-3))   // to show this verse no too top or above top
                 versePtr = ptrBody;
             String str;
-            String workLine = bibleTexts[line] + "~";   // "~" is end character
+            String workLine = bibleTexts[line] + "~";// "~" is end character
             int lenWorkLine = workLine.length() - 1;
             int idx = workLine.indexOf("`a");
             int idx2nd = workLine.indexOf("`c");
-            String agpText = workLine.substring(idx + 2, idx2nd);
+            String agpText = workLine.substring(idx + 2, idx2nd).replace(" ", spacing);
             if (agpText.length() == 0)
                 agpText = " ";
             String cevText = workLine.substring(idx2nd + 2, lenWorkLine);
             if (cevText.length() == 0)
                 cevText = " ";
-            workLine = workLine.substring(0, idx);
+            workLine = workLine.substring(0, idx).replace(" ", spacing);
+            // to prevent word wrap
             String verseString = "" + (line+1);
             if (line < maxVerse-1) {
                 String nextLine = bibleTexts[line+1].substring(0, bibleTexts[line+1].indexOf("`a")).trim();
@@ -393,7 +397,7 @@ class MakeBible {
                 }
                 if (nowVerse > 0 && line == (nowVerse-1))
                     highLightF = ptrBody;
-                str = " " + verseString + " ";
+                str = spacing + spacing + verseString + spacing;
                 textF[idxText] = ptrBody;
                 verseF[idxVerse] = ptrBody;
                 verseT[idxVerse] = ptrBody + str.length();
@@ -421,7 +425,6 @@ class MakeBible {
                 }
                 if (nowVerse > 0 && line == (nowVerse-1))
                     highLightT = ptrBody;
-
                 if (agpShow) {
                     agpText = newLine + agpText;
                     bodyText.append(agpText);
@@ -593,21 +596,23 @@ class MakeBible {
                         break;
                     case "~": { // contains subject name
                         TextView tVLine = new TextView(mContext);
-//                        tVLine.setTextSize(textSizeBibleBody + 3);
+                        tVLine.setTextSize((textSizeBibleBody*3)/6);
                         tVLine.setTextColor(bibleColorFore);
                         tVLine.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                         tVLine.setGravity(Gravity.CENTER_HORIZONTAL);
                         tVLine.setWidth(xPixels);
+                        tVLine.setLineSpacing(1.5f, 1.5f);
                         linearlayout.addView(tVLine);
                         tVLine.setText(line.substring(1));
                         break;
                     }
                     default: {
                         TextView tVLine = new TextView(mContext);
-//                        tVLine.setTextSize(textSizeBibleBody);
+                        tVLine.setTextSize((textSizeBibleBody*2)/6);
                         tVLine.setTextColor(bibleColorFore);
                         tVLine.setGravity(Gravity.START);
                         tVLine.setWidth(xPixels);
+                        tVLine.setLineSpacing(1.2f, 1.2f);
                         linearlayout.addView(tVLine);
                         tVLine.setText(line);
                         break;
