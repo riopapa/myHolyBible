@@ -4,6 +4,7 @@ package com.urrecliner.myholybible;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,8 +31,9 @@ import static com.urrecliner.myholybible.Vars.utils;
 public class SearchActivity extends Activity {
 
     RecyclerView recyclerView;
-    TextView tvClearKey, tvFrom, tvSearchKey;
-    ImageView ivQuickSearch, ivSearchNext;
+    TextView  tvFrom, tvSearchKey;
+    ImageView ivQuickSearch, ivTextClear, ivSearchNext;
+
 //    final String logID = "search";
 
     @Override
@@ -74,8 +76,8 @@ public class SearchActivity extends Activity {
                 tvSearchKey.requestFocus();
             }
         });
-        tvClearKey = findViewById(R.id.search_clear);
-        tvClearKey.setOnClickListener(v -> {
+        ivTextClear = findViewById(R.id.text_clear);
+        ivTextClear.setOnClickListener(v -> {
             tvSearchKey.setText("");
             tvSearchKey.setFocusable(true);
         });
@@ -107,18 +109,17 @@ public class SearchActivity extends Activity {
         int chapter = nowChapter;
         int depth = searchDepth;
         searchResults = new ArrayList<>();
-        final String match = "[^\uAC00-\uD7A3xfe/,\\s]"; // 한글만 OK
 
         while (depth > 0) {
             String file2read = "bible/" + bible + "/" + chapter + ".txt";
             bibleVerses = utils.readBibleFile(file2read);
             for (int i = 0; i < bibleVerses.length; i++) {
-                String s = bibleVerses[i].substring(0, bibleVerses[i].indexOf("`"));
-                if (s.indexOf('}') > 0)
-                    s = s.substring(s.indexOf('}') + 1);
-                s = s.replaceAll(match, "");
+                String s = extractVerse(bibleVerses[i]);
                 if (s.contains(text)) {
-                    SearchResult searchResult = new SearchResult(bible, chapter, i+1, s);
+                    String result = (i>1) ? (i)+")"+extractVerse(bibleVerses[i-1]) + "\n" + (i+1)+")"+s : (i+1)+")"+s;
+                    if (i < bibleVerses.length-1)
+                        result += "\n" + (i+2)+")"+extractVerse(bibleVerses[i+1]);
+                    SearchResult searchResult = new SearchResult(bible, chapter, i+1, result);
                     searchResults.add(searchResult);
                 }
             }
@@ -135,6 +136,16 @@ public class SearchActivity extends Activity {
         }
         if (searchResults.size() == 0)
             Toast.makeText(mContext," 검색되지 않습니다. 계속 버튼을 누르거나\n설정에서 검색장수("+searchDepth+")를 늘려보세요.",Toast.LENGTH_LONG).show();
+    }
+
+    @NonNull
+    private String extractVerse(String bibleVers) {
+        final String match = "[^\uAC00-\uD7A3xfe/,\\s]"; // 한글만 OK
+        String s = bibleVers.substring(0, bibleVers.indexOf("`"));
+        if (s.indexOf('}') > 0)
+            s = s.substring(s.indexOf('}') + 1);
+        s = s.replaceAll(match, "");
+        return s;
     }
 
     void search_BibleNext() {

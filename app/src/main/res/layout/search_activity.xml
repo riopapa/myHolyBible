@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="성경 찾기"
             android:layout_gravity="center"
-            android:textSize="28sp" />
+            android:textSize="20sp" />
 
         <!-- search bible -->
         <LinearLayout
@@ -34,11 +34,10 @@
                 android:id="@+id/searchNext"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                android:padding="4dp"
+                android:paddingLeft="4dp"
                 android:layout_height="32dp"
                 android:background="#00000000"
                 style="@style/exitButton"
-                app:layout_constraintHorizontal_weight="2"
                 android:src="@mipmap/search_next" />
 
             <TextView
@@ -49,22 +48,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="고전12:31"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/search_clear"
+            <ImageView
+                android:id="@+id/text_clear"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:textColor="@color/setText"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:text="X"
                 android:layout_gravity="center"
-                android:textSize="12sp" />
+                android:src="@drawable/clear_text"
+                />
+
             <EditText
                 android:id="@+id/txtSearch"
                 android:layout_width="0dp"
-                android:layout_weight="8"
+                android:layout_weight="7"
                 android:inputType="text"
                 android:gravity="center"
                 android:selectAllOnFocus="true"

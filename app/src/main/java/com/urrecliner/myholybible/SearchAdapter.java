@@ -2,6 +2,9 @@ package com.urrecliner.myholybible;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +18,9 @@ import static com.urrecliner.myholybible.Vars.nowBible;
 import static com.urrecliner.myholybible.Vars.nowChapter;
 import static com.urrecliner.myholybible.Vars.nowVerse;
 import static com.urrecliner.myholybible.Vars.searchActivity;
+import static com.urrecliner.myholybible.Vars.searchNext;
 import static com.urrecliner.myholybible.Vars.searchResults;
+import static com.urrecliner.myholybible.Vars.searchText;
 import static com.urrecliner.myholybible.Vars.shortBibleNames;
 import static com.urrecliner.myholybible.Vars.textSizeBibleBody;
 import static com.urrecliner.myholybible.Vars.topTab;
@@ -75,7 +80,21 @@ class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>  {
 //        holder.tvBible.setText(shortBibleNames[searchResult.getBible()]);
         String s = shortBibleNames[searchResult.getBible()]+"\n"+searchResult.getChapter()+":"+searchResult.getVerse();
         holder.tvVerse.setText(s);
-        holder.tvText.setText(searchResult.getText());
+        s = searchResult.getText();
+        String[] verses = s.split("\n");
+        SpannableString ss = new SpannableString(s);
+        int sLen = verses[0].length();
+        int tLen = 0;
+        tLen += sLen + 1;
+        sLen = verses[1].length();
+        ss.setSpan(new BackgroundColorSpan(0x3845B2D9), tLen, tLen + sLen, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        int kPos = s.indexOf(searchText);
+        while (kPos > 0) {
+            ss.setSpan(new BackgroundColorSpan(0xFF00FF00), kPos, kPos + searchText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            kPos = s.indexOf(searchText, kPos+2);
+        }
+
+        holder.tvText.setText(ss);
 
     }
 
